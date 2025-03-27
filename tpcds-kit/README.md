@@ -1,84 +1,74 @@
-# TPC-DS Benchmarking with Dremio v26
+# tpcds-kit
 
-This repository supports benchmarking Dremio v26 OSS using the TPC-DS benchmark at 1TB scale. It includes tooling to:
+The official TPC-DS tools can be found at [tpc.org](http://www.tpc.org/tpc_documents_current_versions/current_specifications.asp).
 
-- Generate TPC-DS test data in `.dat` format (1 file per table)
-- Convert that data to Parquet
-- Create Apache Iceberg tables
-- Execute benchmark queries and capture performance metrics
+This version is based on v2.4 and has been modified to:
 
-The framework is designed to be S3-compatible and flexible across environments for real-world performance testing.
+* Allow compilation under macOS (commit [2ec45c5](https://github.com/gregrahn/tpcds-kit/commit/2ec45c5ed97cc860819ee630770231eac738097c))
+* Address obvious query template bugs like 
+  * https://github.com/gregrahn/tpcds-kit/issues/30
+  * https://github.com/gregrahn/tpcds-kit/issues/31
+  * https://github.com/gregrahn/tpcds-kit/issues/33
 
----
+## Setup
 
-## License Notice
+### Linux
 
-This project includes the open-source `tpcds-kit` from Databricks.
+Make sure the required development tools are installed:
 
-- **Original source**: [https://github.com/databricks/tpcds-kit](https://github.com/databricks/tpcds-kit)
-- **License**: Apache License 2.0
+Ubuntu: 
+```
+sudo apt-get install gcc make flex bison byacc git
+```
 
-A local copy is included in this repository under the `tools/` directory.
+CentOS/RHEL: 
+```
+sudo yum install gcc make flex bison byacc git
+```
 
----
+Then run the following commands to clone the repo and build the tools:
 
-## Prerequisites
+```
+git clone https://github.com/databricks/tpcds-kit.git
+cd tpcds-kit/tools
+make OS=LINUX
+```
 
-Before proceeding, make sure the following dependencies are installed on your system:
+### macOS
 
-- **Python 3.x**
-- **GCC / C development tools**
-- **Make**
-- **Xcode Command Line Tools** (macOS): Install using:
-  ```bash
-  xcode-select --install
-  ```
-- **Homebrew** (macOS): [https://brew.sh](https://brew.sh)
-- **Bison** (required to compile the query generator): Install using:
-  ```bash
-  brew install bison
-  ```
+Make sure the required development tools are installed:
 
-These are required to compile the TPC-DS generator and process the generated data.
+```
+xcode-select --install
+```
+ 
+Then run the following commands to clone the repo and build the tools:
 
----
+```
+git clone https://github.com/databricks/tpcds-kit.git
+cd tpcds-kit/tools
+make OS=MACOS
+```
 
-## Generating TPC-DS Data Files (1TB)
+## Using the TPC-DS tools
 
-1. Create a directory to hold the raw data files:
-   ```bash
-   mkdir test_data
-   ```
+### Data generation
 
-2. Build the data generator:
-   From the root of the repository:
-   ```bash
-   cd tools
-   make OS=MACOS
-   ```
+Data generation is done via `dsdgen`.  See `dsdgen --help` for all options.  If you do not run `dsdgen` from the `tools/` directory then you will need to use the option `-DISTRIBUTIONS /.../tpcds-kit/tools/tpcds.idx`.
 
-3. Generate the data (Scale Factor 1000 = ~1TB total):
-   From the root of the repo:
-   ```bash
-   ./tools/dsdgen -SCALE 1000 -DIR test_data -FORCE
-   ```
+### Query generation
 
-This will generate one `.dat` file per table in the `test_data` folder. Do not commit this folder to version control—it should be ignored using `.gitignore`.
+Query generation is done via `dsqgen`.   See `dsqgen --help` for all options.
 
----
+The following command can be used to generate all 99 queries in numerical order (`-QUALIFY`) for the 10TB scale factor (`-SCALE`) using the Netezza dialect template (`-DIALECT`) with the output going to `/tmp/query_0.sql` (`-OUTPUT_DIR`).
 
-## Next Steps
-
-### Convert to Parquet
-
-(Coming Soon)
-
-### Create Iceberg Tables
-
-(Coming Soon)
-
-### Execute Queries and Benchmark
-
-(Coming Soon)
-
-Let me know when you’re ready to move on to the Parquet conversion step or need help crafting the `.gitignore`.
+```
+dsqgen \
+-DIRECTORY ../query_templates \
+-INPUT ../query_templates/templates.lst \
+-VERBOSE Y \
+-QUALIFY Y \
+-SCALE 10000 \
+-DIALECT netezza \
+-OUTPUT_DIR /tmp
+```
