@@ -45,22 +45,24 @@ These are required to compile the TPC-DS generator and process the generated dat
 
 ## Generating TPC-DS Data Files (1TB)
 
-1. Create a directory to hold the raw data files:
+1. Navigate to the `tpcds-kit` directory:
+   ```bash
+   cd tools
+   ```
+
+2. Create a directory to hold the raw data files:
    ```bash
    mkdir test_data
    ```
 
-2. Build the data generator:
-   From the root of the repository:
+3. Build the data generator:
    ```bash
-   cd tools
    make OS=MACOS
    ```
 
-3. Generate the data (Scale Factor 1000 = ~1TB total):
-   From the root of the repo:
+4. Generate the data (Scale Factor 1000 = ~1TB total):
    ```bash
-   ./tools/dsdgen -SCALE 1000 -DIR test_data -FORCE
+   ./dsdgen -SCALE 1000 -DIR test_data -FORCE
    ```
 
 This will generate one `.dat` file per table in the `test_data` folder. Do not commit this folder to version control—it should be ignored using `.gitignore`.
@@ -80,5 +82,3 @@ This will generate one `.dat` file per table in the `test_data` folder. Do not c
 ### Execute Queries and Benchmark
 
 (Coming Soon)
-
-Let me know when you’re ready to move on to the Parquet conversion step or need help crafting the `.gitignore`.
