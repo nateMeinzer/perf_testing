@@ -40,6 +40,10 @@ s3 = boto3.client(
     aws_secret_access_key=S3_SECRET_KEY
 )
 
+# Load partition configuration
+with open("partitions.json", "r") as f:
+    PARTITIONS = json.load(f)
+
 def get_auth_header():
     """Get authentication header for Dremio API calls"""
     auth_payload = {
@@ -170,6 +174,26 @@ def format_file_as_table(file_path):
             print(f"Error response: {e.response.text}")
         return False
 
+def create_partitioned_iceberg_table(file_path, partition_key):
+    """Create a partitioned Iceberg table for a given file"""
+    print(f"Starting to create a partitioned Iceberg table.")
+
+    # Extract the table name by removing the .parquet extension from the last item
+    file_name = file_path[-1]  # e.g., "store_sales.parquet"
+    table_name = file_name.replace(".parquet", "")  # e.g., "store_sales"
+
+    query = f"""
+    CREATE TABLE {ICEBERG_BUCKET_NAME}.{table_name} PARTITIONED BY ({partition_key}) AS 
+    SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
+    """
+
+    print(f"Executing query to create partitioned Iceberg table: {table_name}")  # Log before execution
+    success = execute_query(query)
+    if success:
+        print(f"Successfully created partitioned Iceberg table: {table_name}")  # Log success
+    else:
+        print(f"Failed to create partitioned Iceberg table: {table_name}")  # Log failure
+
 def create_iceberg_table(file_path):
     """Create an Iceberg table for a given file"""
     print(f"Starting to get the table paths for iceberg table creation.")
@@ -178,6 +202,14 @@ def create_iceberg_table(file_path):
     file_name = file_path[-1]  # e.g., "call_center.parquet"
     table_name = file_name.replace(".parquet", "")  # e.g., "call_center"
 
+    # Check if the table needs to be partitioned
+    if table_name in PARTITIONS:
+        partition_key = PARTITIONS[table_name]
+        print(f"Table {table_name} requires partitioning by {partition_key}.")
+        create_partitioned_iceberg_table(file_path, partition_key)
+        return
+
+    # Regular table creation for non-partitioned tables
     query = f"""
     CREATE TABLE {ICEBERG_BUCKET_NAME}.{table_name} AS 
     SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
