@@ -40,9 +40,12 @@ s3 = boto3.client(
     aws_secret_access_key=S3_SECRET_KEY
 )
 
-# Load partition configuration
-with open("partitions.json", "r") as f:
-    PARTITIONS = json.load(f)
+# Load table configuration
+with open("tables.json", "r") as f:
+    TABLES = json.load(f)
+
+formatted_parquet_files = []
+iceberg_tables_created = []
 
 def get_auth_header():
     """Get authentication header for Dremio API calls"""
@@ -166,6 +169,7 @@ def format_file_as_table(file_path):
             json=payload
         )
         response.raise_for_status()
+        formatted_parquet_files.append(table_name)  # Track formatted files
         print(f"Successfully formatted file as table: {table_name}")
         return True
     except requests.exceptions.RequestException as e:
@@ -196,31 +200,30 @@ def create_partitioned_iceberg_table(file_path, partition_key):
 
 def create_iceberg_table(file_path):
     """Create an Iceberg table for a given file"""
-    print(f"Starting to get the table paths for iceberg table creation.")
+    file_name = file_path[-1]
+    if not file_name.endswith(".parquet"):
+        file_name = f"{file_name}.parquet"
 
-    # Extract the table name by removing the .parquet extension from the last item
-    file_name = file_path[-1]  # e.g., "call_center.parquet"
-    table_name = file_name.replace(".parquet", "")  # e.g., "call_center"
+    table_name = file_name.replace(".parquet", "")
 
-    # Check if the table needs to be partitioned
-    if table_name in PARTITIONS:
-        partition_key = PARTITIONS[table_name]
-        print(f"Table {table_name} requires partitioning by {partition_key}.")
-        create_partitioned_iceberg_table(file_path, partition_key)
-        return
+    partition_clause = ""
+    if table_name in TABLES["partitioned_tables"]:
+        partition_key = TABLES["partitioned_tables"][table_name]
+        partition_clause = f"PARTITION BY ({partition_key})"
 
-    # Regular table creation for non-partitioned tables
     query = f"""
-    CREATE TABLE {ICEBERG_BUCKET_NAME}.{table_name} AS 
-    SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
+    CREATE TABLE IF NOT EXISTS {ICEBERG_BUCKET_NAME}.{table_name}
+    {partition_clause}
+    AS SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
     """
 
-    print(f"Executing query to create Iceberg table: {table_name}")  # Log before execution
+    print(f"Executing query to create Iceberg table: {table_name}")
     success = execute_query(query)
     if success:
-        print(f"Successfully created Iceberg table: {table_name}")  # Log success
+        iceberg_tables_created.append(table_name)  # Track created tables
+        print(f"Successfully created Iceberg table: {table_name}")
     else:
-        print(f"Failed to create Iceberg table: {table_name}")  # Log failure
+        print(f"Failed to create Iceberg table: {table_name}")
 
 def process_folder(folder_path):
     """Recursively process a folder and its contents"""
@@ -246,6 +249,12 @@ def main():
     # Start processing from the root folder
     root_folder_path = f"{DREMIO_SOURCE_NAME}/{S3_BUCKET_NAME}"
     process_folder(root_folder_path)
+
+    print("\nSummary of Operations:")
+    print(f"Parquet files Formatted: {formatted_parquet_files}")
+    print(f"Total Count: {len(formatted_parquet_files)}")
+    print(f"Iceberg tables Created: {iceberg_tables_created}")
+    print(f"Total Count: {len(iceberg_tables_created)}")
 
 if __name__ == "__main__":
     main()
