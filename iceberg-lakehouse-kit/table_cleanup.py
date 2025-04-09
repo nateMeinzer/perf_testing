@@ -81,14 +81,35 @@ def execute_query(query):
 
 def cleanup_tables():
     """Loop through table names and delete them"""
-    with open("tables.json", "r") as f:  # Updated to use tables.json
-        tables = json.load(f)
+    tables_file = "tables.json"
+    
+    # Check if the tables.json file exists
+    if not os.path.exists(tables_file):
+        print(f"Error: {tables_file} not found. Ensure the file exists in the current directory: {os.getcwd()}")
+        return
+
+    # Debug: Print the absolute path of the file being accessed
+    print(f"Using tables file: {os.path.abspath(tables_file)}")
+
+    # Load the tables.json file
+    try:
+        with open(tables_file, "r") as f:
+            tables = json.load(f)
+    except json.JSONDecodeError as e:
+        print(f"Error: Failed to parse {tables_file}. Ensure it contains valid JSON. {e}")
+        return
+
+    # Validate the structure of the JSON
+    if not isinstance(tables, dict) or "partitioned_tables" not in tables or "non_partitioned_tables" not in tables:
+        print(f"Error: {tables_file} has an invalid structure. Expected keys: 'partitioned_tables' and 'non_partitioned_tables'.")
+        print(f"Loaded JSON: {tables}")  # Debug: Print the loaded JSON for inspection
+        return
 
     # Fetch all table names from both partitioned and non-partitioned sections
     table_names = list(tables["partitioned_tables"].keys()) + tables["non_partitioned_tables"]
 
     for table_name in table_names:
-        query = f"DROP TABLE {ICEBERG_BUCKET_NAME}.{table_name};"
+        query = f'DROP TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}";'
         print(f"Executing cleanup for table: {table_name}")
         success = execute_query(query)
         if success:

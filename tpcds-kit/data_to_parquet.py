@@ -3,7 +3,6 @@ import glob
 import pandas as pd
 import json
 from termcolor import colored
-import chardet
 import sys
 
 # Load schema definitions
@@ -29,27 +28,13 @@ def handle_error(message):
     print("Please use the cleanup tool before beginning again.")
     sys.exit(1)
 
-def normalize_encoding(file_path):
-    """Normalize the encoding of a file to UTF-8."""
-    with open(file_path, "rb") as f:
-        raw_data = f.read()
-        detected_encoding = chardet.detect(raw_data)["encoding"]
-
-    if detected_encoding != "utf-8":
-        print(f"Normalizing encoding for {file_path} from {detected_encoding} to UTF-8")
-        with open(file_path, "r", encoding=detected_encoding) as f:
-            data = f.read()
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(data)
-
 if not dat_files:
     print("No .dat files found in the input directory.")
 else:
     for file_path in dat_files:
         try:
-            normalize_encoding(file_path)  # Normalize encoding before processing
             # Read the .dat file; TPC-DS files are pipe-delimited with no header
-            df = pd.read_csv(file_path, sep="|", header=None, engine="python")
+            df = pd.read_csv(file_path, sep="|", header=None, encoding="latin1", engine="python")
 
             # Sometimes the .dat files have a trailing empty column due to the delimiter at the end
             if df.columns[-1] == df.columns[-1] and df[df.columns[-1]].isnull().all():

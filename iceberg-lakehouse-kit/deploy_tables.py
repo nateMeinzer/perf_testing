@@ -40,13 +40,6 @@ s3 = boto3.client(
     aws_secret_access_key=S3_SECRET_KEY
 )
 
-# Load table configuration
-with open("tables.json", "r") as f:
-    TABLES = json.load(f)
-
-formatted_parquet_files = []
-iceberg_tables_created = []
-
 def get_auth_header():
     """Get authentication header for Dremio API calls"""
     auth_payload = {
@@ -61,6 +54,7 @@ def get_auth_header():
     except requests.exceptions.RequestException as e:
         print(f"Authentication failed: {e}")
         return None
+
 def execute_query(query):
     """Execute a SQL query in Dremio and wait for results"""
     headers = get_auth_header()
@@ -111,150 +105,50 @@ def execute_query(query):
             print(f"Error response: {e.response.text}")
         return False
 
-def get_folder_contents(folder_path):
-    """Retrieve folder contents using the Catalog API"""
-    headers = get_auth_header()
-    if not headers:
-        return None
-
-    # Ensure the path is properly encoded without escapes
-    encoded_path = "/".join(urllib.parse.quote(part) for part in folder_path.split("/"))
-
-    try:
-        response = requests.get(
-            f"{DREMIO_URL}/api/v3/catalog/by-path/{encoded_path}",
-            headers=headers
-        )
-        response.raise_for_status()
-        return response.json().get("children", [])
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to retrieve folder contents for {folder_path}: {e}")
-        if hasattr(e, 'response') and e.response is not None:
-            print(f"Error response: {e.response.text}")
-        return []
-
-def format_file_as_table(file_path):
-    """Format a file as a table in Dremio using path-based API"""
-    headers = get_auth_header()
-    if not headers:
-        return False
-
-    table_name = file_path[-2]  # Use the folder name as the table name
-    path_parts = [DREMIO_SOURCE_NAME, S3_BUCKET_NAME, table_name]
-    encoded_path = "/".join(urllib.parse.quote(part) for part in path_parts)
-
-    try:
-        # First, check if the dataset already exists
-        response = requests.get(
-            f"{DREMIO_URL}/api/v3/catalog/by-path/{encoded_path}",
-            headers=headers
-        )
-        
-        if response.status_code == 200:
-            print(f"Table already exists: {table_name}")
-            return True
-
-        payload = {
-            "entityType": "dataset",
-            "path": path_parts,
-            "type": "PHYSICAL_DATASET",
-            "format": {
-                "type": "Parquet"
-            }
-        }
-
-        response = requests.put(
-            f"{DREMIO_URL}/api/v3/catalog/by-path/{encoded_path}",
-            headers=headers,
-            json=payload
-        )
-        response.raise_for_status()
-        formatted_parquet_files.append(table_name)  # Track formatted files
-        print(f"Successfully formatted file as table: {table_name}")
-        return True
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to format file as table: {table_name}: {e}")
-        if hasattr(e, 'response') and e.response is not None:
-            print(f"Error response: {e.response.text}")
-        return False
-
-def create_partitioned_iceberg_table(file_path, partition_key):
-    """Create a partitioned Iceberg table for a given file"""
-    print(f"Starting to create a partitioned Iceberg table.")
-
-    # Extract the table name by removing the .parquet extension from the last item
-    file_name = file_path[-1]  # e.g., "store_sales.parquet"
-    table_name = file_name.replace(".parquet", "")  # e.g., "store_sales"
-
+def process_table(table_name, partition_column=None):
+    """Query the object and create the Iceberg table."""
+    # Step 1: Query the object with LIMIT 1
     query = f"""
-    CREATE TABLE {ICEBERG_BUCKET_NAME}.{table_name} PARTITIONED BY ({partition_key}) AS 
-    SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
+    SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet" LIMIT 1
     """
+    print(f"Querying object for table: {table_name}")
+    execute_query(query)  # Execute the query regardless of the outcome
 
-    print(f"Executing query to create partitioned Iceberg table: {table_name}")  # Log before execution
-    success = execute_query(query)
-    if success:
-        print(f"Successfully created partitioned Iceberg table: {table_name}")  # Log success
+    # Step 2: Create the Iceberg table
+    if partition_column:
+        create_query = f"""
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}" PARTITION BY ({partition_column}) AS 
+        SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet";
+        """
     else:
-        print(f"Failed to create partitioned Iceberg table: {table_name}")  # Log failure
-
-def create_iceberg_table(file_path):
-    """Create an Iceberg table for a given file"""
-    file_name = file_path[-1]
-    if not file_name.endswith(".parquet"):
-        file_name = f"{file_name}.parquet"
-
-    table_name = file_name.replace(".parquet", "")
-
-    partition_clause = ""
-    if table_name in TABLES["partitioned_tables"]:
-        partition_key = TABLES["partitioned_tables"][table_name]
-        partition_clause = f"PARTITION BY ({partition_key})"
-
-    query = f"""
-    CREATE TABLE IF NOT EXISTS {ICEBERG_BUCKET_NAME}.{table_name}
-    {partition_clause}
-    AS SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
-    """
-
-    print(f"Executing query to create Iceberg table: {table_name}")
-    success = execute_query(query)
-    if success:
-        iceberg_tables_created.append(table_name)  # Track created tables
-        print(f"Successfully created Iceberg table: {table_name}")
-    else:
-        print(f"Failed to create Iceberg table: {table_name}")
-
-def process_folder(folder_path):
-    """Recursively process a folder and its contents"""
-    print(f"\nProcessing folder: {folder_path}")
-    children = get_folder_contents(folder_path)
-
-    if not children:
-        print(f"No files or subdirectories found in folder: {folder_path}")
-        return
-
-    print(f"Found {len(children)} children in folder {folder_path}")
-    for child in children:
-        print(f"Child type: {child['type']}, Path: {child['path']}")
-        if child["type"] == "DATASET":
-            print(f"Processing file: {child['path'][-1]}")
-            format_file_as_table(child["path"])
-            create_iceberg_table(child["path"])
-        elif child["type"] == "CONTAINER":
-            print(f"Entering folder: {child['path'][-1]}")
-            process_folder("/".join(child["path"]))
+        create_query = f"""
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}" AS 
+        SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet";
+        """
+    print(f"Creating Iceberg table for: {table_name}")
+    execute_query(create_query)
 
 def main():
-    # Start processing from the root folder
-    root_folder_path = f"{DREMIO_SOURCE_NAME}/{S3_BUCKET_NAME}"
-    process_folder(root_folder_path)
+    # Load tables.json
+    tables_file = "tables.json"
+    if not os.path.exists(tables_file):
+        print(f"Error: {tables_file} not found. Ensure the file exists in the current directory: {os.getcwd()}")
+        return
 
-    print("\nSummary of Operations:")
-    print(f"Parquet files Formatted: {formatted_parquet_files}")
-    print(f"Total Count: {len(formatted_parquet_files)}")
-    print(f"Iceberg tables Created: {iceberg_tables_created}")
-    print(f"Total Count: {len(iceberg_tables_created)}")
+    try:
+        with open(tables_file, "r") as f:
+            tables = json.load(f)
+    except json.JSONDecodeError as e:
+        print(f"Error: Failed to parse {tables_file}. Ensure it contains valid JSON. {e}")
+        return
+
+    # Process partitioned tables
+    for table_name, partition_column in tables["partitioned_tables"].items():
+        process_table(table_name, partition_column)
+
+    # Process non-partitioned tables
+    for table_name in tables["non_partitioned_tables"]:
+        process_table(table_name)
 
 if __name__ == "__main__":
     main()
