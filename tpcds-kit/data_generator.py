@@ -1,25 +1,14 @@
 import os
 import subprocess
-import boto3
 import argparse
-
-# S3 configuration
-S3_BUCKET = os.getenv("S3_BUCKET", "default-bucket")  # Use environment variable or default
-S3_PREFIX = "dat_files"  # Folder in the bucket to store .dat files
-S3_ENDPOINT = os.getenv("S3_ENDPOINT", "http://localhost:9000")  # Use environment variable or default
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")  # Use environment variable
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")  # Use environment variable
-
-# Initialize S3 client
-s3_client = boto3.client(
-    "s3",
-    endpoint_url=S3_ENDPOINT,
-    aws_access_key_id=AWS_ACCESS_KEY,
-    aws_secret_access_key=AWS_SECRET_KEY,
-)
 
 # Path to the dsdgen executable
 DSDGEN_PATH = os.path.join(os.path.dirname(__file__), "tools", "dsdgen")  # Adjusted path to tools folder
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "tpcds-kit", "test_data", "raw_data")  # Updated output directory
+
+# Create the output directory if it doesn't exist
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
 
 # Compile the dsdgen tool
 def compile_dsdgen():
@@ -32,16 +21,6 @@ def compile_dsdgen():
         print("Failed to compile dsdgen. Ensure you have 'make' and necessary dependencies installed.")
         exit(1)
 
-# Delete .dat files from the tools directory
-def delete_dat_files():
-    tools_dir = os.path.join(os.path.dirname(__file__), "tools")
-    print("Deleting .dat files from the tools directory...")
-    for file_name in os.listdir(tools_dir):
-        if file_name.endswith(".dat"):
-            file_path = os.path.join(tools_dir, file_name)
-            os.remove(file_path)
-            print(f"Deleted {file_name}")
-
 # Generate data using dsdgen
 def generate_data(scale_factor):
     print(f"Generating TPC-DS data with scale factor {scale_factor}...")
@@ -49,27 +28,21 @@ def generate_data(scale_factor):
     command = [
         DSDGEN_PATH,
         "-SCALE", str(scale_factor),
-        "-FORCE"
+        "-FORCE",
+        "-DIR", OUTPUT_DIR  # Specify output directory
     ]
     process = subprocess.Popen(command, cwd=tools_dir, stdout=subprocess.PIPE, text=True)
     for line in process.stdout:
-        if line.strip().endswith(".dat"):
-            file_name = line.strip()
-            file_path = os.path.join(tools_dir, file_name)
-            s3_key = f"{S3_PREFIX}/{file_name}"
-            print(f"Uploading {file_name} to s3://{S3_BUCKET}/{s3_key}...")
-            s3_client.upload_file(file_path, S3_BUCKET, s3_key)
-            print(f"Uploaded {file_name} successfully.")
+        print(line.strip())  # Print dsdgen output for visibility
     process.wait()
     if process.returncode != 0:
         print("Data generation failed.")
         exit(1)
-    print("Data generation and upload complete.")
-    delete_dat_files()
+    print(f"Data generation complete. Files are located in {OUTPUT_DIR}.")
 
 # Main execution
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate TPC-DS data and upload to S3.")
+    parser = argparse.ArgumentParser(description="Generate TPC-DS data.")
     parser.add_argument(
         "--scale-factor", 
         type=int, 

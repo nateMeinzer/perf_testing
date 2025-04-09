@@ -2,18 +2,33 @@ import os
 import glob
 import pandas as pd
 
-# Set directory paths
-input_dir = "test_data"
-output_dir = os.path.join(input_dir, "parquet")
+# Resolve paths relative to the script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+input_dir = os.path.join(script_dir, "tpcds-kit/test_data/raw_data")
+output_dir = os.path.join(script_dir, "tpcds-kit/test_data/parquet")
+
+# Debug: Print full paths
+print(f"Input directory: {input_dir}")
+print(f"Output directory: {output_dir}")
+
+# Ensure the input directory exists
+if not os.path.exists(input_dir):
+    raise FileNotFoundError(f"Input directory does not exist: {input_dir}")
 
 # Create the output directory if it doesn't exist
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-# Get list of all .dat files in the test_data folder
+# Get list of all .dat files in the input directory
 dat_files = glob.glob(os.path.join(input_dir, "*.dat"))
 
+# Debug: Print discovered .dat files
+print(f"Found {len(dat_files)} .dat files: {dat_files}")
+
 for file_path in dat_files:
+    # Debug: Print the file being processed
+    print(f"Processing file: {file_path}")
+    
     # Read the .dat file; TPC-DS files are pipe-delimited with no header
     df = pd.read_csv(file_path, sep="|", header=None, engine="python")
     
