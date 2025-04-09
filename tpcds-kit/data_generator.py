@@ -4,7 +4,7 @@ import argparse
 
 # Path to the dsdgen executable
 DSDGEN_PATH = os.path.join(os.path.dirname(__file__), "tools", "dsdgen")  # Adjusted path to tools folder
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "tpcds-kit", "test_data", "raw_data")  # Updated output directory
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "test_data", "raw_files")  # Updated output directory
 
 # Create the output directory if it doesn't exist
 if not os.path.exists(OUTPUT_DIR):
