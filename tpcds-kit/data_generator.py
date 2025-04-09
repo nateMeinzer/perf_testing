@@ -52,11 +52,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     scale_factor = args.scale_factor
-    print(f"You are about to generate approximately {scale_factor}GB of data.")
-    confirmation = input("Do you want to proceed? (y/n): ").strip().lower()
-    if confirmation != "y":
-        print("Operation cancelled.")
-        exit(1)
 
     compile_dsdgen()
     generate_data(scale_factor)

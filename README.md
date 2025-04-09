@@ -11,74 +11,138 @@ The framework is designed to be S3-compatible and flexible across environments f
 
 ---
 
-## License Notice
-
-This project includes the open-source `tpcds-kit` from Databricks.
-
-- **Original source**: [https://github.com/databricks/tpcds-kit](https://github.com/databricks/tpcds-kit)
-- **License**: Apache License 2.0
-
-A local copy is included in this repository under the `tools/` directory.
+## **Features**
+1. **Data Generation**: Generate TPC-DS raw `.dat` files at a specified scale factor.
+2. **Parquet Conversion and Upload**: Convert `.dat` files to `.parquet` format and upload them to an S3 bucket.
+3. **Cleanup**: Remove `.dat` and `.parquet` files to free up disk space.
 
 ---
 
-## Prerequisites
+## **Workflow**
+The workflow is managed through the `tpcds` script, which provides three main commands: `generate`, `upload`, and `cleanup`.
 
-Before proceeding, make sure the following dependencies are installed on your system:
+### **1. Data Generation**
+Generate raw `.dat` files using the `generate` command.
 
-- **Python 3.x**
-- **GCC / C development tools**
-- **Make**
-- **Xcode Command Line Tools** (macOS): Install using:
-  ```bash
-  xcode-select --install
-  ```
-- **Homebrew** (macOS): [https://brew.sh](https://brew.sh)
-- **Bison** (required to compile the query generator): Install using:
-  ```bash
-  brew install bison
-  ```
+#### **Usage**
+```bash
+python tpcds generate --scale <scale_factor>
+```
 
-These are required to compile the TPC-DS generator and process the generated data.
+#### **Arguments**
+- `--scale`: The scale factor for data generation (e.g., `1` for 1GB, `10` for 10GB).
 
----
-
-## Generating TPC-DS Data Files (1TB)
-
-1. Navigate to the `tpcds-kit` directory:
-   ```bash
-   cd tools
-   ```
-
-2. Create a directory to hold the raw data files:
-   ```bash
-   mkdir test_data
-   ```
-
-3. Build the data generator:
-   ```bash
-   make OS=MACOS
-   ```
-
-4. Generate the data (Scale Factor 1000 = ~1TB total):
-   ```bash
-   ./dsdgen -SCALE 1000 -DIR test_data -FORCE
-   ```
-
-This will generate one `.dat` file per table in the `test_data` folder. Do not commit this folder to version control—it should be ignored using `.gitignore`.
+#### **Example**
+```bash
+python tpcds generate --scale 10
+```
+This will generate approximately 10GB of raw `.dat` files in the `tpcds-kit/test_data/raw_files` directory.
 
 ---
 
-## Next Steps
+### **2. Parquet Conversion and Upload**
+Convert `.dat` files to `.parquet` format and upload them to an S3 bucket using the `upload` command.
 
-### Convert to Parquet
+#### **Usage**
+```bash
+python tpcds upload [--test]
+```
 
-(Coming Soon)
+#### **Arguments**
+- `--test`: Run in test mode to simulate the upload process. Outputs the source and target paths without performing the actual upload.
 
-### Create Iceberg Tables
+#### **Example**
+1. **Test Mode**:
+   ```bash
+   python tpcds upload --test
+   ```
+   Output:
+   ```
+   TEST MODE: Listing source and target paths
+   Source: tpcds-kit/test_data/parquet/customer.parquet Target: s3://tpcds/customer/customer.parquet
+   Source: tpcds-kit/test_data/parquet/orders.parquet Target: s3://tpcds/orders/orders.parquet
+   ```
 
-(Coming Soon)
+2. **Full Execution**:
+   ```bash
+   python tpcds upload
+   ```
+   This will:
+   - Convert `.dat` files in `tpcds-kit/test_data/raw_files` to `.parquet` files in `tpcds-kit/test_data/parquet`.
+   - Upload the `.parquet` files to the S3 bucket specified in the `.env` file.
 
-### Execute Queries and Benchmark
+---
 
-(Coming Soon)
+### **3. Cleanup**
+Remove all `.dat` and `.parquet` files using the `cleanup` command.
+
+#### **Usage**
+```bash
+python tpcds cleanup
+```
+
+#### **Example**
+```bash
+python tpcds cleanup
+```
+Output:
+```
+WARNING: This will delete all .dat files in 'tpcds-kit/test_data/raw_files' and all .parquet files in 'tpcds-kit/test_data/parquet'.
+Do you want to proceed? (y/n): y
+Deleted all .dat files in 'tpcds-kit/test_data/raw_files'.
+Deleted all .parquet files in 'tpcds-kit/test_data/parquet'.
+```
+
+---
+
+## **Environment Configuration**
+The toolkit uses environment variables for S3 configuration. These variables are stored in a `.env` file.
+
+### **Example .env File**
+```properties
+# S3 Configuration
+S3_BUCKET_NAME=tpcds
+S3_ENDPOINT_URL=http://localhost:9000
+S3_ACCESS_KEY=admin
+S3_SECRET_KEY=admin123
+```
+The `.env` file is located in the root of the repository.
+
+---
+
+## **Directory Structure**
+The toolkit organizes files into the following directories:
+```
+tpcds-kit/
+├── tpcds               # Main script to manage the workflow
+├── data_generator.py     # Script for generating raw TPC-DS data
+├── data_to_parquet.py    # Script for converting .dat files to .parquet
+├── upload_parquet.py     # Script for uploading .parquet files to S3
+├── test_data/
+│   ├── raw_files/        # Directory for raw .dat files
+│   └── parquet/          # Directory for .parquet files
+├── .env                  # Environment variables for S3 configuration
+└── .gitignore            # Git ignore rules
+```
+
+---
+
+## **Best Practices**
+1. **Test Before Uploading**:
+   Use the `--test` flag with the `upload` command to verify source and target paths before performing the upload.
+
+2. **Cleanup Regularly**:
+   Run the `cleanup` command after completing the workflow to free up disk space.
+
+3. **Environment Variables**:
+   Ensure the `.env` file is correctly configured with your S3 credentials and endpoint.
+
+---
+
+## **Contributing**
+Feel free to contribute to the TPC-DS Test Kit by submitting issues or pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## **License**
+This project is licensed under the TPC Benchmark License. See the `LICENSE` file for details.
