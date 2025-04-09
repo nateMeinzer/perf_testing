@@ -1,3 +1,5 @@
-# ...existing code...
 .env
 tpcds-kit/test_data/  # Ignore generated TPC-DS data
+
+# Ignore all .parquet files
+*.parquet
