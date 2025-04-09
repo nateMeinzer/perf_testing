@@ -2,6 +2,9 @@ import os
 import glob
 import pandas as pd
 import json
+from termcolor import colored
+import chardet
+import sys
 
 # Load schema definitions
 schema_path = os.path.join(os.path.dirname(__file__), "tpcds_schema.json")
@@ -20,11 +23,31 @@ if not os.path.exists(output_dir):
 # Get list of all .dat files in the input directory
 dat_files = glob.glob(os.path.join(input_dir, "*.dat"))
 
+def handle_error(message):
+    """Handle errors by printing in red and stopping the process."""
+    print(colored(f"ERROR: {message}", "red"))
+    print("Please use the cleanup tool before beginning again.")
+    sys.exit(1)
+
+def normalize_encoding(file_path):
+    """Normalize the encoding of a file to UTF-8."""
+    with open(file_path, "rb") as f:
+        raw_data = f.read()
+        detected_encoding = chardet.detect(raw_data)["encoding"]
+
+    if detected_encoding != "utf-8":
+        print(f"Normalizing encoding for {file_path} from {detected_encoding} to UTF-8")
+        with open(file_path, "r", encoding=detected_encoding) as f:
+            data = f.read()
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(data)
+
 if not dat_files:
     print("No .dat files found in the input directory.")
 else:
     for file_path in dat_files:
         try:
+            normalize_encoding(file_path)  # Normalize encoding before processing
             # Read the .dat file; TPC-DS files are pipe-delimited with no header
             df = pd.read_csv(file_path, sep="|", header=None, engine="python")
 
@@ -51,4 +74,4 @@ else:
             df.to_parquet(output_file, engine="pyarrow", index=False)
             print(f"Successfully converted {file_path} to {output_file}")
         except Exception as e:
-            print(f"Failed to process {file_path}: {e}")
+            handle_error(f"Failed to process {file_path}: {e}")
