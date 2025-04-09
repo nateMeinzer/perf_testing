@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 import boto3
 import urllib.parse
+import time  # Ensure 'time' is imported for sleep functionality
 
 # Load environment variables from .env file
 load_dotenv()
@@ -53,27 +54,50 @@ def get_auth_header():
     except requests.exceptions.RequestException as e:
         print(f"Authentication failed: {e}")
         return None
-
 def execute_query(query):
-    """Execute a SQL query in Dremio"""
+    """Execute a SQL query in Dremio and wait for results"""
     headers = get_auth_header()
     if not headers:
         return False
 
-    payload = {
+    # Step 1: Submit the query
+    submit_payload = {
         "sql": query
     }
 
     try:
-        print(f"Executing SQL query: {query}")  # Debug log
+        print(f"Submitting SQL query: {query}")
         response = requests.post(
             f"{DREMIO_URL}/api/v3/sql",
             headers=headers,
-            json=payload
+            json=submit_payload
         )
         response.raise_for_status()
-        print("Query executed successfully")
-        return True
+        job_id = response.json().get('id')
+        
+        if not job_id:
+            print("No job ID returned from query submission")
+            return False
+
+        # Step 2: Poll for query status
+        while True:
+            status_response = requests.get(
+                f"{DREMIO_URL}/api/v3/job/{job_id}",
+                headers=headers
+            )
+            status_response.raise_for_status()
+            status = status_response.json()
+            
+            if status.get('jobState') == 'COMPLETED':
+                print("Query completed successfully")
+                return True
+            elif status.get('jobState') in ['FAILED', 'CANCELED', 'INVALID']:
+                print(f"Query failed with state: {status.get('jobState')}")
+                print(f"Error: {status.get('errorMessage')}")
+                return False
+            
+            time.sleep(1)  # Wait before polling again
+
     except requests.exceptions.RequestException as e:
         print(f"Failed to execute query: {e}")
         if hasattr(e, 'response') and e.response is not None:
@@ -147,13 +171,16 @@ def format_file_as_table(file_path):
         return False
 
 def create_iceberg_table(file_path):
-    print(f"Starting to get the table paths for iceberg table creation.")
     """Create an Iceberg table for a given file"""
-    table_name = file_path[-2]  # Use the folder name as the table name
+    print(f"Starting to get the table paths for iceberg table creation.")
+
+    # Extract the table name by removing the .parquet extension from the last item
+    file_name = file_path[-1]  # e.g., "call_center.parquet"
+    table_name = file_name.replace(".parquet", "")  # e.g., "call_center"
 
     query = f"""
     CREATE TABLE {ICEBERG_BUCKET_NAME}.{table_name} AS 
-    SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name};
+    SELECT * FROM {S3_OBJECT_STORE}.{S3_BUCKET_NAME}.{table_name}."{file_name}";
     """
 
     print(f"Executing query to create Iceberg table: {table_name}")  # Log before execution
