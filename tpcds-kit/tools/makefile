@@ -39,7 +39,7 @@
 ## TARGET OS HERE
 ################
 # OS Values: AIX, LINUX, SOLARIS, NCR, HPUX, MACOS
-OS = LINUX
+OS = MACOS
 ###########
 # No changes should be necessary below this point
 # Each compile variable is adjusted for the target platform using the OS setting above

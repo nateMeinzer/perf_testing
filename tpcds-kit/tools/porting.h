@@ -43,7 +43,7 @@
 #endif
 
 #ifdef USE_VALUES_H
-#include <values.h>
+#include <limits.h>
 #endif
 
 #ifdef USE_LIMITS_H
