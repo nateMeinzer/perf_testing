@@ -37,6 +37,7 @@ define YEAR = random(1999, 2002, uniform);
 define MONTH = random(2,5,uniform);
 define STATE = dist(fips_county,3,1);
 define _LIMIT=100;
+define _END = "";
 
 with ws_wh as
 (select ws1.ws_order_number,ws1.ws_warehouse_sk wh1,ws2.ws_warehouse_sk wh2

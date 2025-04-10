@@ -37,6 +37,7 @@ define IMID  = random(1,1000,uniform);
 define YEAR  = random(1998,2002,uniform);
 define WSDATE = date([YEAR]+"-01-01",[YEAR]+"-04-01",sales);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] 
    sum(ws_ext_discount_amt)  as "Excess Discount Amount" 
@@ -64,5 +65,5 @@ and ws_ext_discount_amt
           and d_date_sk = ws_sold_date_sk 
       ) 
 order by sum(ws_ext_discount_amt)
-[_LIMITC]; 
+[_LIMITC];
 

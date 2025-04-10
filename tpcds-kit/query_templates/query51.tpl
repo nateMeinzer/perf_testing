@@ -35,6 +35,7 @@
 
 define DMS = random(1176,1224,uniform);
 define _LIMIT=100;
+define _END = "";
 
 WITH web_v1 as (
 select

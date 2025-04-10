@@ -36,6 +36,7 @@
  define MONTH = random(4,4,uniform); 
  define AGG= text({"sum",1},{"min",1},{"max",1},{"avg",1},{"stddev_samp",1}); 
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB]  
      i_item_id
@@ -81,5 +82,5 @@
    ,s_store_id
    ,s_store_name
  [_LIMITC];
- 
+
 

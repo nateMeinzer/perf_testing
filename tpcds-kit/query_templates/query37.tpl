@@ -37,6 +37,7 @@
  define MANUFACT_ID=ulist(random(667,1000,uniform),4);
  define PRICE=random(10,70,uniform);
  define _LIMIT=100;
+ define _END = "";
   
  [_LIMITA] select [_LIMITB] i_item_id
        ,i_item_desc
@@ -52,6 +53,6 @@
  group by i_item_id,i_item_desc,i_current_price
  order by i_item_id
  [_LIMITC];
- 
- 
+
+
 

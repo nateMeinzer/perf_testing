@@ -35,6 +35,7 @@
  define YEAR=random(1998,2002,uniform);
  define SALES_DATE=date([YEAR]+"-01-31",[YEAR]+"-7-01",sales);
  define _LIMIT=100;
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] 
    w_state

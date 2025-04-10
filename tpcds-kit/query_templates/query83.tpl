@@ -37,6 +37,7 @@
  define RETURNED_DATE_TWO=date([YEAR]+"-08-01",[YEAR]+"-10-24",sales);
  define RETURNED_DATE_THREE=date([YEAR]+"-11-01",[YEAR]+"-11-24",sales);
  define _LIMIT=100;
+ define _END = "";
  
  with sr_items as
  (select i_item_id item_id,

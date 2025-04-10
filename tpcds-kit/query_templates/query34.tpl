@@ -44,6 +44,7 @@
  define COUNTY_F=distmember(fips_county, [COUNTYNUMBER.6], 2);
  define COUNTY_G=distmember(fips_county, [COUNTYNUMBER.7], 2);
  define COUNTY_H=distmember(fips_county, [COUNTYNUMBER.8], 2);
+ define _END = "";
  
  
  select c_last_name

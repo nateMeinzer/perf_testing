@@ -36,6 +36,7 @@
  define YEAR = random(1998,2000,uniform);
  define VEHCNT=random(-1,4,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB]
   c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit

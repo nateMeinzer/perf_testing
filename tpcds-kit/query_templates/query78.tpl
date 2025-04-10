@@ -34,7 +34,7 @@
 -- 
 define YEAR=random(1998, 2002, uniform);
 define SELECTONE=text({"ss_sold_year",1},{"ss_item_sk",1},{"ss_customer_sk",1},{"ss_sold_year, ss_item_sk, ss_customer_sk",1});
-
+define _END = "";
 define _LIMIT = 100;
 
 with ws as

@@ -47,6 +47,7 @@ define CLASS_E = DIST(distmember(categories, [IDX.5], 2), 1, 1);
 define CAT_F = distmember(categories, [IDX.6], 1);
 define CLASS_F = DIST(distmember(categories, [IDX.6], 2), 1, 1);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] *
 from(

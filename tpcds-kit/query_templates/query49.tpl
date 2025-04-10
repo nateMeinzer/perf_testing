@@ -35,6 +35,7 @@
  define YEAR=random(1998,2002,uniform);
  define MONTH=random(11,12,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] channel, item, return_ratio, return_rank, currency_rank from
  (select

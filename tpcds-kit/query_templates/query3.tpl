@@ -36,6 +36,8 @@
  define MONTH = random(11,12,uniform);
  define MANUFACT= random(1,1000,uniform);
  define _LIMIT=100;
+ define YEAR=random(1998,2001,uniform);
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] dt.d_year 
        ,item.i_brand_id brand_id 

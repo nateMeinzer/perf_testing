@@ -32,10 +32,11 @@
 -- 
 -- Contributors:
 -- 
- define YEAR=random(1998,2002,uniform);
+ define YEAR=random(1998,2001,uniform);
  define QOY=random(1,2,uniform);
  define ZIP=ulist(random(10000,99999,uniform),400);  
  define _LIMIT=100;
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] s_store_name
       ,sum(ss_net_profit)

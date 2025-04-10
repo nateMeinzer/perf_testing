@@ -44,6 +44,7 @@
  define STATE_E=distmember(fips_county,[STATENUMBER.5], 3);
  define STATE_F=distmember(fips_county,[STATENUMBER.6], 3);
  define _LIMIT=100;
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] i_item_id,
         s_state, grouping(s_state) g_state,

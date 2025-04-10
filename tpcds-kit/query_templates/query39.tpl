@@ -35,7 +35,7 @@
 
 define MONTH = random(1,4,uniform);
 define YEAR = random(1998,2002, uniform);
-
+define _END = "";
 
 
 with inv as

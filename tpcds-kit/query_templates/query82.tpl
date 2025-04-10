@@ -37,6 +37,7 @@
  define INVDATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales);
  define MANUFACT_ID=ulist(random(1,1000,uniform),4);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] i_item_id
        ,i_item_desc
@@ -52,5 +53,5 @@
  group by i_item_id,i_item_desc,i_current_price
  order by i_item_id
  [_LIMITC];
- 
+
 

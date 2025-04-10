@@ -36,6 +36,7 @@
  define HOUR_AM = random(6,12,uniform);
  define HOUR_PM = random(13,21,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
  from ( select count(*) amc

@@ -36,6 +36,7 @@
  define ES= ulist(dist(education, 1, 1), 3);
  define STATE= ulist(dist(fips_county, 3, 1), 9);
  define YEAR= random(1998,2002, uniform);
+ define _END = "";
 
  select sum (ss_quantity)
  from store_sales, store, customer_demographics, customer_address, date_dim

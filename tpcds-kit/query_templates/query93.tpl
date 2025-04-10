@@ -35,6 +35,7 @@
 
 define REASON= dist(return_reasons, 1, 1);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] ss_customer_sk
             ,sum(act_sales) sumsales

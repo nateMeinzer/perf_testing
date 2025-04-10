@@ -131,6 +131,7 @@ parseTemplate(char *szFileName, int nIndex)
 		AddQuerySegment(pCurrentQuery, "\n");
 		AddQuerySegment(pCurrentQuery, "");
 		((segment_t *)pCurrentQuery->SegmentList->head->pData)->pSubstitution = findSubstitution(pCurrentQuery, "_BEGIN", 0);
+
 		pCurrentQuery->SegmentList->nFlags &= ~L_FL_HEAD;
 		pCurrentQuery->SegmentList->nFlags |= L_FL_TAIL;
 		

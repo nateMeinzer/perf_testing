@@ -36,6 +36,7 @@
 define HOUR= text({"20",1},{"15",1},{"16",1},{"8",1});
 define DEPCNT=random(0,9,uniform);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] count(*) 
 from store_sales

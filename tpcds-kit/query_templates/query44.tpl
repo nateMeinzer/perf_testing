@@ -35,6 +35,7 @@
 define NULLCOLSS= text({"ss_customer_sk",1},{"ss_cdemo_sk",1},{"ss_hdemo_sk",1},{"ss_addr_sk",1},{"ss_promo_sk",1});
 define STORE=random(1,rowcount("STORE"),uniform);
 define _LIMIT=100;
+define _END = "";
 
 
 [_LIMITA] select [_LIMITB] asceding.rnk, i1.i_product_name best_performing, i2.i_product_name worst_performing

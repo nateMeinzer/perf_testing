@@ -36,6 +36,8 @@
  define YEAR=random(1998,2002,uniform);
  define QOY=random(1,2,uniform);
  define _LIMIT=100;
+ define _END = "";
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] ca_zip, [GBOBC], sum(ws_sales_price)
  from web_sales, customer, customer_address, date_dim, item

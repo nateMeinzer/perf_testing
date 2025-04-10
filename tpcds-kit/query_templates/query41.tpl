@@ -37,6 +37,7 @@
  define SIZE=ulist(dist(sizes,1,1),6);
  define MANUFACT= random(667,1000,uniform); 
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] distinct(i_product_name)
  from item i1

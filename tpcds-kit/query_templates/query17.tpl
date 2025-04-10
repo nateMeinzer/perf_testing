@@ -34,6 +34,7 @@
 -- 
  define YEAR= random(1998,2002, uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] i_item_id
        ,i_item_desc

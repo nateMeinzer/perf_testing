@@ -35,6 +35,7 @@
  define YEAR = random(1998, 2002, uniform);
  define SALES_DATE=date([YEAR]+"-08-01",[YEAR]+"-08-30",sales);
  define _LIMIT=100;
+ define _END = "";
  
  with ss as
  (select s_store_sk,
@@ -141,5 +142,5 @@
  order by channel
          ,id
  [_LIMITC];
- 
+
 

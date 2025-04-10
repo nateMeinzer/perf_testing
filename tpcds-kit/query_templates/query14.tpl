@@ -35,6 +35,7 @@
  define YEAR= random(1998, 2000, uniform);
  define DAY = random(1,28,uniform);
  define _LIMIT=100; 
+ define _END = "";
 
 with  cross_items as
  (select i_item_sk ss_item_sk

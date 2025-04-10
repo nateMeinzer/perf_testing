@@ -38,6 +38,7 @@ define MONTH = random(11,12,uniform);
 define GMT = text({"-6",1},{"-7",1});
 define CATEGORY = text({"Books",1},{"Home",1},{"Electronics",1},{"Jewelry",1},{"Sports",1});
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] promotions,total,cast(promotions as decimal(15,4))/cast(total as decimal(15,4))*100
 from

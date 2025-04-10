@@ -36,6 +36,7 @@
  define MONTH=random(11,12,uniform);
  define MANAGER=random(1,100,uniform); 
  define _LIMIT=100;
+ define _END = "";
  
 [_LIMITA]  select [_LIMITB] i_brand_id brand_id, i_brand brand,
  	sum(ss_ext_sales_price) ext_price

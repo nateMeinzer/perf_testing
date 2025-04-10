@@ -37,6 +37,7 @@
  define GMT = dist(fips_county, 6, 1);
  define COLOR=ulist(dist(colors,1,1),3);
  define _LIMIT=100;
+ define _END = "";
 
  with ss as (
  select i_item_id,sum(ss_ext_sales_price) total_sales
@@ -104,5 +105,5 @@ where i_color in ('[COLOR.1]','[COLOR.2]','[COLOR.3]'))
  order by total_sales,
           i_item_id
  [_LIMITC];
- 
+
 

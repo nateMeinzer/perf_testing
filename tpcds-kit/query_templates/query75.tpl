@@ -37,6 +37,7 @@ define CINDX = random(1,rowcount("categories"),uniform);
 define CATEGORY = distmember(categories,[CINDX],1);
 define YEAR = random(1999,2002,uniform);
 define _LIMIT=100;
+define _END = "";
 
 WITH all_sales AS (
  SELECT d_year

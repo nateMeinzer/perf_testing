@@ -1,6 +1,8 @@
-DIRECTORY ../query_templates
-INPUT ../query_templates/templates.lst
-DIALECT ansi
-TEMPLATE ../query_templates/query1.tpl
-SCALE 1
-OUTPUT_DIR ./queries
+DIRECTORY = ../query_templates
+INPUT = ../query_templates/templates.lst
+TEMPLATE = ../query_templates/query1.tpl
+DIALECT = ansi
+SCALE = 1
+OUTPUT_DIR = ./queries
+DEBUG = Y
+QUALIFY = Y

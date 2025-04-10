@@ -35,6 +35,7 @@
  define STATE= dist(fips_county, 3, 1);
  define YEAR= random(1998, 2002, uniform);
  define _LIMIT=100; 
+ define _END = "";
  
  with customer_total_return as
  (select cr_returning_customer_sk as ctr_customer_sk
@@ -64,5 +65,5 @@
                    ,ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,ca_gmt_offset
                   ,ca_location_type,ctr_total_return
  [_LIMITC];
- 
+
 

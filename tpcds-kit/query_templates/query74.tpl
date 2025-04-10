@@ -37,6 +37,7 @@
  define ORDERC=ulist(random(1,3,uniform),3); 
 
  define _LIMIT=100;
+ define _END = "";
  
  with year_total as (
  select c_customer_id customer_id

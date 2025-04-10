@@ -37,6 +37,7 @@
  define GMT = dist(fips_county, 6, 1);
  define CATEGORY = text({"Children",1},{"Men",1},{"Music",1},{"Jewelry",1},{"Shoes",1});
  define _LIMIT=100;
+ define _END = "";
  
  with ss as (
  select

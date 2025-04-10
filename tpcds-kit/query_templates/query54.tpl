@@ -38,6 +38,7 @@
  define CATEGORY = distmember(categories,[CINDX],1);
  define CLASS = dist(distmember(categories,[CINDX],2),1,1); 
  define _LIMIT=100;
+ define _END = "";
  
  with my_customers as (
  select distinct c_customer_sk
@@ -92,4 +93,4 @@
  group by segment
  order by segment, num_customers
  [_LIMITC];
- 
+

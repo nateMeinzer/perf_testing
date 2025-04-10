@@ -35,6 +35,7 @@
  define YEAR = random(1998, 2002, uniform); 
  define SALES_DATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales); 
  define _LIMIT=100;
+ define _END = "";
  
  with ss_items as
  (select i_item_id item_id

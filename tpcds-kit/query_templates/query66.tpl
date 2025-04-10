@@ -40,6 +40,7 @@
  define SALESONE = text({"ws_sales_price",1},{"ws_ext_sales_price",1},{"ws_ext_list_price",1});
  define SALESTWO = text({"cs_sales_price",1},{"cs_ext_sales_price",1},{"cs_ext_list_price",1});
  define _LIMIT=100; 
+ define _END = "";
  
  [_LIMITA] select [_LIMITB]  
          w_warehouse_name

@@ -38,6 +38,7 @@ define COUNTY=random(1, rowcount("active_counties", "store"), uniform);
 define GMT=distmember(fips_county,[COUNTY], 6);
 define CATEGORY = text({"Books",1},{"Home",1},{"Electronics",1},{"Jewelry",1},{"Sports",1});
 define _LIMIT=100;
+define _END = "";
  
  with ss as (
  select

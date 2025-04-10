@@ -36,6 +36,7 @@
 define COLOR=ulist(dist(colors,1,1),6);
 define PRICE=random(0,85,uniform);
 define YEAR = random(1999, 2001, uniform);
+define _END = "";
 
 with cs_ui as
  (select cs_item_sk

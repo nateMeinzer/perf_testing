@@ -35,6 +35,7 @@
 
 define _LIMIT=100;
 define DMS = random(1176,1224,uniform); 
+define _END = "";
 [_LIMITA] select [_LIMITB] i_product_name
              ,i_brand
              ,i_class

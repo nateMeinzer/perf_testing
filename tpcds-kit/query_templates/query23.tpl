@@ -36,6 +36,7 @@
  define MONTH = random(1,7,uniform); -- for qualification: 7
  define TOPPERCENT=random(95,95,uniform); 
  define _LIMIT=100;
+ define _END = "";
  
  with frequent_ss_items as 
  (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt

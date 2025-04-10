@@ -37,6 +37,7 @@
  define ES= dist(education, 1, 1);
  define YEAR = random(1998,2002,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] i_item_id, 
         avg(ss_quantity) agg1,
@@ -56,5 +57,5 @@
  group by i_item_id
  order by i_item_id
  [_LIMITC];
- 
+
 

@@ -43,6 +43,7 @@
  define STATE_G=distmember(fips_county,[STATENUMBER.7], 3);
  define STATE_H=distmember(fips_county,[STATENUMBER.8], 3);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] 
     sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin

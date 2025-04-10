@@ -38,6 +38,7 @@
                        ,{"t_s_secyear.customer_login",1}
                        ,{"t_s_secyear.customer_email_address",1});
  define _LIMIT=100;
+ define _END = "";
 
  with year_total as (
  select c_customer_id customer_id

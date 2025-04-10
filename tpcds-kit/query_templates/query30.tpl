@@ -35,6 +35,7 @@
  define STATE= dist(fips_county, 3, 1);
  define YEAR= random(1999, 2002, uniform);
  define _LIMIT=100;
+ define _END = "";
  
  with customer_total_return as
  (select wr_returning_customer_sk as ctr_customer_sk

@@ -35,6 +35,7 @@
  define YEAR=random(1998,2002,uniform);
  define QOY=random(1,2,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] ca_zip
        ,sum(cs_sales_price)

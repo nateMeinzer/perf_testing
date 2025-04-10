@@ -34,6 +34,7 @@
 -- 
  define DMS = random(1176,1212,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  with wss as 
  (select d_week_seq,

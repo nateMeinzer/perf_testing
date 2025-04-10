@@ -34,7 +34,7 @@
 -- 
  define YEAR=random(1998,2002,uniform);
  define AGG= text({"ss1.ca_county",1},{"ss1.d_year",1},{"web_q1_q2_increase",1},{"store_q1_q2_increase",1},{"web_q2_q3_increase",1},{"store_q2_q3_increase",1}); 
-
+ define _END = "";
 
  with ss as
  (select ca_county,d_qoy, d_year,sum(ss_ext_sales_price) as store_sales

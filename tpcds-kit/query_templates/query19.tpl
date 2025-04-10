@@ -37,6 +37,7 @@
  define MGR_IDX = dist(i_manager_id, 1, 1);
  define MANAGER=random(distmember(i_manager_id, [MGR_IDX], 2), distmember(i_manager_id, [MGR_IDX], 3),uniform);
  define _LIMIT=100;
+ define _END = "";
  
 [_LIMITA]  select [_LIMITB] i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
  	sum(ss_ext_sales_price) ext_price

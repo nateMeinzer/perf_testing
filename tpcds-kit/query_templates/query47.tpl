@@ -37,6 +37,7 @@
  define SELECTONE= text({"v1.i_category",1},{"v1.i_brand",1},{"v1.i_category, v1.i_brand",1},{"v1.s_store_name",1},{"v1.s_company_name",1},{"v1.s_store_name, v1.s_company_name",1},{"v1.i_category, v1.i_brand, v1.s_store_name, v1.s_company_name",1}); 
  define SELECTTWO= text({",v1.d_year",1},{",v1.d_year, v1.d_moy",1}); 
  define ORDERBY= text({"avg_monthly_sales",1},{"sum_sales",1},{"psum",1},{"nsum",1});
+ define _END = "";
 
  with v1 as(
  select i_category, i_brand,

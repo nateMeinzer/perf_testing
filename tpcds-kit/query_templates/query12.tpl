@@ -37,6 +37,7 @@ define YEAR=random(1998,2002,uniform);
 define SDATE=date([YEAR]+"-01-01",[YEAR]+"-07-01",sales);
 define CATEGORY=ulist(dist(categories,1,1),3);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] i_item_id
       ,i_item_desc 

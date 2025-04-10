@@ -37,6 +37,7 @@ define YEAR = random(1999, 2002, uniform);
 define MONTH = random(2,5,uniform);
 define STATE = dist(fips_county,3,1);   
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] 
    count(distinct ws_order_number) as "order count"

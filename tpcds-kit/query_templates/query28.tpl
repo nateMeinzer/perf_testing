@@ -37,6 +37,7 @@ define LISTPRICE=ulist(random(0, 190, uniform),6);
 define COUPONAMT=ulist(random(0, 18000, uniform),6);
 define WHOLESALECOST=ulist(random(0, 80, uniform),6);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] *
 from (select avg(ss_list_price) B1_LP

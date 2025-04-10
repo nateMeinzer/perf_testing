@@ -35,6 +35,8 @@
 define AGGCTHEN= text({"ss_ext_discount_amt",1},{"ss_ext_sales_price",1},{"ss_ext_list_price",1},{"ss_ext_tax",1});
 define AGGCELSE= text({"ss_net_paid",1},{"ss_net_paid_inc_tax",1},{"ss_net_profit",1});
 define RC=ulist(random(1, rowcount("store_sales")/5,uniform),5);
+define YEAR=random(1998,2001,uniform);
+define _END = "";
 
 select case when (select count(*) 
                   from store_sales 
@@ -84,5 +86,5 @@ select case when (select count(*)
 from reason
 where r_reason_sk = 1
 ;
- 
+
 

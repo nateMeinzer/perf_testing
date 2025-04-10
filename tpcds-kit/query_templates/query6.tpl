@@ -35,6 +35,7 @@
  define YEAR = random(1998, 2002, uniform);
  define MONTH= random(1,7,uniform);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] a.ca_state state, count(*) cnt
  from customer_address a

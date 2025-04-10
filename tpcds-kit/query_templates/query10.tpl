@@ -36,6 +36,7 @@
  define MONTH = random(1,4,uniform);
  define YEAR = random(1999,2002,uniform);
  define _LIMIT=100; 
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] 
   cd_gender,
@@ -93,6 +94,6 @@
           cd_dep_employed_count,
           cd_dep_college_count
 [_LIMITC];
- 
- 
+
+
 

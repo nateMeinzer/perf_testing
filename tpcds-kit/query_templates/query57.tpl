@@ -38,6 +38,7 @@
  define ORDERBY= text({"avg_monthly_sales",1},{"sum_sales",1},{"psum",1},{"nsum",1});
 
  define _LIMIT=100;
+ define _END = "";
 
  with v1 as(
  select i_category, i_brand,

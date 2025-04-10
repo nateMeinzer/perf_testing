@@ -37,6 +37,7 @@
  define STATE= ulist(dist(fips_county, 3, 1), 9);
  define YEAR= random(1998,2002, uniform);
  define _LIMIT=100;
+ define _END = "";
 
  [_LIMITA] select [_LIMITB] substr(r_reason_desc,1,20)
        ,avg(ws_quantity)
@@ -118,4 +119,4 @@ order by substr(r_reason_desc,1,20)
         ,avg(ws_quantity)
         ,avg(wr_refunded_cash)
         ,avg(wr_fee)
-[_LIMITC]; 
+[_LIMITC];

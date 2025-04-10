@@ -36,6 +36,7 @@
 define YEAR = random(1998,2002,uniform);
 define MONTH = random(8,10,uniform);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] 
    s_store_name

@@ -34,6 +34,7 @@
 -- 
  define HOUR = ulist(random(-1,4,uniform),3);
  define STORE = dist(stores,1,1);
+ define _END = "";
 
 select  *
 from

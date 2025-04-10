@@ -39,6 +39,7 @@
  define CITY_A = distmember(cities, [CITYNUMBER.1], 1);
  define CITY_B = distmember(cities, [CITYNUMBER.2], 1);
  define _LIMIT=100;
+ define _END = "";
  
  [_LIMITA] select [_LIMITB] c_last_name
        ,c_first_name
