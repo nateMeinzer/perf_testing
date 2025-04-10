@@ -95,6 +95,42 @@ Deleted all .parquet files in 'tpcds-kit/test_data/parquet'.
 
 ---
 
+## **Iceberg Lakehouse Kit**
+
+The `iceberg.py` script provides commands to deploy and clean up tables in Dremio.
+
+### **1. Deploy Tables**
+Deploy tables to Dremio using the `deploy` command.
+
+#### **Usage**
+```bash
+python iceberg.py deploy
+```
+
+#### **Example**
+```bash
+python iceberg.py deploy
+```
+This will deploy tables to Dremio. A warning will be displayed, and you must confirm to proceed.
+
+---
+
+### **2. Cleanup Tables**
+Drop tables in Dremio using the `cleanup` command.
+
+#### **Usage**
+```bash
+python iceberg.py cleanup
+```
+
+#### **Example**
+```bash
+python iceberg.py cleanup
+```
+This will drop tables in Dremio. A warning will be displayed, and you must confirm to proceed.
+
+---
+
 ## **Environment Configuration**
 The toolkit uses environment variables for S3 configuration. These variables are stored in a `.env` file.
 
@@ -118,6 +154,7 @@ tpcds-kit/
 ├── data_generator.py     # Script for generating raw TPC-DS data
 ├── data_to_parquet.py    # Script for converting .dat files to .parquet
 ├── upload_parquet.py     # Script for uploading .parquet files to S3
+├── iceberg.py            # Script for managing Iceberg tables in Dremio
 ├── test_data/
 │   ├── raw_files/        # Directory for raw .dat files
 │   └── parquet/          # Directory for .parquet files

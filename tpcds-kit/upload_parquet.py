@@ -15,7 +15,8 @@ def upload_parquet_files(parquet_dir, test_mode):
     s3_secret_key = os.environ.get("S3_SECRET_KEY")
 
     if not s3_bucket or not s3_endpoint or not s3_access_key or not s3_secret_key:
-        print("Environment variables S3_BUCKET_NAME, S3_ENDPOINT_URL, S3_ACCESS_KEY, and S3_SECRET_KEY must be set.")
+        print("\033[91mEnvironment variables S3_BUCKET_NAME, S3_ENDPOINT_URL, S3_ACCESS_KEY, and S3_SECRET_KEY must be set.\033[0m")
+        print("\033[91mHint: Try running 'tpcds.py cleanup' before attempting again.\033[0m")
         return
 
     # Create an S3 client using environment variables
@@ -43,7 +44,8 @@ def upload_parquet_files(parquet_dir, test_mode):
                     s3.upload_file(file_path, s3_bucket, key)
                     print("Upload successful")
                 except NoCredentialsError:
-                    print("Credentials not available. Please ensure S3_ACCESS_KEY and S3_SECRET_KEY are set.")
+                    print("\033[91mCredentials not available. Please ensure S3_ACCESS_KEY and S3_SECRET_KEY are set.\033[0m")
+                    print("\033[91mHint: Try running 'tpcds.py cleanup' before attempting again.\033[0m")
                     return
 
 if __name__ == "__main__":
