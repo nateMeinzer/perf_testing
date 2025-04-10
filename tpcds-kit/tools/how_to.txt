@@ -1,0 +1,196 @@
+TPC-DS “how to” Guide
+
+
+Introduction
+The purpose of this guide is to describe the most common tasks necessary to implement a TPC-DS benchmark.  The target audience is individuals who want to install, populate, run and analyze the database, queries and data maintenance workloads for TPC-DS.
+
+
+This guide does not discuss anything related to actually publishing TPC-DS results (e.g.: tuning, data layout, pricing, auxiliary data structures, auditing, etc.).
+
+
+For more details, see the official TPC-DS specification.
+
+
+Change Log
+Date
+	Version
+	Comments
+	Feb. 8, 2007
+	1.0
+	Initial draft for kit 1.1.52 (Doug Johnson/Netezza)
+	Feb. 22, 2007
+	1.1
+	Added comments from Meikel Poess/Oracle and Shirley Wang/MS
+	
+
+How to download the latest kit
+The kit is downloadable from www.tpc.org. Use the link to the TPC-DS benchmark.
+
+
+What’s in the kit
+There are hundreds of files in the kit but only a few that you have to read or modify. Here’s the list of files that you should read:
+1. Specification.doc: latest specification document
+
+
+Here’s the list of files that you will probably have to modify:
+1. tpcds.sql: file with SQL to create the data warehouse tables. You will probably need to add allocation or distribution information.
+2. tpcds_source.sql: file with SQL to create the source/staging tables. You will probably need to add allocation or distribution information.
+3. Makefile.suite: file with Unix-style make commands to build the dbgen2 and qgen2 binaries for a target platform. You will need to specify the execution environment (see make/build section below).
+4. vcproj files: files used to build the tools for Windows Visual C++.
+5. query_templates: folder with query template files (.tpl). You don’t manually change these files but the qgen2 program transforms them into executable SQL.
+6. TBD: folder with sample ANSI SQL “create view” statements used to refresh the data warehouse during the data maintenance phase.
+
+
+How to make/build the binaries
+For AIX, LINUX, HPUX, NCR and Solaris
+1. Copy Makefile.suite to Makefile
+2. Edit Makefile and find the line containing “OS = “
+3. Read the comments and append your target OS. For example: “OS = LINUX”
+4. Run “make”
+
+
+For Windows
+1. Install Microsoft Visual Studio 2005
+2. Open the entire solution by double-clicking on dbgen2.sln (you might see an error saying “project file grammar.vcproj” has failed to load; you can safely ignore this error)
+3. From list of projects, right click on dbgen2 and select “build” (or from top menu, Build -> Build Solution).  This will build mkheader and distcomp before building dbgen2.
+4. Repeat step 3 for building qgen2
+5. To cross compile for X64 and IA64 on X86 platforms, install Microsoft Visual Studio 2005 “Team Suite” SKU, modify the target platform from Build -> Configuration Manager, and repeat steps 3 & 4.
+
+
+How to generate the load data
+The dbgen2 utility generates input data to (a) load the initial data warehouse and (b) “refresh” the data warehouse for the data maintenance workload. This section describes how to generate the load data.
+
+
+Run “dbgen2 –h” for the help info. Note that many of the options are “advanced” and usually not needed. 
+
+
+Example to generate the load data files for a 100GB in the /tmp directory:
+
+
+        dbgen2 –scale 100 –dir /tmp
+
+
+The official scale factors are 100GB, 300GB, 1TB, 3TB, 10TB, 30TB and 100TB.
+
+
+The output files will be of the form “<table>.csv”. Even though file suffix is “.csv”, the default field delimiter is ‘|’. Use the “-delimiter ‘<c>’” option to change delimiters.
+
+
+Since dbgen2 only generates 200-300GB/hour (on a 2-3GHz x86 processor), it is useful to run multiple parallel streams when generating large amounts of data. Here’s an example for generating 100 GB with 4 parallel streams simultaneously on Linux/Unix :
+
+
+        dbgen2 –scale 100 –dir /tmp –parallel 4 –child 1 &        
+        dbgen2 –scale 100 –dir /tmp –parallel 4 –child 2 &        
+        dbgen2 –scale 100 –dir /tmp –parallel 4 –child 3 &        
+        dbgen2 –scale 100 –dir /tmp –parallel 4 –child 4 &        
+
+
+Note that dbgen2 always reads the “tpcds.idx” file so if you run it from somewhere other than the “kit” directory, then you need to copy tpcds.idx to the current directory.
+
+
+How to load the data
+Run the loader provided with your DBMS to load the dbgen2 generated data files into the data warehouse tables.
+
+
+Note that the default delimiter is ‘|’ so you may need to specify a different delimiter with dbgen2 or the loader if the defaults don’t match.
+
+
+Also, the default “null” value is “||” so if your loader expects (for example), “|NULL|”, then you will need to override the loader’s value for nulls.
+
+
+Unlike TPC-H, the load time is a component of the QphDS@SF performance metric.
+
+
+How to generate query SQL from templates
+The “qgen2” utility is used to transform the query templates (see query_templates/*.tpl) into executable SQL for your target DBMS. The unmodified templates are not executable.  
+
+
+Run “qgen2 –h” for the help info. Note that many of the options are “advanced” and usually not needed. 
+
+
+Since some common SQL features do not have ANSI standard forms (e.g. “LIMIT” and “BEGIN/COMMIT”), the qgen2 utility must be told which “dialect” to use. The following “dialect templates” are supported: db2.tpl, netezza.tpl, oracle.tpl, sqlserver.tpl. The following example generates a SQL file (named query_0.sql) from the query99 template for a 100GB database using Oracle syntax.
+
+
+        qgen2 –query99.tpl –directory query_templates 
+–dialect oracle –scale 100
+
+
+Note that qgen2 also reads the “tpcds.idx” file (in the “kit” directory) and the “ansi.tpl” file (in the “kit/query_templates”) so you’ll need to copy something somewhere.
+
+
+How to run the queries
+You can, of course, run the queries any way you want but the “official” method is to run N concurrent query streams where N is a function of the database size. Unlike TPC-H, the TPC-DS query workload does not have a single-stream query component. The relationship between database size (SF) and query streams (N) is:
+
+
+SF
+	N
+	100
+	7
+	300
+	9
+	1,000
+	11
+	3,000
+	13
+	10,000
+	15
+	30,000
+	17
+	100,000
+	19
+	
+
+
+
+How to generate the refresh data
+Run “dbgen2 –h” for the help info. Note that many of the options are “advanced” and usually not needed. 
+
+
+Example to generate the refresh data files in /tmp for the 3rd “update” stream:
+
+
+        dbgen2 –scale 100 –dir /tmp –update 3
+
+
+The output files will be of the form “s_<table>_<stream>.csv”. The default field delimiter is ‘|’. Use the “-delimiter ‘<c>’” option to change delimiters.
+
+
+Since dbgen2 only generates 200-300GB/hour (on a 2-3GHz x86 processor), it is useful to run multiple parallel streams when generating large amounts of data. Here’s an example for the 3rd stream/child of 10 parallel streams:
+
+
+        dbgen2 –scale 100 –dir /tmp –update 3 –parallel 10 
+–child 3
+
+
+Note that dbgen2 always reads the “tpcds.idx” file so if you run it from somewhere other than the “kit” directory, then you need to copy tpcds.idx to the current directory.
+
+
+How to run the data maintenance workload
+The rules for the data maintenance phase (a.k.a. “refresh”) are intentionally “open-ended” because the natural methods for implementation are DBMS-specific. The specification describes the methods in general and the kit contains some sample SQL and but be warned that implementing the refresh workload on your system will require some time (think weeks, not days) from someone that has read the specification and knows what they’re doing.  
+
+
+As with the query streams, you can run the refresh streams any way you want. Officially, the specification defines the same number of streams for both query and refresh operations. Unlike the query streams, the refresh streams are run serially. Within a single stream, you can run the individual DM function serially or in parallel.[a]
+
+
+In general, the process is:
+
+
+1. Create the staging tables (also optional): Example: “isql –db tpcds100 –f tpcds_source.sql”
+2. Load the staging tables using the DBMS-supplied loader.
+3. Run whatever else your database requires (e.g. grant permissions, generate statistics, etc.) to prepare the tables.
+4. Create sequences needed for the “history keeping” tables: call_center, item, store, web_page and web_site. See the specification for definition of “history keeping”.
+5. Create the refresh views. The kit contains sample ANSI SQL that will almost certainly require some changes. 
+6. Run the refresh functions. There are five types of refresh functions – corresponding to the type of table and type of data maintenance operations. See the specification for details about the functions. In general, the methods involve running UPDATE, INSERT and DELETE commands using the views created above to refresh the data warehouse tables.
+
+
+Here’s an example using generic shell script and SQL.
+
+
+MAX=`nzsql tpcds1 -At -c "(SELECT max(cc_call_center_sk)+1 
+        FROM call_center)"`
+isql -db $DB -c "CREATE SEQUENCE cc_seq START WITH $MAX"
+
+
+
+
+[a]Is this true in V2??

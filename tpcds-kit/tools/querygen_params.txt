@@ -1,0 +1,6 @@
+DIRECTORY ../query_templates
+INPUT ../query_templates/templates.lst
+DIALECT ansi
+TEMPLATE ../query_templates/query1.tpl
+SCALE 1
+OUTPUT_DIR ./queries
