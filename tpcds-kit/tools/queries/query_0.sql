@@ -1,4 +1,3 @@
-
 with customer_total_return as
 (select sr_customer_sk as ctr_customer_sk
 ,sr_store_sk as ctr_store_sk
@@ -248,7 +247,7 @@ with ssr as
      store
  where date_sk = d_date_sk
        and d_date between cast('2001-08-25' as date) 
-                  and (cast('2001-08-25' as date) +  14 days)
+                  and date_add(cast('2001-08-25' as date), 14)
        and store_sk = s_store_sk
  group by s_store_id)
  ,
@@ -279,9 +278,10 @@ with ssr as
      catalog_page
  where date_sk = d_date_sk
        and d_date between cast('2001-08-25' as date)
-                  and (cast('2001-08-25' as date) +  14 days)
+                  and date_add(cast('2001-08-25' as date), 14)
        and page_sk = cp_catalog_page_sk
  group by cp_catalog_page_id)
+ ,
  ,
  wsr as
  (select web_site_id,
