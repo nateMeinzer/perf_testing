@@ -8,8 +8,8 @@ from
   ,customer_address
   ,call_center
 where
-    d_date between '1999-5-01' and 
-           (cast('1999-5-01' as date) + 60 days)
+    d_date between cast('1999-5-01' as date) and 
+          date_add(cast('1999-5-01' as date), 60)
 and cs1.cs_ship_date_sk = d_date_sk
 and cs1.cs_ship_addr_sk = ca_address_sk
 and ca_state = 'ID'

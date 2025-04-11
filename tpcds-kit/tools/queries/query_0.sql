@@ -588,8 +588,8 @@ from
   ,customer_address
   ,web_site
 where
-    d_date between '1999-4-01' and 
-           (cast('1999-4-01' as date) + 60 days)
+    d_date between cast('1999-4-01' as date) and 
+           (date_add(cast('1999-4-01' as date),  60 ))
 and ws1.ws_ship_date_sk = d_date_sk
 and ws1.ws_ship_addr_sk = ca_address_sk
 and ca_state = 'WI'
@@ -998,8 +998,8 @@ from
   ,customer_address
   ,call_center
 where
-    d_date between '1999-5-01' and 
-           (cast('1999-5-01' as date) + 60 days)
+    d_date between cast('1999-5-01' as date) and 
+          date_add(cast('1999-5-01' as date), 60)
 and cs1.cs_ship_date_sk = d_date_sk
 and cs1.cs_ship_addr_sk = ca_address_sk
 and ca_state = 'ID'
@@ -1829,7 +1829,7 @@ select  cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
          and ws_web_page_sk = web_page.wp_web_page_sk
          and time_dim.t_hour between 9 and 9+1
          and household_demographics.hd_dep_count = 2
-         and web_page.wp_char_count between 5000 and 5200) at,
+         and web_page.wp_char_count between 5000 and 5200) att,
       ( select count(*) pmc
        from web_sales, household_demographics , time_dim, web_page
        where ws_sold_time_sk = time_dim.t_time_sk
@@ -1954,8 +1954,8 @@ from
   ,customer_address
   ,web_site
 where
-    d_date between '2002-5-01' and 
-           (cast('2002-5-01' as date) + 60 days)
+    d_date between cast('2002-5-01' as date) and 
+           (date_add(cast('2002-5-01' as date), 60))
 and ws1.ws_ship_date_sk = d_date_sk
 and ws1.ws_ship_addr_sk = ca_address_sk
 and ca_state = 'MA'
@@ -3443,7 +3443,7 @@ with customer_total_return as
          ,ca_state)
   select  c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
        ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
-       ,c_last_review_date_sk,ctr_total_return
+       ,c_last_review_date,ctr_total_return
  from customer_total_return ctr1
      ,customer_address
      ,customer
@@ -3455,7 +3455,7 @@ with customer_total_return as
        and ctr1.ctr_customer_sk = c_customer_sk
  order by c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
                   ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
-                  ,c_last_review_date_sk,ctr_total_return
+                  ,c_last_review_date,ctr_total_return
 limit 100;
 
 
@@ -3624,7 +3624,7 @@ with ss as
  (select 'store channel' as channel
         , ss.s_store_sk as id
         , sales
-        , coalesce(returns, 0) as "returns"
+        , coalesce("returns", 0) as "returns"
         , (profit - coalesce(profit_loss,0)) as profit
  from   ss left join sr
         on  ss.s_store_sk = sr.s_store_sk
@@ -3640,7 +3640,7 @@ with ss as
  select 'web channel' as channel
         , ws.wp_web_page_sk as id
         , sales
-        , coalesce(returns, 0) returns
+        , coalesce("returns", 0)  as "returns"
         , (profit - coalesce(profit_loss,0)) as profit
  from   ws left join wr
         on  ws.wp_web_page_sk = wr.wp_web_page_sk
@@ -3968,7 +3968,7 @@ left outer join promotion on (cs_promo_sk=p_promo_sk)
 left outer join catalog_returns on (cr_item_sk = cs_item_sk and cr_order_number = cs_order_number)
 where d1.d_week_seq = d2.d_week_seq
   and inv_quantity_on_hand < cs_quantity 
-  and d3.d_date > d1.d_date + 5
+  and d3.d_date > date_add(d1.d_date, 5)
   and hd_buy_potential = '501-1000'
   and d1.d_year = 1999
   and cd_marital_status = 'S'

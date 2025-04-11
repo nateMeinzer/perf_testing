@@ -43,6 +43,7 @@ define COUNTY_C = distmember(fips_county, [COUNTYNUMBER.3], 2);
 define COUNTY_D = distmember(fips_county, [COUNTYNUMBER.4], 2);
 define COUNTY_E = distmember(fips_county, [COUNTYNUMBER.5], 2);
 define _LIMIT=100;
+define _END = "";
 
 [_LIMITA] select [_LIMITB] 
    count(distinct cs_order_number) as "order count"

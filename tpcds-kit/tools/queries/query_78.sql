@@ -78,7 +78,7 @@ with ss as
  (select 'store channel' as channel
         , ss.s_store_sk as id
         , sales
-        , coalesce(returns, 0) as "returns"
+        , coalesce("returns", 0) as "returns"
         , (profit - coalesce(profit_loss,0)) as profit
  from   ss left join sr
         on  ss.s_store_sk = sr.s_store_sk
@@ -86,7 +86,7 @@ with ss as
  select 'catalog channel' as channel
         , cs_call_center_sk as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from  cs
        , cr
@@ -94,7 +94,7 @@ with ss as
  select 'web channel' as channel
         , ws.wp_web_page_sk as id
         , sales
-        , coalesce(returns, 0) returns
+        , coalesce("returns", 0)  as "returns"
         , (profit - coalesce(profit_loss,0)) as profit
  from   ws left join wr
         on  ws.wp_web_page_sk = wr.wp_web_page_sk

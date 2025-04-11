@@ -101,21 +101,21 @@ with ssr as
  (select 'store channel' as channel
         , 'store' || s_store_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from   ssr
  union all
  select 'catalog channel' as channel
         , 'catalog_page' || cp_catalog_page_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from  csr
  union all
  select 'web channel' as channel
         , 'web_site' || web_site_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from   wsr
  ) x
