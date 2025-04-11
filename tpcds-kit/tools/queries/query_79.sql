@@ -1,105 +1,25 @@
-with ss as
- (select s_store_sk,
-         sum(ss_ext_sales_price) as sales,
-         sum(ss_net_profit) as profit
- from store_sales,
-      date_dim,
-      store
- where ss_sold_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date) 
-                  and (cast('2001-08-22' as date) +  30 days) 
-       and ss_store_sk = s_store_sk
- group by s_store_sk)
- ,
- sr as
- (select s_store_sk,
-         sum(sr_return_amt) as returns,
-         sum(sr_net_loss) as profit_loss
- from store_returns,
-      date_dim,
-      store
- where sr_returned_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date)
-                  and (cast('2001-08-22' as date) +  30 days)
-       and sr_store_sk = s_store_sk
- group by s_store_sk), 
- cs as
- (select cs_call_center_sk,
-        sum(cs_ext_sales_price) as sales,
-        sum(cs_net_profit) as profit
- from catalog_sales,
-      date_dim
- where cs_sold_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date)
-                  and (cast('2001-08-22' as date) +  30 days)
- group by cs_call_center_sk 
- ), 
- cr as
- (select cr_call_center_sk,
-         sum(cr_return_amount) as returns,
-         sum(cr_net_loss) as profit_loss
- from catalog_returns,
-      date_dim
- where cr_returned_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date)
-                  and (cast('2001-08-22' as date) +  30 days)
- group by cr_call_center_sk
- ), 
- ws as
- ( select wp_web_page_sk,
-        sum(ws_ext_sales_price) as sales,
-        sum(ws_net_profit) as profit
- from web_sales,
-      date_dim,
-      web_page
- where ws_sold_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date)
-                  and (cast('2001-08-22' as date) +  30 days)
-       and ws_web_page_sk = wp_web_page_sk
- group by wp_web_page_sk), 
- wr as
- (select wp_web_page_sk,
-        sum(wr_return_amt) as returns,
-        sum(wr_net_loss) as profit_loss
- from web_returns,
-      date_dim,
-      web_page
- where wr_returned_date_sk = d_date_sk
-       and d_date between cast('2001-08-22' as date)
-                  and (cast('2001-08-22' as date) +  30 days)
-       and wr_web_page_sk = wp_web_page_sk
- group by wp_web_page_sk)
-  select  channel
-        , id
-        , sum(sales) as sales
-        , sum(returns) as returns
-        , sum(profit) as profit
- from 
- (select 'store channel' as channel
-        , ss.s_store_sk as id
-        , sales
-        , coalesce(returns, 0) as returns
-        , (profit - coalesce(profit_loss,0)) as profit
- from   ss left join sr
-        on  ss.s_store_sk = sr.s_store_sk
- union all
- select 'catalog channel' as channel
-        , cs_call_center_sk as id
-        , sales
-        , returns
-        , (profit - profit_loss) as profit
- from  cs
-       , cr
- union all
- select 'web channel' as channel
-        , ws.wp_web_page_sk as id
-        , sales
-        , coalesce(returns, 0) returns
-        , (profit - coalesce(profit_loss,0)) as profit
- from   ws left join wr
-        on  ws.wp_web_page_sk = wr.wp_web_page_sk
- ) x
- group by rollup (channel, id)
- order by channel
-         ,id
- limit 100;
+select c_last_name
+       ,c_first_name
+       ,c_salutation
+       ,c_preferred_cust_flag 
+       ,ss_ticket_number
+       ,cnt from
+   (select ss_ticket_number
+          ,ss_customer_sk
+          ,count(*) cnt
+    from store_sales,date_dim,store,household_demographics
+    where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+    and store_sales.ss_store_sk = store.s_store_sk  
+    and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+    and date_dim.d_dom between 1 and 2 
+    and (household_demographics.hd_buy_potential = '501-1000' or
+         household_demographics.hd_buy_potential = 'Unknown')
+    and household_demographics.hd_vehicle_count > 0
+    and case when household_demographics.hd_vehicle_count > 0 then 
+             household_demographics.hd_dep_count/ household_demographics.hd_vehicle_count else null end > 1
+    and date_dim.d_year in (1998,1998+1,1998+2)
+    and store.s_county in ('Williamson County','Williamson County','Williamson County','Williamson County')
+    group by ss_ticket_number,ss_customer_sk) dj,customer
+    where ss_customer_sk = c_customer_sk
+      and cnt between 1 and 5
+    order by cnt desc, c_last_name asc;

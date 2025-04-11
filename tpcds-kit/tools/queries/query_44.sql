@@ -1,19 +1,27 @@
-select  dt.d_year
- 	,item.i_category_id
- 	,item.i_category
- 	,sum(ss_ext_sales_price)
- from 	date_dim dt
- 	,store_sales
- 	,item
- where dt.d_date_sk = store_sales.ss_sold_date_sk
- 	and store_sales.ss_item_sk = item.i_item_sk
- 	and item.i_manager_id = 1  	
- 	and dt.d_moy=12
- 	and dt.d_year=2000
- group by 	dt.d_year
- 		,item.i_category_id
- 		,item.i_category
- order by       sum(ss_ext_sales_price) desc,dt.d_year
- 		,item.i_category_id
- 		,item.i_category
+select  
+   sum(ws_ext_discount_amt)  as "Excess Discount Amount" 
+from 
+    web_sales 
+   ,item 
+   ,date_dim
+where
+i_manufact_id = 914
+and i_item_sk = ws_item_sk 
+and d_date between '2001-01-25' and 
+        DATE_ADD(cast('2001-01-25' as date), 90)
+and d_date_sk = ws_sold_date_sk 
+and ws_ext_discount_amt  
+     > ( 
+         SELECT 
+            1.3 * avg(ws_ext_discount_amt) 
+         FROM 
+            web_sales 
+           ,date_dim
+         WHERE 
+              ws_item_sk = i_item_sk 
+          and d_date between '2001-01-25' and
+                             DATE_ADD(cast('2001-01-25' as date), 90)
+          and d_date_sk = ws_sold_date_sk 
+      ) 
+order by sum(ws_ext_discount_amt)
 limit 100;

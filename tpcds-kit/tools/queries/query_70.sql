@@ -1,39 +1,45 @@
-select  c_last_name
-       ,c_first_name
-       ,ca_city
-       ,bought_city
-       ,ss_ticket_number
-       ,extended_price
-       ,extended_tax
-       ,list_price
- from (select ss_ticket_number
-             ,ss_customer_sk
-             ,ca_city bought_city
-             ,sum(ss_ext_sales_price) extended_price 
-             ,sum(ss_ext_list_price) list_price
-             ,sum(ss_ext_tax) extended_tax 
-       from store_sales
-           ,date_dim
-           ,store
-           ,household_demographics
-           ,customer_address 
-       where store_sales.ss_sold_date_sk = date_dim.d_date_sk
-         and store_sales.ss_store_sk = store.s_store_sk  
-        and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
-        and store_sales.ss_addr_sk = customer_address.ca_address_sk
-        and date_dim.d_dom between 1 and 2 
-        and (household_demographics.hd_dep_count = 5 or
-             household_demographics.hd_vehicle_count= 0)
-        and date_dim.d_year in (1998,1998+1,1998+2)
-        and store.s_city in ('Fairview','Midway')
-       group by ss_ticket_number
-               ,ss_customer_sk
-               ,ss_addr_sk,ca_city) dn
-      ,customer
-      ,customer_address current_addr
- where ss_customer_sk = c_customer_sk
-   and customer.c_current_addr_sk = current_addr.ca_address_sk
-   and current_addr.ca_city <> bought_city
- order by c_last_name
-         ,ss_ticket_number
+with v1 as(
+ select i_category, i_brand,
+        cc_name,
+        d_year, d_moy,
+        sum(cs_sales_price) sum_sales,
+        avg(sum(cs_sales_price)) over
+          (partition by i_category, i_brand,
+                     cc_name, d_year)
+          avg_monthly_sales,
+        rank() over
+          (partition by i_category, i_brand,
+                     cc_name
+           order by d_year, d_moy) rn
+ from item, catalog_sales, date_dim, call_center
+ where cs_item_sk = i_item_sk and
+       cs_sold_date_sk = d_date_sk and
+       cc_call_center_sk= cs_call_center_sk and
+       (
+         d_year = 2000 or
+         ( d_year = 2000-1 and d_moy =12) or
+         ( d_year = 2000+1 and d_moy =1)
+       )
+ group by i_category, i_brand,
+          cc_name , d_year, d_moy),
+ v2 as(
+ select v1.i_category
+        ,v1.d_year
+        ,v1.avg_monthly_sales
+        ,v1.sum_sales, v1_lag.sum_sales psum, v1_lead.sum_sales nsum
+ from v1, v1 v1_lag, v1 v1_lead
+ where v1.i_category = v1_lag.i_category and
+       v1.i_category = v1_lead.i_category and
+       v1.i_brand = v1_lag.i_brand and
+       v1.i_brand = v1_lead.i_brand and
+       v1. cc_name = v1_lag. cc_name and
+       v1. cc_name = v1_lead. cc_name and
+       v1.rn = v1_lag.rn + 1 and
+       v1.rn = v1_lead.rn - 1)
+  select  *
+ from v2
+ where  d_year = 2000 and
+        avg_monthly_sales > 0 and
+        case when avg_monthly_sales > 0 then abs(sum_sales - avg_monthly_sales) / avg_monthly_sales else null end > 0.1
+ order by sum_sales - avg_monthly_sales, sum_sales
  limit 100;

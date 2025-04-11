@@ -1,55 +1,50 @@
-select   
-  ca_state,
-  cd_gender,
-  cd_marital_status,
-  cd_dep_count,
-  count(*) cnt1,
-  sum(cd_dep_count),
-  stddev_samp(cd_dep_count),
-  avg(cd_dep_count),
-  cd_dep_employed_count,
-  count(*) cnt2,
-  sum(cd_dep_employed_count),
-  stddev_samp(cd_dep_employed_count),
-  avg(cd_dep_employed_count),
-  cd_dep_college_count,
-  count(*) cnt3,
-  sum(cd_dep_college_count),
-  stddev_samp(cd_dep_college_count),
-  avg(cd_dep_college_count)
- from
-  customer c,customer_address ca,customer_demographics
- where
-  c.c_current_addr_sk = ca.ca_address_sk and
-  cd_demo_sk = c.c_current_cdemo_sk and 
-  exists (select *
-          from store_sales,date_dim
-          where c.c_customer_sk = ss_customer_sk and
-                ss_sold_date_sk = d_date_sk and
-                d_year = 1999 and
-                d_qoy < 4) and
-   (exists (select *
-            from web_sales,date_dim
-            where c.c_customer_sk = ws_bill_customer_sk and
-                  ws_sold_date_sk = d_date_sk and
-                  d_year = 1999 and
-                  d_qoy < 4) or 
-    exists (select * 
-            from catalog_sales,date_dim
-            where c.c_customer_sk = cs_ship_customer_sk and
-                  cs_sold_date_sk = d_date_sk and
-                  d_year = 1999 and
-                  d_qoy < 4))
- group by ca_state,
-          cd_gender,
-          cd_marital_status,
-          cd_dep_count,
-          cd_dep_employed_count,
-          cd_dep_college_count
- order by ca_state,
-          cd_gender,
-          cd_marital_status,
-          cd_dep_count,
-          cd_dep_employed_count,
-          cd_dep_college_count
- limit 100;
+select  *
+from (select avg(ss_list_price) B1_LP
+            ,count(ss_list_price) B1_CNT
+            ,count(distinct ss_list_price) B1_CNTD
+      from store_sales
+      where ss_quantity between 0 and 5
+        and (ss_list_price between 28 and 28+10 
+             or ss_coupon_amt between 12573 and 12573+1000
+             or ss_wholesale_cost between 33 and 33+20)) B1,
+     (select avg(ss_list_price) B2_LP
+            ,count(ss_list_price) B2_CNT
+            ,count(distinct ss_list_price) B2_CNTD
+      from store_sales
+      where ss_quantity between 6 and 10
+        and (ss_list_price between 143 and 143+10
+          or ss_coupon_amt between 5562 and 5562+1000
+          or ss_wholesale_cost between 45 and 45+20)) B2,
+     (select avg(ss_list_price) B3_LP
+            ,count(ss_list_price) B3_CNT
+            ,count(distinct ss_list_price) B3_CNTD
+      from store_sales
+      where ss_quantity between 11 and 15
+        and (ss_list_price between 159 and 159+10
+          or ss_coupon_amt between 2807 and 2807+1000
+          or ss_wholesale_cost between 24 and 24+20)) B3,
+     (select avg(ss_list_price) B4_LP
+            ,count(ss_list_price) B4_CNT
+            ,count(distinct ss_list_price) B4_CNTD
+      from store_sales
+      where ss_quantity between 16 and 20
+        and (ss_list_price between 24 and 24+10
+          or ss_coupon_amt between 3706 and 3706+1000
+          or ss_wholesale_cost between 46 and 46+20)) B4,
+     (select avg(ss_list_price) B5_LP
+            ,count(ss_list_price) B5_CNT
+            ,count(distinct ss_list_price) B5_CNTD
+      from store_sales
+      where ss_quantity between 21 and 25
+        and (ss_list_price between 76 and 76+10
+          or ss_coupon_amt between 2096 and 2096+1000
+          or ss_wholesale_cost between 50 and 50+20)) B5,
+     (select avg(ss_list_price) B6_LP
+            ,count(ss_list_price) B6_CNT
+            ,count(distinct ss_list_price) B6_CNTD
+      from store_sales
+      where ss_quantity between 26 and 30
+        and (ss_list_price between 169 and 169+10
+          or ss_coupon_amt between 10672 and 10672+1000
+          or ss_wholesale_cost between 58 and 58+20)) B6
+limit 100;

@@ -1,19 +1,51 @@
-select  cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
- from ( select count(*) amc
-       from web_sales, household_demographics , time_dim, web_page
-       where ws_sold_time_sk = time_dim.t_time_sk
-         and ws_ship_hdemo_sk = household_demographics.hd_demo_sk
-         and ws_web_page_sk = web_page.wp_web_page_sk
-         and time_dim.t_hour between 10 and 10+1
-         and household_demographics.hd_dep_count = 2
-         and web_page.wp_char_count between 5000 and 5200) at,
-      ( select count(*) pmc
-       from web_sales, household_demographics , time_dim, web_page
-       where ws_sold_time_sk = time_dim.t_time_sk
-         and ws_ship_hdemo_sk = household_demographics.hd_demo_sk
-         and ws_web_page_sk = web_page.wp_web_page_sk
-         and time_dim.t_hour between 16 and 16+1
-         and household_demographics.hd_dep_count = 2
-         and web_page.wp_char_count between 5000 and 5200) pt
- order by am_pm_ratio
- limit 100;
+with ssales as
+(select c_last_name
+      ,c_first_name
+      ,s_store_name
+      ,ca_state
+      ,s_state
+      ,i_color
+      ,i_current_price
+      ,i_manager_id
+      ,i_units
+      ,i_size
+      ,sum(ss_ext_sales_price) netpaid
+from store_sales
+    ,store_returns
+    ,store
+    ,item
+    ,customer
+    ,customer_address
+where ss_ticket_number = sr_ticket_number
+  and ss_item_sk = sr_item_sk
+  and ss_customer_sk = c_customer_sk
+  and ss_item_sk = i_item_sk
+  and ss_store_sk = s_store_sk
+  and c_current_addr_sk = ca_address_sk
+  and c_birth_country <> upper(ca_country)
+  and s_zip = ca_zip
+and s_market_id=8
+group by c_last_name
+        ,c_first_name
+        ,s_store_name
+        ,ca_state
+        ,s_state
+        ,i_color
+        ,i_current_price
+        ,i_manager_id
+        ,i_units
+        ,i_size)
+select c_last_name
+      ,c_first_name
+      ,s_store_name
+      ,sum(netpaid) paid
+from ssales
+where i_color = 'navy'
+group by c_last_name
+        ,c_first_name
+        ,s_store_name
+having sum(netpaid) > (select 0.05*avg(netpaid)
+                                 from ssales)
+order by c_last_name
+        ,c_first_name
+        ,s_store_name;

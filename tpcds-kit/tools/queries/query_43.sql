@@ -1,49 +1,29 @@
-select  distinct(i_product_name)
- from item i1
- where i_manufact_id between 867 and 867+40 
-   and (select count(*) as item_cnt
-        from item
-        where (i_manufact = i1.i_manufact and
-        ((i_category = 'Women' and 
-        (i_color = 'blanched' or i_color = 'lemon') and 
-        (i_units = 'Box' or i_units = 'Unknown') and
-        (i_size = 'medium' or i_size = 'extra large')
-        ) or
-        (i_category = 'Women' and
-        (i_color = 'red' or i_color = 'moccasin') and
-        (i_units = 'Dozen' or i_units = 'Dram') and
-        (i_size = 'N/A' or i_size = 'petite')
-        ) or
-        (i_category = 'Men' and
-        (i_color = 'peru' or i_color = 'chiffon') and
-        (i_units = 'Ounce' or i_units = 'Bundle') and
-        (i_size = 'small' or i_size = 'economy')
-        ) or
-        (i_category = 'Men' and
-        (i_color = 'linen' or i_color = 'firebrick') and
-        (i_units = 'N/A' or i_units = 'Tbl') and
-        (i_size = 'medium' or i_size = 'extra large')
-        ))) or
-       (i_manufact = i1.i_manufact and
-        ((i_category = 'Women' and 
-        (i_color = 'cream' or i_color = 'papaya') and 
-        (i_units = 'Oz' or i_units = 'Each') and
-        (i_size = 'medium' or i_size = 'extra large')
-        ) or
-        (i_category = 'Women' and
-        (i_color = 'floral' or i_color = 'beige') and
-        (i_units = 'Gross' or i_units = 'Gram') and
-        (i_size = 'N/A' or i_size = 'petite')
-        ) or
-        (i_category = 'Men' and
-        (i_color = 'ghost' or i_color = 'pale') and
-        (i_units = 'Lb' or i_units = 'Pallet') and
-        (i_size = 'small' or i_size = 'economy')
-        ) or
-        (i_category = 'Men' and
-        (i_color = 'seashell' or i_color = 'wheat') and
-        (i_units = 'Ton' or i_units = 'Bunch') and
-        (i_size = 'medium' or i_size = 'extra large')
-        )))) > 0
- order by i_product_name
- limit 100;
+with ws_wh as
+(select ws1.ws_order_number,ws1.ws_warehouse_sk wh1,ws2.ws_warehouse_sk wh2
+ from web_sales ws1,web_sales ws2
+ where ws1.ws_order_number = ws2.ws_order_number
+   and ws1.ws_warehouse_sk <> ws2.ws_warehouse_sk)
+ select  
+   count(distinct ws_order_number) as "order count"
+  ,sum(ws_ext_ship_cost) as "total shipping cost"
+  ,sum(ws_net_profit) as "total net profit"
+from
+   web_sales ws1
+  ,date_dim
+  ,customer_address
+  ,web_site
+where
+    d_date between '2002-5-01' and 
+           (cast('2002-5-01' as date) + 60 days)
+and ws1.ws_ship_date_sk = d_date_sk
+and ws1.ws_ship_addr_sk = ca_address_sk
+and ca_state = 'MA'
+and ws1.ws_web_site_sk = web_site_sk
+and web_company_name = 'pri'
+and ws1.ws_order_number in (select ws_order_number
+                            from ws_wh)
+and ws1.ws_order_number in (select wr_order_number
+                            from web_returns,ws_wh
+                            where wr_order_number = ws_wh.ws_order_number)
+order by count(distinct ws_order_number)
+limit 100;

@@ -1,81 +1,26 @@
-select  substr(r_reason_desc,1,20)
-       ,avg(ws_quantity)
-       ,avg(wr_refunded_cash)
-       ,avg(wr_fee)
- from web_sales, web_returns, web_page, customer_demographics cd1,
-      customer_demographics cd2, customer_address, date_dim, reason 
- where ws_web_page_sk = wp_web_page_sk
-   and ws_item_sk = wr_item_sk
-   and ws_order_number = wr_order_number
-   and ws_sold_date_sk = d_date_sk and d_year = 2002
-   and cd1.cd_demo_sk = wr_refunded_cdemo_sk 
-   and cd2.cd_demo_sk = wr_returning_cdemo_sk
-   and ca_address_sk = wr_refunded_addr_sk
-   and r_reason_sk = wr_reason_sk
-   and
-   (
-    (
-     cd1.cd_marital_status = 'U'
-     and
-     cd1.cd_marital_status = cd2.cd_marital_status
-     and
-     cd1.cd_education_status = 'Unknown'
-     and 
-     cd1.cd_education_status = cd2.cd_education_status
-     and
-     ws_sales_price between 100.00 and 150.00
-    )
-   or
-    (
-     cd1.cd_marital_status = 'S'
-     and
-     cd1.cd_marital_status = cd2.cd_marital_status
-     and
-     cd1.cd_education_status = 'Advanced Degree' 
-     and
-     cd1.cd_education_status = cd2.cd_education_status
-     and
-     ws_sales_price between 50.00 and 100.00
-    )
-   or
-    (
-     cd1.cd_marital_status = 'D'
-     and
-     cd1.cd_marital_status = cd2.cd_marital_status
-     and
-     cd1.cd_education_status = '4 yr Degree'
-     and
-     cd1.cd_education_status = cd2.cd_education_status
-     and
-     ws_sales_price between 150.00 and 200.00
-    )
-   )
-   and
-   (
-    (
-     ca_country = 'United States'
-     and
-     ca_state in ('CO', 'MT', 'TX')
-     and ws_net_profit between 100 and 200  
-    )
-    or
-    (
-     ca_country = 'United States'
-     and
-     ca_state in ('OH', 'GA', 'TN')
-     and ws_net_profit between 150 and 300  
-    )
-    or
-    (
-     ca_country = 'United States'
-     and
-     ca_state in ('WI', 'SD', 'KY')
-     and ws_net_profit between 50 and 250  
-    )
-   )
-group by r_reason_desc
-order by substr(r_reason_desc,1,20)
-        ,avg(ws_quantity)
-        ,avg(wr_refunded_cash)
-        ,avg(wr_fee)
+select  i_item_desc
+      ,w_warehouse_name
+      ,d1.d_week_seq
+      ,sum(case when p_promo_sk is null then 1 else 0 end) no_promo
+      ,sum(case when p_promo_sk is not null then 1 else 0 end) promo
+      ,count(*) total_cnt
+from catalog_sales
+join inventory on (cs_item_sk = inv_item_sk)
+join warehouse on (w_warehouse_sk=inv_warehouse_sk)
+join item on (i_item_sk = cs_item_sk)
+join customer_demographics on (cs_bill_cdemo_sk = cd_demo_sk)
+join household_demographics on (cs_bill_hdemo_sk = hd_demo_sk)
+join date_dim d1 on (cs_sold_date_sk = d1.d_date_sk)
+join date_dim d2 on (inv_date_sk = d2.d_date_sk)
+join date_dim d3 on (cs_ship_date_sk = d3.d_date_sk)
+left outer join promotion on (cs_promo_sk=p_promo_sk)
+left outer join catalog_returns on (cr_item_sk = cs_item_sk and cr_order_number = cs_order_number)
+where d1.d_week_seq = d2.d_week_seq
+  and inv_quantity_on_hand < cs_quantity 
+  and d3.d_date > d1.d_date + 5
+  and hd_buy_potential = '501-1000'
+  and d1.d_year = 1999
+  and cd_marital_status = 'S'
+group by i_item_desc,w_warehouse_name,d1.d_week_seq
+order by total_cnt desc, i_item_desc, w_warehouse_name, d_week_seq
 limit 100;

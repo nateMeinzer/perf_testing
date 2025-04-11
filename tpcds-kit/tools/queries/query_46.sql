@@ -1,32 +1,42 @@
-select  asceding.rnk, i1.i_product_name best_performing, i2.i_product_name worst_performing
-from(select *
-     from (select item_sk,rank() over (order by rank_col asc) rnk
-           from (select ss_item_sk item_sk,avg(ss_net_profit) rank_col 
-                 from store_sales ss1
-                 where ss_store_sk = 3
-                 group by ss_item_sk
-                 having avg(ss_net_profit) > 0.9*(select avg(ss_net_profit) rank_col
-                                                  from store_sales
-                                                  where ss_store_sk = 3
-                                                    and ss_hdemo_sk is null
-                                                  group by ss_store_sk))V1)V11
-     where rnk  < 11) asceding,
-    (select *
-     from (select item_sk,rank() over (order by rank_col desc) rnk
-           from (select ss_item_sk item_sk,avg(ss_net_profit) rank_col
-                 from store_sales ss1
-                 where ss_store_sk = 3
-                 group by ss_item_sk
-                 having avg(ss_net_profit) > 0.9*(select avg(ss_net_profit) rank_col
-                                                  from store_sales
-                                                  where ss_store_sk = 3
-                                                    and ss_hdemo_sk is null
-                                                  group by ss_store_sk))V2)V21
-     where rnk  < 11) descending,
-item i1,
-item i2
-where asceding.rnk = descending.rnk 
-  and i1.i_item_sk=asceding.item_sk
-  and i2.i_item_sk=descending.item_sk
-order by asceding.rnk
+WITH web_v1 as (
+select
+  ws_item_sk item_sk, d_date,
+  sum(sum(ws_sales_price))
+      over (partition by ws_item_sk order by d_date rows between unbounded preceding and current row) cume_sales
+from web_sales
+    ,date_dim
+where ws_sold_date_sk=d_date_sk
+  and d_month_seq between 1178 and 1178+11
+  and ws_item_sk is not NULL
+group by ws_item_sk, d_date),
+store_v1 as (
+select
+  ss_item_sk item_sk, d_date,
+  sum(sum(ss_sales_price))
+      over (partition by ss_item_sk order by d_date rows between unbounded preceding and current row) cume_sales
+from store_sales
+    ,date_dim
+where ss_sold_date_sk=d_date_sk
+  and d_month_seq between 1178 and 1178+11
+  and ss_item_sk is not NULL
+group by ss_item_sk, d_date)
+ select  *
+from (select item_sk
+     ,d_date
+     ,web_sales
+     ,store_sales
+     ,max(web_sales)
+         over (partition by item_sk order by d_date rows between unbounded preceding and current row) web_cumulative
+     ,max(store_sales)
+         over (partition by item_sk order by d_date rows between unbounded preceding and current row) store_cumulative
+     from (select case when web.item_sk is not null then web.item_sk else store.item_sk end item_sk
+                 ,case when web.d_date is not null then web.d_date else store.d_date end d_date
+                 ,web.cume_sales web_sales
+                 ,store.cume_sales store_sales
+           from web_v1 web full outer join store_v1 store on (web.item_sk = store.item_sk
+                                                          and web.d_date = store.d_date)
+          )x )y
+where web_cumulative > store_cumulative
+order by item_sk
+        ,d_date
 limit 100;
