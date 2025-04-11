@@ -40,7 +40,7 @@
  with ssr as
  (select  s_store_id as store_id,
           sum(ss_ext_sales_price) as sales,
-          sum(coalesce(sr_return_amt, 0)) as returns,
+          sum(coalesce(sr_return_amt, 0)) as "returns",
           sum(ss_net_profit - coalesce(sr_net_loss, 0)) as profit
   from store_sales left outer join store_returns on
          (ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number),
@@ -61,7 +61,7 @@
  csr as
  (select  cp_catalog_page_id as catalog_page_id,
           sum(cs_ext_sales_price) as sales,
-          sum(coalesce(cr_return_amount, 0)) as returns,
+          sum(coalesce(cr_return_amount, 0)) as "returns",
           sum(cs_net_profit - coalesce(cr_net_loss, 0)) as profit
   from catalog_sales left outer join catalog_returns on
          (cs_item_sk = cr_item_sk and cs_order_number = cr_order_number),
@@ -82,7 +82,7 @@ group by cp_catalog_page_id)
  wsr as
  (select  web_site_id,
           sum(ws_ext_sales_price) as sales,
-          sum(coalesce(wr_return_amt, 0)) as returns,
+          sum(coalesce(wr_return_amt, 0)) as "returns",
           sum(ws_net_profit - coalesce(wr_net_loss, 0)) as profit
   from web_sales left outer join web_returns on
          (ws_item_sk = wr_item_sk and ws_order_number = wr_order_number),
@@ -102,7 +102,7 @@ group by web_site_id)
  [_LIMITA] select [_LIMITB] channel
         , id
         , sum(sales) as sales
-        , sum(returns) as returns
+        , sum("returns") as "returns"
         , sum(profit) as profit
  from 
  (select 'store channel' as channel

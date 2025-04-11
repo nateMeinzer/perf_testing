@@ -41,7 +41,7 @@
  (select s_store_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  ss_store_sk as store_sk,
@@ -72,7 +72,7 @@
  (select cp_catalog_page_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  cs_catalog_page_sk as page_sk,
@@ -103,7 +103,7 @@
  (select web_site_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  ws_web_site_sk as wsr_web_site_sk,
@@ -134,7 +134,7 @@
  [_LIMITA] select [_LIMITB] channel
         , id
         , sum(sales) as sales
-        , sum(returns) as returns
+        , sum("returns") as "returns"
         , sum(profit) as profit
  from 
  (select 'store channel' as channel
