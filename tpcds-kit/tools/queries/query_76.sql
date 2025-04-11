@@ -46,10 +46,10 @@ with year_total as (
          and t_w_firstyear.sale_type = 'w'
          and t_s_secyear.sale_type = 's'
          and t_w_secyear.sale_type = 'w'
-         and t_s_firstyear.year = 2001
-         and t_s_secyear.year = 2001+1
-         and t_w_firstyear.year = 2001
-         and t_w_secyear.year = 2001+1
+         and t_s_firstyear."year" = 2001
+         and t_s_secyear."year" = 2001+1
+         and t_w_firstyear."year" = 2001
+         and t_w_secyear."year" = 2001+1
          and t_s_firstyear.year_total > 0
          and t_w_firstyear.year_total > 0
          and case when t_w_firstyear.year_total > 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end

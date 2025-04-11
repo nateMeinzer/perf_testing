@@ -43,7 +43,6 @@ define COUNTY_C = distmember(fips_county, [COUNTYNUMBER.3], 2);
 define COUNTY_D = distmember(fips_county, [COUNTYNUMBER.4], 2);
 define COUNTY_E = distmember(fips_county, [COUNTYNUMBER.5], 2);
 define _LIMIT=100;
-define _END = "";
 
 [_LIMITA] select [_LIMITB] 
    count(distinct cs_order_number) as "order count"
@@ -55,8 +54,8 @@ from
   ,customer_address
   ,call_center
 where
-    d_date between '[YEAR]-[MONTH]-01' and 
-           (cast('[YEAR]-[MONTH]-01' as date) + 60 days)
+    d_date between cast('[YEAR]-[MONTH]-01' as date) and 
+          date_add(cast('[YEAR]-[MONTH]-01' as date), 60)
 and cs1.cs_ship_date_sk = d_date_sk
 and cs1.cs_ship_addr_sk = ca_address_sk
 and ca_state = '[STATE]'

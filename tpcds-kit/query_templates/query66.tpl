@@ -50,7 +50,7 @@
  	,w_state
  	,w_country
         ,ship_carriers
-        ,year
+        ,"year"
  	,sum(jan_sales) as jan_sales
  	,sum(feb_sales) as feb_sales
  	,sum(mar_sales) as mar_sales
@@ -256,7 +256,7 @@
  	,w_state
  	,w_country
  	,ship_carriers
-       ,year
+       ,"year"
  order by w_warehouse_name
  [_LIMITC];
 

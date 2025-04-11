@@ -2,19 +2,35 @@ import os
 import re
 
 def rewrite_date_add(content):
-    # Pattern: (cast('[VAR]' as date) + N days)
+    # Matches: (cast('...' as date) +/- N days)
     pattern = re.compile(
-        r"\(cast\('(?P<var>\[[^\]]+\])'\s+as\s+date\)\s*\+\s*(?P<num>\d+)\s+days\)",
-        re.IGNORECASE
+        r"""
+        \(?                      # optional opening paren
+        cast\s*\(\s*             # cast(
+        (?P<quote>['"])          # opening quote
+        (?P<var>\[?[^\]'"]+\]?)  # variable or date literal
+        (?P=quote)               # closing quote
+        \s+as\s+date\s*\)        # as date)
+        \s*                      # optional whitespace
+        (?P<op>[+-])             # + or -
+        \s*                      # optional whitespace
+        (?P<days>\d+)            # the number
+        \s+days\s*               # " days"
+        \)?                      # optional closing paren
+        """,
+        re.IGNORECASE | re.VERBOSE
     )
 
-    def replacer(match):
-        var = match.group("var")
-        num = match.group("num")
-        return f"DATE_ADD(cast('{var}' as date), {num})"
+    def replacer(m):
+        var = m.group("var")
+        op = m.group("op")
+        days = m.group("days")
+        sign = "-" if op == "-" else ""
+        return f'DATE_ADD(cast(\'{var}\' as date), {sign}{days})'
 
     return pattern.sub(replacer, content)
 
+# Process all .tpl files in current directory
 for filename in os.listdir("."):
     if filename.endswith(".tpl"):
         try:

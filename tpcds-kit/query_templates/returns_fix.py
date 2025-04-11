@@ -2,12 +2,14 @@ import os
 import re
 
 def fix_returns(text):
-    # 1. Match: as returns,
-    text = re.sub(r'\bas\s+returns\b(?=\s*,)', 'as "returns"', text)
-    # 2. Match: as returns (no comma after)
-    text = re.sub(r'\bas\s+returns\b(?!\s*[,])', 'as "returns"', text)
-    # 3. Match: (returns) or ( returns )
-    text = re.sub(r'\(\s*returns\s*\)', '("returns")', text)
+    # 1. as returns,
+    text = re.sub(r'\bas\s+returns\b(?=\s*,)', 'as "returns"', text, flags=re.IGNORECASE)
+    # 2. as returns (no comma)
+    text = re.sub(r'\bas\s+returns\b(?!\s*,)', 'as "returns"', text, flags=re.IGNORECASE)
+    # 3. function(returns) → function("returns")
+    text = re.sub(r'(\b\w+\s*\()\s*returns\s*(\))', r'\1"returns"\2', text)
+    # 4. , returns → , "returns"
+    text = re.sub(r',\s*returns\b', r', "returns"', text, flags=re.IGNORECASE)
     return text
 
 for filename in os.listdir("."):

@@ -125,7 +125,7 @@
  select 'catalog channel' as channel
         , cs_call_center_sk as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from  cs
        , cr

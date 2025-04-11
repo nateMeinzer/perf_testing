@@ -84,7 +84,7 @@ WITH all_sales AS (
        WHERE i_category='Shoes') sales_detail
  GROUP BY d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id)
  SELECT  prev_yr.d_year AS prev_year
-                          ,curr_yr.d_year AS year
+                          ,curr_yr.d_year as "year"
                           ,curr_yr.i_brand_id
                           ,curr_yr.i_class_id
                           ,curr_yr.i_category_id
@@ -240,21 +240,21 @@ group by web_site_id)
  (select 'store channel' as channel
         , 'store' || store_id as id
         , sales
-        , returns
+        , "returns"
         , profit
  from   ssr
  union all
  select 'catalog channel' as channel
         , 'catalog_page' || catalog_page_id as id
         , sales
-        , returns
+        , "returns"
         , profit
  from  csr
  union all
  select 'web channel' as channel
         , 'web_site' || web_site_id as id
         , sales
-        , returns
+        , "returns"
         , profit
  from   wsr
  ) x
@@ -523,8 +523,8 @@ select  *
      and i_item_sk          = inv_item_sk
      and inv_warehouse_sk   = w_warehouse_sk
      and inv_date_sk    = d_date_sk
-     and d_date between (cast ('2000-05-19' as date) - 30 days)
-                    and (cast ('2000-05-19' as date) + 30 days)
+     and d_date between DATE_ADD(cast('2000-05-19' as date), -30)
+                    and DATE_ADD(cast('2000-05-19' as date), 30)
    group by w_warehouse_name, i_item_id) x
  where (case when inv_before > 0 
              then inv_after / inv_before 
@@ -1609,7 +1609,7 @@ select
  	,w_state
  	,w_country
         ,ship_carriers
-        ,year
+        ,"year"
  	,sum(jan_sales) as jan_sales
  	,sum(feb_sales) as feb_sales
  	,sum(mar_sales) as mar_sales
@@ -1815,7 +1815,7 @@ select
  	,w_state
  	,w_country
  	,ship_carriers
-       ,year
+       ,"year"
  order by w_warehouse_name
  limit 100;
 
@@ -3508,10 +3508,10 @@ with year_total as (
          and t_w_firstyear.sale_type = 'w'
          and t_s_secyear.sale_type = 's'
          and t_w_secyear.sale_type = 'w'
-         and t_s_firstyear.year = 2001
-         and t_s_secyear.year = 2001+1
-         and t_w_firstyear.year = 2001
-         and t_w_secyear.year = 2001+1
+         and t_s_firstyear."year" = 2001
+         and t_s_secyear."year" = 2001+1
+         and t_w_firstyear."year" = 2001
+         and t_w_secyear."year" = 2001+1
          and t_s_firstyear.year_total > 0
          and t_w_firstyear.year_total > 0
          and case when t_w_firstyear.year_total > 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end
@@ -3632,7 +3632,7 @@ with ss as
  select 'catalog channel' as channel
         , cs_call_center_sk as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from  cs
        , cr
@@ -3940,8 +3940,8 @@ select
  and i_item_sk          = cs_item_sk
  and cs_warehouse_sk    = w_warehouse_sk 
  and cs_sold_date_sk    = d_date_sk
- and d_date between (cast ('1999-03-30' as date) - 30 days)
-                and (cast ('1999-03-30' as date) + 30 days) 
+ and d_date between DATE_ADD(cast('1999-03-30' as date), -30)
+                and DATE_ADD(cast('1999-03-30' as date), 30) 
  group by
     w_state,i_item_id
  order by w_state,i_item_id
@@ -4577,21 +4577,21 @@ with ssr as
  (select 'store channel' as channel
         , 'store' || s_store_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from   ssr
  union all
  select 'catalog channel' as channel
         , 'catalog_page' || cp_catalog_page_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from  csr
  union all
  select 'web channel' as channel
         , 'web_site' || web_site_id as id
         , sales
-        , returns
+        , "returns"
         , (profit - profit_loss) as profit
  from   wsr
  ) x
