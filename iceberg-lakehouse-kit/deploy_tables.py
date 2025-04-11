@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import boto3
 import urllib.parse
 import time  # Ensure 'time' is imported for sleep functionality
+import argparse  # Add argparse for command-line arguments
 
 # Load environment variables from .env file
 load_dotenv()
@@ -129,26 +130,36 @@ def process_table(table_name, partition_column=None):
     execute_query(create_query)
 
 def main():
-    # Load tables.json
-    tables_file = "tables.json"
-    if not os.path.exists(tables_file):
-        print(f"Error: {tables_file} not found. Ensure the file exists in the current directory: {os.getcwd()}")
-        return
+    parser = argparse.ArgumentParser(description="Deploy Iceberg tables from S3 objects")
+    parser.add_argument("--table", help="Specific table name to process (without fetching the list)")
+    args = parser.parse_args()
 
-    try:
-        with open(tables_file, "r") as f:
-            tables = json.load(f)
-    except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse {tables_file}. Ensure it contains valid JSON. {e}")
-        return
-
-    # Process partitioned tables
-    for table_name, partition_column in tables["partitioned_tables"].items():
-        process_table(table_name, partition_column)
-
-    # Process non-partitioned tables
-    for table_name in tables["non_partitioned_tables"]:
+    if args.table:
+        # Process only the specified table
+        table_name = args.table
+        print(f"Processing single table: {table_name}")
         process_table(table_name)
+    else:
+        # Load tables.json
+        tables_file = "tables.json"
+        if not os.path.exists(tables_file):
+            print(f"Error: {tables_file} not found. Ensure the file exists in the current directory: {os.getcwd()}")
+            return
+
+        try:
+            with open(tables_file, "r") as f:
+                tables = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"Error: Failed to parse {tables_file}. Ensure it contains valid JSON. {e}")
+            return
+
+        # Process partitioned tables
+        for table_name, partition_column in tables["partitioned_tables"].items():
+            process_table(table_name, partition_column)
+
+        # Process non-partitioned tables
+        for table_name in tables["non_partitioned_tables"]:
+            process_table(table_name)
 
 if __name__ == "__main__":
     main()

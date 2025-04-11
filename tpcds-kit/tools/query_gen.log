@@ -1,0 +1,1831 @@
+BEGIN STREAM 0
+Template: query96.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DEPCNT.01 = 5
+	HOUR.01 = 8
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query7.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2001
+	ES.01 = 4 yr Degree
+	MS.01 = M
+	GEN.01 = M
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query75.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2000
+	CATEGORY.01 = Shoes
+	CINDX.01 = 4
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query44.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STORE.01 = 6
+	NULLCOLSS.01 = ss_hdemo_sk
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query39.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 2001
+	MONTH.01 = 1
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query80.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 2002-08-04
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query32.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CSDATE.01 = 1999-02-22
+	YEAR.01 = 1999
+	IMID.01 = 283
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query19.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MANAGER.01 = 8
+	MGR_IDX.01 = 1
+	MONTH.01 = 11
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query25.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	AGG.01 = min
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query78.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_LIMIT.01 = 100
+	_END.01 = 
+	SELECTONE.01 = ss_customer_sk
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query86.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1205
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query1.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	AGG_FIELD.01 = SR_RETURN_AMT_INC_TAX
+	YEAR.01 = 1999
+	STATE.01 = TN
+	COUNTY.01 = 1
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query91.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	GMT.01 = -6
+	BUY_POTENTIAL.01 = Unknown
+	MONTH.01 = 11
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query21.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 2000-05-19
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query43.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2000
+	GMT.01 = -5
+	COUNTY.01 = 1
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query27.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE_F.01 = TN
+	STATE_E.01 = TN
+	STATE_D.01 = TN
+	STATE_C.01 = TN
+	STATE_B.01 = TN
+	STATE_A.01 = TN
+	STATENUMBER.01 = 1
+	STATENUMBER.02 = 1
+	STATENUMBER.03 = 1
+	STATENUMBER.04 = 1
+	STATENUMBER.05 = 1
+	STATENUMBER.06 = 1
+	ES.01 = Secondary
+	MS.01 = U
+	GEN.01 = M
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query94.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE.01 = WI
+	MONTH.01 = 4
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query45.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	QOY.01 = 2
+	YEAR.01 = 2000
+	GBOBC.01 = ca_city
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query58.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 2000-02-12
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query64.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 2001
+	PRICE.01 = 22
+	COLOR.01 = light
+	COLOR.02 = cyan
+	COLOR.03 = burnished
+	COLOR.04 = green
+	COLOR.05 = almond
+	COLOR.06 = smoke
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query36.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE_H.01 = TN
+	STATE_G.01 = TN
+	STATE_F.01 = TN
+	STATE_E.01 = TN
+	STATE_D.01 = TN
+	STATE_C.01 = TN
+	STATE_B.01 = TN
+	STATE_A.01 = TN
+	STATENUMBER.01 = 1
+	STATENUMBER.02 = 1
+	STATENUMBER.03 = 1
+	STATENUMBER.04 = 1
+	STATENUMBER.05 = 1
+	STATENUMBER.06 = 1
+	STATENUMBER.07 = 1
+	STATENUMBER.08 = 1
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query33.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CATEGORY.01 = Books
+	GMT.01 = -5
+	COUNTY.01 = 1
+	MONTH.01 = 4
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query46.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CITY_E.01 = Fairview
+	CITY_D.01 = Fairview
+	CITY_C.01 = Fairview
+	CITY_B.01 = Fairview
+	CITY_A.01 = Midway
+	CITYNUMBER.01 = 1
+	CITYNUMBER.02 = 2
+	CITYNUMBER.03 = 2
+	CITYNUMBER.04 = 2
+	CITYNUMBER.05 = 2
+	VEHCNT.01 = 1
+	YEAR.01 = 1999
+	DEPCNT.01 = 3
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query62.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1217
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query16.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	COUNTY_E.01 = Williamson County
+	COUNTY_D.01 = Williamson County
+	COUNTY_C.01 = Williamson County
+	COUNTY_B.01 = Williamson County
+	COUNTY_A.01 = Williamson County
+	COUNTYNUMBER.01 = 1
+	COUNTYNUMBER.02 = 1
+	COUNTYNUMBER.03 = 1
+	COUNTYNUMBER.04 = 1
+	COUNTYNUMBER.05 = 1
+	STATE.01 = ID
+	MONTH.01 = 5
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query10.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2002
+	MONTH.01 = 3
+	COUNTY.01 = Clinton County
+	COUNTY.02 = Platte County
+	COUNTY.03 = Franklin County
+	COUNTY.04 = Louisa County
+	COUNTY.05 = Harmon County
+	COUNTY.06 = Montgomery County
+	COUNTY.07 = Mahoning County
+	COUNTY.08 = Harper County
+	COUNTY.09 = Santa Cruz County
+	COUNTY.10 = Rawlins County
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query63.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1181
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query69.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE.01 = IN
+	STATE.02 = VA
+	STATE.03 = MS
+	YEAR.01 = 2002
+	MONTH.01 = 2
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query60.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CATEGORY.01 = Shoes
+	GMT.01 = -6
+	MONTH.01 = 10
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query59.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1206
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query37.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	PRICE.01 = 26
+	MANUFACT_ID.01 = 744
+	MANUFACT_ID.02 = 884
+	MANUFACT_ID.03 = 722
+	MANUFACT_ID.04 = 693
+	INVDATE.01 = 2001-06-09
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query98.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	CATEGORY.01 = Shoes
+	CATEGORY.02 = Music
+	CATEGORY.03 = Men
+	SDATE.01 = 2000-01-05
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query85.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2001
+	STATE.01 = SC
+	STATE.02 = IN
+	STATE.03 = VA
+	STATE.04 = WA
+	STATE.05 = KS
+	STATE.06 = KY
+	STATE.07 = SD
+	STATE.08 = WI
+	STATE.09 = NE
+	ES.01 = Primary
+	ES.02 = Unknown
+	ES.03 = Advanced Degree
+	MS.01 = D
+	MS.02 = U
+	MS.03 = M
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query70.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1180
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query67.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1194
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query28.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	WHOLESALECOST.01 = 33
+	WHOLESALECOST.02 = 45
+	WHOLESALECOST.03 = 24
+	WHOLESALECOST.04 = 46
+	WHOLESALECOST.05 = 50
+	WHOLESALECOST.06 = 58
+	COUPONAMT.01 = 12573
+	COUPONAMT.02 = 5562
+	COUPONAMT.03 = 2807
+	COUPONAMT.04 = 3706
+	COUPONAMT.05 = 2096
+	COUPONAMT.06 = 10672
+	LISTPRICE.01 = 28
+	LISTPRICE.02 = 143
+	LISTPRICE.03 = 159
+	LISTPRICE.04 = 24
+	LISTPRICE.05 = 76
+	LISTPRICE.06 = 169
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query81.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 1998
+	STATE.01 = TX
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query97.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1211
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query66.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALESTWO.01 = cs_sales_price
+	SALESONE.01 = ws_ext_list_price
+	NETTWO.01 = cs_net_paid
+	NETONE.01 = ws_net_profit
+	SMC.01 = FEDEX
+	SMC.02 = GERMA
+	TIMEONE.01 = 19072
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query90.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	HOUR_PM.01 = 15
+	HOUR_AM.01 = 9
+	DEPCNT.01 = 2
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query17.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query47.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	ORDERBY.01 = nsum
+	SELECTTWO.01 = ,v1.d_year
+	SELECTONE.01 = v1.i_category, v1.i_brand, v1.s_store_name, v1.s_company_name
+	_LIMIT.01 = 100
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query95.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE.01 = MA
+	MONTH.01 = 5
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query92.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	WSDATE.01 = 2001-01-25
+	YEAR.01 = 2001
+	IMID.01 = 914
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query3.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 1998
+	_LIMIT.01 = 100
+	MANUFACT.01 = 48
+	MONTH.01 = 12
+	AGGC.01 = ss_net_profit
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query51.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1178
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query35.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	AGGTHREE.01 = stddev_samp
+	AGGTWO.01 = max
+	AGGONE.01 = min
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query49.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MONTH.01 = 11
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query9.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 2000
+	RC.01 = 31000
+	RC.02 = 4078
+	RC.03 = 28395
+	RC.04 = 12716
+	RC.05 = 41806
+	AGGCELSE.01 = ss_net_paid
+	AGGCTHEN.01 = ss_ext_tax
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query31.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	AGG.01 = store_q1_q2_increase
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query11.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SELECTONE.01 = t_s_secyear.customer_email_address
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query93.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	REASON.01 = reason 55
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query29.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	AGG.01 = min
+	MONTH.01 = 4
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query38.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1217
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query22.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	DMS.01 = 1212
+	_LIMIT.01 = 100
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query89.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CLASS_F.01 = athletic
+	CAT_F.01 = Shoes
+	CLASS_E.01 = memory
+	CAT_E.01 = Electronics
+	CLASS_D.01 = athletic shoes
+	CAT_D.01 = Sports
+	CLASS_C.01 = infants
+	CAT_C.01 = Children
+	CLASS_B.01 = self-help
+	CAT_B.01 = Books
+	CLASS_A.01 = sports-apparel
+	CAT_A.01 = Men
+	IDX.01 = 2
+	IDX.02 = 9
+	IDX.03 = 3
+	IDX.04 = 8
+	IDX.05 = 10
+	IDX.06 = 4
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query15.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	QOY.01 = 1
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query6.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MONTH.01 = 7
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query52.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2000
+	MONTH.01 = 12
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query50.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MONTH.01 = 8
+	YEAR.01 = 2002
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query42.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 1999
+	MONTH.01 = 12
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query41.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MANUFACT.01 = 814
+	SIZE.01 = medium
+	SIZE.02 = extra large
+	SIZE.03 = petite
+	SIZE.04 = N/A
+	SIZE.05 = large
+	SIZE.06 = economy
+	UNIT.01 = Gram
+	UNIT.02 = Case
+	UNIT.03 = Lb
+	UNIT.04 = Pallet
+	UNIT.05 = Box
+	UNIT.06 = Oz
+	UNIT.07 = Bundle
+	UNIT.08 = Unknown
+	UNIT.09 = Gross
+	UNIT.10 = Dram
+	UNIT.11 = Bunch
+	UNIT.12 = Cup
+	UNIT.13 = Tbl
+	UNIT.14 = N/A
+	UNIT.15 = Pound
+	UNIT.16 = Ounce
+	COLOR.01 = midnight
+	COLOR.02 = light
+	COLOR.03 = lavender
+	COLOR.04 = green
+	COLOR.05 = pale
+	COLOR.06 = burlywood
+	COLOR.07 = antique
+	COLOR.08 = pink
+	COLOR.09 = drab
+	COLOR.10 = deep
+	COLOR.11 = lace
+	COLOR.12 = steel
+	COLOR.13 = cornsilk
+	COLOR.14 = saddle
+	COLOR.15 = chiffon
+	COLOR.16 = yellow
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query8.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	ZIP.01 = 51640
+	ZIP.02 = 49699
+	ZIP.03 = 82312
+	ZIP.04 = 80032
+	ZIP.05 = 12897
+	ZIP.06 = 55984
+	ZIP.07 = 54530
+	ZIP.08 = 67535
+	ZIP.09 = 49118
+	ZIP.10 = 18601
+	ZIP.11 = 16733
+	ZIP.12 = 42639
+	ZIP.13 = 51878
+	ZIP.14 = 47815
+	ZIP.15 = 21587
+	ZIP.16 = 31819
+	ZIP.17 = 31903
+	ZIP.18 = 28863
+	ZIP.19 = 81398
+	ZIP.20 = 44142
+	ZIP.21 = 45114
+	ZIP.22 = 40302
+	ZIP.23 = 44881
+	ZIP.24 = 82058
+	ZIP.25 = 83753
+	ZIP.26 = 59162
+	ZIP.27 = 37146
+	ZIP.28 = 46398
+	ZIP.29 = 43280
+	ZIP.30 = 55117
+	ZIP.31 = 43670
+	ZIP.32 = 36519
+	ZIP.33 = 77935
+	ZIP.34 = 13015
+	ZIP.35 = 27934
+	ZIP.36 = 42764
+	ZIP.37 = 59231
+	ZIP.38 = 42501
+	ZIP.39 = 93402
+	ZIP.40 = 21137
+	ZIP.41 = 13932
+	ZIP.42 = 74268
+	ZIP.43 = 95425
+	ZIP.44 = 75005
+	ZIP.45 = 57183
+	ZIP.46 = 15529
+	ZIP.47 = 12967
+	ZIP.48 = 21677
+	ZIP.49 = 30728
+	ZIP.50 = 23765
+	ZIP.51 = 27293
+	ZIP.52 = 41852
+	ZIP.53 = 68798
+	ZIP.54 = 48571
+	ZIP.55 = 57104
+	ZIP.56 = 44853
+	ZIP.57 = 18359
+	ZIP.58 = 14429
+	ZIP.59 = 54090
+	ZIP.60 = 62125
+	ZIP.61 = 10425
+	ZIP.62 = 32204
+	ZIP.63 = 41139
+	ZIP.64 = 79545
+	ZIP.65 = 40734
+	ZIP.66 = 58214
+	ZIP.67 = 81618
+	ZIP.68 = 77136
+	ZIP.69 = 87459
+	ZIP.70 = 74931
+	ZIP.71 = 44128
+	ZIP.72 = 28788
+	ZIP.73 = 13768
+	ZIP.74 = 42975
+	ZIP.75 = 54225
+	ZIP.76 = 23142
+	ZIP.77 = 98293
+	ZIP.78 = 93675
+	ZIP.79 = 12301
+	ZIP.80 = 31813
+	ZIP.81 = 55954
+	ZIP.82 = 81581
+	ZIP.83 = 28608
+	ZIP.84 = 12138
+	ZIP.85 = 62878
+	ZIP.86 = 33508
+	ZIP.87 = 83832
+	ZIP.88 = 83585
+	ZIP.89 = 95172
+	ZIP.90 = 53489
+	ZIP.91 = 57870
+	ZIP.92 = 66750
+	ZIP.93 = 20265
+	ZIP.94 = 42096
+	ZIP.95 = 22014
+	ZIP.96 = 92168
+	ZIP.97 = 46211
+	ZIP.98 = 25748
+	ZIP.99 = 63049
+	ZIP.100 = 98827
+	ZIP.101 = 89784
+	ZIP.102 = 59532
+	ZIP.103 = 76967
+	ZIP.104 = 70147
+	ZIP.105 = 13738
+	ZIP.106 = 97662
+	ZIP.107 = 62081
+	ZIP.108 = 47318
+	ZIP.109 = 30828
+	ZIP.110 = 13408
+	ZIP.111 = 25410
+	ZIP.112 = 33317
+	ZIP.113 = 42808
+	ZIP.114 = 46687
+	ZIP.115 = 43941
+	ZIP.116 = 71211
+	ZIP.117 = 46364
+	ZIP.118 = 34851
+	ZIP.119 = 54884
+	ZIP.120 = 99984
+	ZIP.121 = 78449
+	ZIP.122 = 37405
+	ZIP.123 = 93822
+	ZIP.124 = 73495
+	ZIP.125 = 21566
+	ZIP.126 = 87151
+	ZIP.127 = 13605
+	ZIP.128 = 14233
+	ZIP.129 = 56444
+	ZIP.130 = 49512
+	ZIP.131 = 16789
+	ZIP.132 = 75595
+	ZIP.133 = 21743
+	ZIP.134 = 85088
+	ZIP.135 = 35197
+	ZIP.136 = 86177
+	ZIP.137 = 46844
+	ZIP.138 = 87261
+	ZIP.139 = 79484
+	ZIP.140 = 29344
+	ZIP.141 = 13880
+	ZIP.142 = 47082
+	ZIP.143 = 17857
+	ZIP.144 = 77744
+	ZIP.145 = 52745
+	ZIP.146 = 10835
+	ZIP.147 = 22044
+	ZIP.148 = 74998
+	ZIP.149 = 42027
+	ZIP.150 = 77011
+	ZIP.151 = 26611
+	ZIP.152 = 52552
+	ZIP.153 = 86100
+	ZIP.154 = 10607
+	ZIP.155 = 11259
+	ZIP.156 = 18963
+	ZIP.157 = 55712
+	ZIP.158 = 48211
+	ZIP.159 = 15963
+	ZIP.160 = 31194
+	ZIP.161 = 44286
+	ZIP.162 = 92020
+	ZIP.163 = 39550
+	ZIP.164 = 70195
+	ZIP.165 = 18451
+	ZIP.166 = 54431
+	ZIP.167 = 44384
+	ZIP.168 = 82907
+	ZIP.169 = 32109
+	ZIP.170 = 28207
+	ZIP.171 = 93798
+	ZIP.172 = 61460
+	ZIP.173 = 99735
+	ZIP.174 = 12345
+	ZIP.175 = 25166
+	ZIP.176 = 62311
+	ZIP.177 = 47268
+	ZIP.178 = 55128
+	ZIP.179 = 19081
+	ZIP.180 = 11421
+	ZIP.181 = 29782
+	ZIP.182 = 92832
+	ZIP.183 = 31218
+	ZIP.184 = 28390
+	ZIP.185 = 34690
+	ZIP.186 = 85841
+	ZIP.187 = 35854
+	ZIP.188 = 71524
+	ZIP.189 = 43004
+	ZIP.190 = 32751
+	ZIP.191 = 69262
+	ZIP.192 = 17350
+	ZIP.193 = 83670
+	ZIP.194 = 58885
+	ZIP.195 = 75919
+	ZIP.196 = 45354
+	ZIP.197 = 91040
+	ZIP.198 = 32252
+	ZIP.199 = 97406
+	ZIP.200 = 21049
+	ZIP.201 = 37167
+	ZIP.202 = 88901
+	ZIP.203 = 76466
+	ZIP.204 = 29801
+	ZIP.205 = 86572
+	ZIP.206 = 98173
+	ZIP.207 = 12544
+	ZIP.208 = 72863
+	ZIP.209 = 13359
+	ZIP.210 = 19505
+	ZIP.211 = 27259
+	ZIP.212 = 29532
+	ZIP.213 = 60164
+	ZIP.214 = 75492
+	ZIP.215 = 19175
+	ZIP.216 = 28800
+	ZIP.217 = 47548
+	ZIP.218 = 43234
+	ZIP.219 = 48177
+	ZIP.220 = 61036
+	ZIP.221 = 30729
+	ZIP.222 = 15745
+	ZIP.223 = 50098
+	ZIP.224 = 33937
+	ZIP.225 = 96255
+	ZIP.226 = 56659
+	ZIP.227 = 44650
+	ZIP.228 = 97147
+	ZIP.229 = 40361
+	ZIP.230 = 72807
+	ZIP.231 = 11234
+	ZIP.232 = 17282
+	ZIP.233 = 93192
+	ZIP.234 = 92436
+	ZIP.235 = 44706
+	ZIP.236 = 35482
+	ZIP.237 = 22786
+	ZIP.238 = 52547
+	ZIP.239 = 18833
+	ZIP.240 = 40663
+	ZIP.241 = 18380
+	ZIP.242 = 77526
+	ZIP.243 = 91316
+	ZIP.244 = 36114
+	ZIP.245 = 66159
+	ZIP.246 = 68574
+	ZIP.247 = 52079
+	ZIP.248 = 71888
+	ZIP.249 = 35094
+	ZIP.250 = 60112
+	ZIP.251 = 32748
+	ZIP.252 = 69518
+	ZIP.253 = 43398
+	ZIP.254 = 26844
+	ZIP.255 = 93974
+	ZIP.256 = 54677
+	ZIP.257 = 46177
+	ZIP.258 = 62869
+	ZIP.259 = 87434
+	ZIP.260 = 38960
+	ZIP.261 = 76659
+	ZIP.262 = 66726
+	ZIP.263 = 63517
+	ZIP.264 = 90546
+	ZIP.265 = 85094
+	ZIP.266 = 13879
+	ZIP.267 = 38595
+	ZIP.268 = 84214
+	ZIP.269 = 38187
+	ZIP.270 = 63955
+	ZIP.271 = 71799
+	ZIP.272 = 27410
+	ZIP.273 = 52554
+	ZIP.274 = 30692
+	ZIP.275 = 21909
+	ZIP.276 = 41063
+	ZIP.277 = 95080
+	ZIP.278 = 34422
+	ZIP.279 = 38829
+	ZIP.280 = 66753
+	ZIP.281 = 17169
+	ZIP.282 = 75088
+	ZIP.283 = 92024
+	ZIP.284 = 79808
+	ZIP.285 = 80539
+	ZIP.286 = 28803
+	ZIP.287 = 28847
+	ZIP.288 = 26462
+	ZIP.289 = 46385
+	ZIP.290 = 52351
+	ZIP.291 = 42891
+	ZIP.292 = 82226
+	ZIP.293 = 30676
+	ZIP.294 = 41115
+	ZIP.295 = 44307
+	ZIP.296 = 79016
+	ZIP.297 = 15962
+	ZIP.298 = 26215
+	ZIP.299 = 40985
+	ZIP.300 = 31652
+	ZIP.301 = 96293
+	ZIP.302 = 34907
+	ZIP.303 = 44873
+	ZIP.304 = 15145
+	ZIP.305 = 96226
+	ZIP.306 = 21444
+	ZIP.307 = 67090
+	ZIP.308 = 63657
+	ZIP.309 = 33481
+	ZIP.310 = 95377
+	ZIP.311 = 11785
+	ZIP.312 = 12154
+	ZIP.313 = 77623
+	ZIP.314 = 52839
+	ZIP.315 = 31294
+	ZIP.316 = 86611
+	ZIP.317 = 33232
+	ZIP.318 = 25364
+	ZIP.319 = 71375
+	ZIP.320 = 17821
+	ZIP.321 = 57170
+	ZIP.322 = 44127
+	ZIP.323 = 34084
+	ZIP.324 = 51050
+	ZIP.325 = 82712
+	ZIP.326 = 89184
+	ZIP.327 = 84580
+	ZIP.328 = 24670
+	ZIP.329 = 77497
+	ZIP.330 = 77144
+	ZIP.331 = 57802
+	ZIP.332 = 15565
+	ZIP.333 = 80939
+	ZIP.334 = 38607
+	ZIP.335 = 92162
+	ZIP.336 = 65826
+	ZIP.337 = 55590
+	ZIP.338 = 68326
+	ZIP.339 = 88942
+	ZIP.340 = 40201
+	ZIP.341 = 83549
+	ZIP.342 = 26026
+	ZIP.343 = 30146
+	ZIP.344 = 29992
+	ZIP.345 = 24237
+	ZIP.346 = 98908
+	ZIP.347 = 66819
+	ZIP.348 = 32931
+	ZIP.349 = 50107
+	ZIP.350 = 23460
+	ZIP.351 = 47523
+	ZIP.352 = 25963
+	ZIP.353 = 61802
+	ZIP.354 = 49317
+	ZIP.355 = 42134
+	ZIP.356 = 48466
+	ZIP.357 = 66372
+	ZIP.358 = 89375
+	ZIP.359 = 61266
+	ZIP.360 = 81272
+	ZIP.361 = 92552
+	ZIP.362 = 16561
+	ZIP.363 = 87533
+	ZIP.364 = 50843
+	ZIP.365 = 31396
+	ZIP.366 = 82331
+	ZIP.367 = 24346
+	ZIP.368 = 57886
+	ZIP.369 = 95738
+	ZIP.370 = 60005
+	ZIP.371 = 99511
+	ZIP.372 = 70965
+	ZIP.373 = 79455
+	ZIP.374 = 83983
+	ZIP.375 = 95733
+	ZIP.376 = 26339
+	ZIP.377 = 18194
+	ZIP.378 = 92971
+	ZIP.379 = 52682
+	ZIP.380 = 47040
+	ZIP.381 = 11196
+	ZIP.382 = 59341
+	ZIP.383 = 59025
+	ZIP.384 = 82497
+	ZIP.385 = 87412
+	ZIP.386 = 26546
+	ZIP.387 = 53404
+	ZIP.388 = 92058
+	ZIP.389 = 41150
+	ZIP.390 = 14626
+	ZIP.391 = 97749
+	ZIP.392 = 43977
+	ZIP.393 = 24154
+	ZIP.394 = 33887
+	ZIP.395 = 70291
+	ZIP.396 = 95709
+	ZIP.397 = 94981
+	ZIP.398 = 51813
+	ZIP.399 = 84592
+	ZIP.400 = 23102
+	QOY.01 = 2
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query12.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CATEGORY.01 = Home
+	CATEGORY.02 = Books
+	CATEGORY.03 = Men
+	SDATE.01 = 2000-05-01
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query20.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CATEGORY.01 = Music
+	CATEGORY.02 = Shoes
+	CATEGORY.03 = Jewelry
+	SDATE.01 = 2001-02-26
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query88.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	STORE.01 = Unknown
+	HOUR.01 = 4
+	HOUR.02 = -1
+	HOUR.03 = 3
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query82.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MANUFACT_ID.01 = 101
+	MANUFACT_ID.02 = 153
+	MANUFACT_ID.03 = 178
+	MANUFACT_ID.04 = 206
+	INVDATE.01 = 2000-05-29
+	PRICE.01 = 30
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query23.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	TOPPERCENT.01 = 95
+	MONTH.01 = 7
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query14.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DAY.01 = 15
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query57.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	ORDERBY.01 = sum_sales
+	SELECTTWO.01 = ,v1.d_year
+	SELECTONE.01 = v1.i_category
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query65.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1214
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query71.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	MONTH.01 = 11
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query34.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	COUNTY_H.01 = Williamson County
+	COUNTY_G.01 = Williamson County
+	COUNTY_F.01 = Williamson County
+	COUNTY_E.01 = Williamson County
+	COUNTY_D.01 = Williamson County
+	COUNTY_C.01 = Williamson County
+	COUNTY_B.01 = Williamson County
+	COUNTY_A.01 = Williamson County
+	COUNTYNUMBER.01 = 1
+	COUNTYNUMBER.02 = 1
+	COUNTYNUMBER.03 = 1
+	COUNTYNUMBER.04 = 1
+	COUNTYNUMBER.05 = 1
+	COUNTYNUMBER.06 = 1
+	COUNTYNUMBER.07 = 1
+	COUNTYNUMBER.08 = 1
+	YEAR.01 = 2000
+	BPTWO.01 = 5001-10000
+	BPONE.01 = >10000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query48.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 2000
+	STATE.01 = OR
+	STATE.02 = SD
+	STATE.03 = FL
+	STATE.04 = CO
+	STATE.05 = MI
+	STATE.06 = KY
+	STATE.07 = AR
+	STATE.08 = GA
+	STATE.09 = MN
+	ES.01 = Secondary
+	ES.02 = 4 yr Degree
+	ES.03 = Primary
+	MS.01 = D
+	MS.02 = M
+	MS.03 = W
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query30.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 2002
+	STATE.01 = MN
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query74.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	ORDERC.01 = 2
+	ORDERC.02 = 1
+	ORDERC.03 = 3
+	AGGONE.01 = max
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query87.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	DMS.01 = 1197
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query77.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 1998-08-20
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query73.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	COUNTY_D.01 = Williamson County
+	COUNTY_C.01 = Williamson County
+	COUNTY_B.01 = Williamson County
+	COUNTY_A.01 = Williamson County
+	COUNTYNUMBER.01 = 1
+	COUNTYNUMBER.02 = 1
+	COUNTYNUMBER.03 = 1
+	COUNTYNUMBER.04 = 1
+	COUNTYNUMBER.05 = 1
+	COUNTYNUMBER.06 = 1
+	COUNTYNUMBER.07 = 1
+	COUNTYNUMBER.08 = 1
+	YEAR.01 = 1998
+	BPTWO.01 = Unknown
+	BPONE.01 = 501-1000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query84.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	INCOME.01 = 65353
+	CITY.01 = Hillcrest
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query54.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CLASS.01 = rock
+	CATEGORY.01 = Music
+	CINDX.01 = 5
+	MONTH.01 = 4
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query55.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MANAGER.01 = 56
+	MONTH.01 = 11
+	YEAR.01 = 1998
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query56.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	COLOR.01 = pink
+	COLOR.02 = maroon
+	COLOR.03 = grey
+	GMT.01 = -5
+	MONTH.01 = 6
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query2.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query26.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	YEAR.01 = 1998
+	ES.01 = 4 yr Degree
+	MS.01 = U
+	GEN.01 = F
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query40.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 1999-03-30
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query72.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	MS.01 = S
+	BP.01 = 501-1000
+	_LIMIT.01 = 100
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query53.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1176
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query79.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	VEHCNT.01 = -1
+	YEAR.01 = 2000
+	DEPCNT.01 = 7
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query18.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	MONTH.01 = 1
+	MONTH.02 = 11
+	MONTH.03 = 2
+	MONTH.04 = 9
+	MONTH.05 = 5
+	MONTH.06 = 3
+	STATE.01 = MN
+	STATE.02 = MO
+	STATE.03 = MI
+	STATE.04 = MS
+	STATE.05 = NY
+	STATE.06 = AK
+	STATE.07 = IL
+	ES.01 = Primary
+	GEN.01 = F
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query13.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	STATE.01 = MT
+	STATE.02 = CA
+	STATE.03 = MN
+	STATE.04 = GA
+	STATE.05 = VA
+	STATE.06 = NE
+	STATE.07 = NC
+	STATE.08 = MI
+	STATE.09 = IN
+	ES.01 = Unknown
+	ES.02 = 4 yr Degree
+	ES.03 = College
+	MS.01 = U
+	MS.02 = M
+	MS.03 = W
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query24.tpl
+	__LIMITA.01 = 
+	_END.01 = 
+	COLOR.01 = navy
+	COLOR.02 = chiffon
+	AMOUNTONE.01 = ss_ext_sales_price
+	MARKET.01 = 8
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query4.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SELECTONE.01 = t_s_secyear.customer_preferred_cust_flag
+	YEAR.01 = 2000
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query99.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	DMS.01 = 1178
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query68.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CITY_B.01 = Midway
+	CITY_A.01 = Fairview
+	CITYNUMBER.01 = 2
+	CITYNUMBER.02 = 1
+	VEHCNT.01 = 3
+	YEAR.01 = 1998
+	DEPCNT.01 = 0
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query83.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	RETURNED_DATE_THREE.01 = 1999-11-08
+	RETURNED_DATE_TWO.01 = 1999-10-13
+	RETURNED_DATE_ONE.01 = 1999-05-05
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query61.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	CATEGORY.01 = Home
+	GMT.01 = -6
+	MONTH.01 = 12
+	YEAR.01 = 2001
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query5.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	SALES_DATE.01 = 1999-08-28
+	YEAR.01 = 1999
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+Template: query76.tpl
+	__LIMITA.01 = 
+	_LIMITC.01 = limit 100
+	_LIMITB.01 = 
+	_LIMITA.01 = 
+	_END.01 = 
+	_LIMIT.01 = 100
+	NULLCOLWS.01 = ws_ship_addr_sk
+	NULLCOLSS.01 = ss_addr_sk
+	NULLCOLCS.01 = cs_ship_customer_sk
+	__LIMITC.01 = limit %d
+	__LIMITB.01 = 
+
+END STREAM 0

@@ -8,7 +8,7 @@
     "non_partitioned_tables": [
         "call_center", "catalog_page", "catalog_returns",  
         "customer_address", "customer_demographics", "date_dim", "dbgen_version", 
-        "household_demographics", "income_band", 
+        "household_demographics", "income_band", "customer",
         "item","promotion", "reason", "ship_mode", "store_returns", 
         "store", "time_dim", 
         "warehouse", "web_page", "web_returns",  "web_site"

@@ -9,7 +9,7 @@ where sr_returned_date_sk = d_date_sk
 and d_year =2000
 group by sr_customer_sk
 ,sr_store_sk)
- select top 100 c_customer_id
+ select  c_customer_id
 from customer_total_return ctr1
 ,store
 ,customer
@@ -20,7 +20,7 @@ and s_store_sk = ctr1.ctr_store_sk
 and s_state = 'TN'
 and ctr1.ctr_customer_sk = c_customer_sk
 order by c_customer_id
-;
+limit 100;
 
 
 
@@ -84,7 +84,7 @@ with wscs as
 
 
 
-select top 100 dt.d_year 
+select  dt.d_year 
        ,item.i_brand_id brand_id 
        ,item.i_brand brand
        ,sum(ss_sales_price) sum_agg
@@ -101,7 +101,7 @@ select top 100 dt.d_year
  order by dt.d_year
          ,sum_agg desc
          ,brand_id
- ;
+ limit 100;
 
 
 
@@ -178,7 +178,7 @@ union all
          ,c_email_address
          ,d_year
          )
-  select top 100 
+  select  
                   t_s_secyear.customer_id
                  ,t_s_secyear.customer_first_name
                  ,t_s_secyear.customer_last_name
@@ -217,7 +217,7 @@ union all
          ,t_s_secyear.customer_first_name
          ,t_s_secyear.customer_last_name
          ,t_s_secyear.customer_birth_country
-;
+limit 100;
 
 
 
@@ -225,7 +225,7 @@ with ssr as
  (select s_store_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  ss_store_sk as store_sk,
@@ -256,7 +256,7 @@ with ssr as
  (select cp_catalog_page_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  cs_catalog_page_sk as page_sk,
@@ -287,7 +287,7 @@ with ssr as
  (select web_site_id,
         sum(sales_price) as sales,
         sum(profit) as profit,
-        sum(return_amt) as returns,
+        sum(return_amt) as "returns",
         sum(net_loss) as profit_loss
  from
   ( select  ws_web_site_sk as wsr_web_site_sk,
@@ -315,10 +315,10 @@ with ssr as
                   and (cast('2001-08-25' as date) +  14 days)
        and wsr_web_site_sk = web_site_sk
  group by web_site_id)
-  select top 100 channel
+  select  channel
         , id
         , sum(sales) as sales
-        , sum(returns) as returns
+        , sum("returns")  as "returns"
         , sum(profit) as profit
  from 
  (select 'store channel' as channel
@@ -345,11 +345,11 @@ with ssr as
  group by rollup (channel, id)
  order by channel
          ,id
- ;
+ limit 100;
 
 
 
-select top 100 a.ca_state state, count(*) cnt
+select  a.ca_state state, count(*) cnt
  from customer_address a
      ,customer c
      ,store_sales s
@@ -371,11 +371,11 @@ select top 100 a.ca_state state, count(*) cnt
  group by a.ca_state
  having count(*) >= 10
  order by cnt, a.ca_state 
- ;
+ limit 100;
 
 
 
-select top 100 i_item_id, 
+select  i_item_id, 
         avg(ss_quantity) agg1,
         avg(ss_list_price) agg2,
         avg(ss_coupon_amt) agg3,
@@ -392,11 +392,11 @@ select top 100 i_item_id,
        d_year = 1999 
  group by i_item_id
  order by i_item_id
- ;
+ limit 100;
 
 
 
-select top 100 s_store_name
+select  s_store_name
       ,sum(ss_net_profit)
  from store_sales
      ,date_dim
@@ -500,7 +500,7 @@ select top 100 s_store_name
   and (substr(s_zip,1,2) = substr(V1.ca_zip,1,2))
  group by s_store_name
  order by s_store_name
- ;
+ limit 100;
 
 
 
@@ -555,7 +555,7 @@ where r_reason_sk = 1
 
 
 
-select top 100 
+select  
   cd_gender,
   cd_marital_status,
   cd_education_status,
@@ -610,7 +610,7 @@ select top 100
           cd_dep_count,
           cd_dep_employed_count,
           cd_dep_college_count
-;
+limit 100;
 
 
 
@@ -663,7 +663,7 @@ with year_total as (
          ,c_email_address
          ,d_year
          )
-  select top 100 
+  select  
                   t_s_secyear.customer_id
                  ,t_s_secyear.customer_first_name
                  ,t_s_secyear.customer_last_name
@@ -691,11 +691,11 @@ with year_total as (
          ,t_s_secyear.customer_first_name
          ,t_s_secyear.customer_last_name
          ,t_s_secyear.customer_preferred_cust_flag
-;
+limit 100;
 
 
 
-select top 100 i_item_id
+select  i_item_id
       ,i_item_desc 
       ,i_category 
       ,i_class 
@@ -725,7 +725,7 @@ order by
         ,i_item_id
         ,i_item_desc
         ,revenueratio
-;
+limit 100;
 
 
 
@@ -839,7 +839,7 @@ with  cross_items as
            ,date_dim
        where ws_sold_date_sk = d_date_sk
          and d_year between 1998 and 1998 + 2) x)
-  select top 100 channel, i_brand_id,i_class_id,i_category_id,sum(sales), sum(number_sales)
+  select  channel, i_brand_id,i_class_id,i_category_id,sum(sales), sum(number_sales)
  from(
        select 'store' channel, i_brand_id,i_class_id
              ,i_category_id,sum(ss_quantity*ss_list_price) sales
@@ -881,117 +881,11 @@ with  cross_items as
  ) y
  group by rollup (channel, i_brand_id,i_class_id,i_category_id)
  order by channel,i_brand_id,i_class_id,i_category_id
- ;
-with  cross_items as
- (select i_item_sk ss_item_sk
- from item,
- (select iss.i_brand_id brand_id
-     ,iss.i_class_id class_id
-     ,iss.i_category_id category_id
- from store_sales
-     ,item iss
-     ,date_dim d1
- where ss_item_sk = iss.i_item_sk
-   and ss_sold_date_sk = d1.d_date_sk
-   and d1.d_year between 1998 AND 1998 + 2
- intersect
- select ics.i_brand_id
-     ,ics.i_class_id
-     ,ics.i_category_id
- from catalog_sales
-     ,item ics
-     ,date_dim d2
- where cs_item_sk = ics.i_item_sk
-   and cs_sold_date_sk = d2.d_date_sk
-   and d2.d_year between 1998 AND 1998 + 2
- intersect
- select iws.i_brand_id
-     ,iws.i_class_id
-     ,iws.i_category_id
- from web_sales
-     ,item iws
-     ,date_dim d3
- where ws_item_sk = iws.i_item_sk
-   and ws_sold_date_sk = d3.d_date_sk
-   and d3.d_year between 1998 AND 1998 + 2) x
- where i_brand_id = brand_id
-      and i_class_id = class_id
-      and i_category_id = category_id
-),
- avg_sales as
-(select avg(quantity*list_price) average_sales
-  from (select ss_quantity quantity
-             ,ss_list_price list_price
-       from store_sales
-           ,date_dim
-       where ss_sold_date_sk = d_date_sk
-         and d_year between 1998 and 1998 + 2
-       union all
-       select cs_quantity quantity
-             ,cs_list_price list_price
-       from catalog_sales
-           ,date_dim
-       where cs_sold_date_sk = d_date_sk
-         and d_year between 1998 and 1998 + 2
-       union all
-       select ws_quantity quantity
-             ,ws_list_price list_price
-       from web_sales
-           ,date_dim
-       where ws_sold_date_sk = d_date_sk
-         and d_year between 1998 and 1998 + 2) x)
-  select top 100 this_year.channel ty_channel
-                           ,this_year.i_brand_id ty_brand
-                           ,this_year.i_class_id ty_class
-                           ,this_year.i_category_id ty_category
-                           ,this_year.sales ty_sales
-                           ,this_year.number_sales ty_number_sales
-                           ,last_year.channel ly_channel
-                           ,last_year.i_brand_id ly_brand
-                           ,last_year.i_class_id ly_class
-                           ,last_year.i_category_id ly_category
-                           ,last_year.sales ly_sales
-                           ,last_year.number_sales ly_number_sales 
- from
- (select 'store' channel, i_brand_id,i_class_id,i_category_id
-        ,sum(ss_quantity*ss_list_price) sales, count(*) number_sales
- from store_sales 
-     ,item
-     ,date_dim
- where ss_item_sk in (select ss_item_sk from cross_items)
-   and ss_item_sk = i_item_sk
-   and ss_sold_date_sk = d_date_sk
-   and d_week_seq = (select d_week_seq
-                     from date_dim
-                     where d_year = 1998 + 1
-                       and d_moy = 12
-                       and d_dom = 6)
- group by i_brand_id,i_class_id,i_category_id
- having sum(ss_quantity*ss_list_price) > (select average_sales from avg_sales)) this_year,
- (select 'store' channel, i_brand_id,i_class_id
-        ,i_category_id, sum(ss_quantity*ss_list_price) sales, count(*) number_sales
- from store_sales
-     ,item
-     ,date_dim
- where ss_item_sk in (select ss_item_sk from cross_items)
-   and ss_item_sk = i_item_sk
-   and ss_sold_date_sk = d_date_sk
-   and d_week_seq = (select d_week_seq
-                     from date_dim
-                     where d_year = 1998
-                       and d_moy = 12
-                       and d_dom = 6)
- group by i_brand_id,i_class_id,i_category_id
- having sum(ss_quantity*ss_list_price) > (select average_sales from avg_sales)) last_year
- where this_year.i_brand_id= last_year.i_brand_id
-   and this_year.i_class_id = last_year.i_class_id
-   and this_year.i_category_id = last_year.i_category_id
- order by this_year.channel, this_year.i_brand_id, this_year.i_class_id, this_year.i_category_id
- ;
+ limit 100;
 
 
 
-select top 100 ca_zip
+select  ca_zip
        ,sum(cs_sales_price)
  from catalog_sales
      ,customer
@@ -1007,11 +901,11 @@ select top 100 ca_zip
  	and d_qoy = 2 and d_year = 2000
  group by ca_zip
  order by ca_zip
- ;
+ limit 100;
 
 
 
-select top 100 
+select  
    count(distinct cs_order_number) as "order count"
   ,sum(cs_ext_ship_cost) as "total shipping cost"
   ,sum(cs_net_profit) as "total net profit"
@@ -1038,11 +932,11 @@ and not exists(select *
                from catalog_returns cr1
                where cs1.cs_order_number = cr1.cr_order_number)
 order by count(distinct cs_order_number)
-;
+limit 100;
 
 
 
-select top 100 i_item_id
+select  i_item_id
        ,i_item_desc
        ,s_state
        ,count(ss_quantity) as store_sales_quantitycount
@@ -1083,11 +977,11 @@ select top 100 i_item_id
  order by i_item_id
          ,i_item_desc
          ,s_state
-;
+limit 100;
 
 
 
-select top 100 i_item_id,
+select  i_item_id,
         ca_country,
         ca_state, 
         ca_county,
@@ -1117,11 +1011,11 @@ select top 100 i_item_id,
         ca_state, 
         ca_county,
 	i_item_id
- ;
+ limit 100;
 
 
 
-select top 100 i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
+select  i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
  	sum(ss_ext_sales_price) ext_price
  from date_dim, store_sales, item,customer,customer_address,store
  where d_date_sk = ss_sold_date_sk
@@ -1142,11 +1036,11 @@ select top 100 i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
          ,i_brand_id
          ,i_manufact_id
          ,i_manufact
- ;
+limit 100 ;
 
 
 
-select top 100 i_item_id
+select  i_item_id
        ,i_item_desc 
        ,i_category 
        ,i_class 
@@ -1172,11 +1066,11 @@ select top 100 i_item_id
          ,i_item_id
          ,i_item_desc
          ,revenueratio
-;
+limit 100;
 
 
 
-select top 100 *
+select  *
  from(select w_warehouse_name
             ,i_item_id
             ,sum(case when (cast(d_date as date) < cast ('1998-02-15' as date))
@@ -1202,11 +1096,11 @@ select top 100 *
              end) between 2.0/3.0 and 3.0/2.0
  order by w_warehouse_name
          ,i_item_id
- ;
+ limit 100;
 
 
 
-select top 100 i_product_name
+select  i_product_name
              ,i_brand
              ,i_class
              ,i_category
@@ -1222,7 +1116,7 @@ select top 100 i_product_name
                        ,i_class
                        ,i_category)
 order by qoh, i_product_name, i_brand, i_class, i_category
-;
+limit 100;
 
 
 
@@ -1256,7 +1150,7 @@ with frequent_ss_items as
   *
 from
  max_store_sales))
-  select top 100 sum(sales)
+  select  sum(sales)
  from (select cs_quantity*cs_list_price sales
        from catalog_sales
            ,date_dim 
@@ -1274,62 +1168,7 @@ from
          and ws_sold_date_sk = d_date_sk 
          and ws_item_sk in (select item_sk from frequent_ss_items)
          and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)) 
- ;
-with frequent_ss_items as
- (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt
-  from store_sales
-      ,date_dim
-      ,item
-  where ss_sold_date_sk = d_date_sk
-    and ss_item_sk = i_item_sk
-    and d_year in (1999,1999 + 1,1999 + 2,1999 + 3)
-  group by substr(i_item_desc,1,30),i_item_sk,d_date
-  having count(*) >4),
- max_store_sales as
- (select max(csales) tpcds_cmax
-  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
-        from store_sales
-            ,customer
-            ,date_dim 
-        where ss_customer_sk = c_customer_sk
-         and ss_sold_date_sk = d_date_sk
-         and d_year in (1999,1999+1,1999+2,1999+3)
-        group by c_customer_sk)),
- best_ss_customer as
- (select c_customer_sk,sum(ss_quantity*ss_sales_price) ssales
-  from store_sales
-      ,customer
-  where ss_customer_sk = c_customer_sk
-  group by c_customer_sk
-  having sum(ss_quantity*ss_sales_price) > (95/100.0) * (select
-  *
- from max_store_sales))
-  select top 100 c_last_name,c_first_name,sales
- from (select c_last_name,c_first_name,sum(cs_quantity*cs_list_price) sales
-        from catalog_sales
-            ,customer
-            ,date_dim 
-        where d_year = 1999 
-         and d_moy = 6 
-         and cs_sold_date_sk = d_date_sk 
-         and cs_item_sk in (select item_sk from frequent_ss_items)
-         and cs_bill_customer_sk in (select c_customer_sk from best_ss_customer)
-         and cs_bill_customer_sk = c_customer_sk 
-       group by c_last_name,c_first_name
-      union all
-      select c_last_name,c_first_name,sum(ws_quantity*ws_list_price) sales
-       from web_sales
-           ,customer
-           ,date_dim 
-       where d_year = 1999 
-         and d_moy = 6 
-         and ws_sold_date_sk = d_date_sk 
-         and ws_item_sk in (select item_sk from frequent_ss_items)
-         and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)
-         and ws_bill_customer_sk = c_customer_sk
-       group by c_last_name,c_first_name) 
-     order by c_last_name,c_first_name,sales
-  ;
+ limit 100;
 
 
 
@@ -1440,7 +1279,7 @@ order by c_last_name
 
 
 
-select top 100 
+select  
  i_item_id
  ,i_item_desc
  ,s_store_id
@@ -1484,11 +1323,11 @@ select top 100
  ,i_item_desc
  ,s_store_id
  ,s_store_name
- ;
+ limit 100;
 
 
 
-select top 100 i_item_id, 
+select  i_item_id, 
         avg(cs_quantity) agg1,
         avg(cs_list_price) agg2,
         avg(cs_coupon_amt) agg3,
@@ -1505,11 +1344,11 @@ select top 100 i_item_id,
        d_year = 2001 
  group by i_item_id
  order by i_item_id
- ;
+ limit 100;
 
 
 
-select top 100 i_item_id,
+select  i_item_id,
         s_state, grouping(s_state) g_state,
         avg(ss_quantity) agg1,
         avg(ss_list_price) agg2,
@@ -1528,11 +1367,11 @@ select top 100 i_item_id,
  group by rollup (i_item_id, s_state)
  order by i_item_id
          ,s_state
- ;
+ limit 100;
 
 
 
-select top 100 *
+select  *
 from (select avg(ss_list_price) B1_LP
             ,count(ss_list_price) B1_CNT
             ,count(distinct ss_list_price) B1_CNTD
@@ -1581,11 +1420,11 @@ from (select avg(ss_list_price) B1_LP
         and (ss_list_price between 179 and 179+10
           or ss_coupon_amt between 2980 and 2980+1000
           or ss_wholesale_cost between 56 and 56+20)) B6
-;
+limit 100;
 
 
 
-select top 100  
+select   
      i_item_id
     ,i_item_desc
     ,s_store_id
@@ -1628,7 +1467,7 @@ select top 100
    ,i_item_desc
    ,s_store_id
    ,s_store_name
- ;
+ limit 100;
 
 
 
@@ -1644,7 +1483,7 @@ with customer_total_return as
    and wr_returning_addr_sk = ca_address_sk 
  group by wr_returning_customer_sk
          ,ca_state)
-  select top 100 c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
+  select  c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
        ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
        ,c_last_review_date_sk,ctr_total_return
  from customer_total_return ctr1
@@ -1659,7 +1498,7 @@ with customer_total_return as
  order by c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
                   ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
                   ,c_last_review_date_sk,ctr_total_return
-;
+limit 100;
 
 
 
@@ -1715,7 +1554,7 @@ with ss as
 
 
 
-select top 100 sum(cs_ext_discount_amt)  as "excess discount amount" 
+select  sum(cs_ext_discount_amt)  as "excess discount amount" 
 from 
    catalog_sales 
    ,item 
@@ -1739,7 +1578,7 @@ and cs_ext_discount_amt
                              (cast('1999-02-28' as date) + 90 days)
           and d_date_sk = cs_sold_date_sk 
       ) 
-;
+limit 100;
 
 
 
@@ -1806,7 +1645,7 @@ where i_category in ('Home'))
  and     ws_bill_addr_sk         = ca_address_sk
  and     ca_gmt_offset           = -5
  group by i_manufact_id)
-  select top 100 i_manufact_id ,sum(total_sales) total_sales
+  select  i_manufact_id ,sum(total_sales) total_sales
  from  (select * from ss 
         union all
         select * from cs 
@@ -1814,7 +1653,7 @@ where i_category in ('Home'))
         select * from ws) tmp1
  group by i_manufact_id
  order by total_sales
-;
+limit 100;
 
 
 
@@ -1849,7 +1688,7 @@ select c_last_name
 
 
 
-select top 100  
+select   
   ca_state,
   cd_gender,
   cd_marital_status,
@@ -1903,11 +1742,11 @@ select top 100
           cd_dep_count,
           cd_dep_employed_count,
           cd_dep_college_count
- ;
+ limit 100;
 
 
 
-select top 100 
+select  
     sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin
    ,i_category
    ,i_class
@@ -1933,11 +1772,11 @@ select top 100
    lochierarchy desc
   ,case when lochierarchy = 0 then i_category end
   ,rank_within_parent
-  ;
+  limit 100;
 
 
 
-select top 100 i_item_id
+select  i_item_id
        ,i_item_desc
        ,i_current_price
  from item, inventory, date_dim, catalog_sales
@@ -1950,11 +1789,11 @@ select top 100 i_item_id
  and cs_item_sk = i_item_sk
  group by i_item_id,i_item_desc,i_current_price
  order by i_item_id
- ;
+ limit 100;
 
 
 
-select top 100 count(*) from (
+select  count(*) from (
     select distinct c_last_name, c_first_name, d_date
     from store_sales, date_dim, customer
           where store_sales.ss_sold_date_sk = date_dim.d_date_sk
@@ -1973,7 +1812,7 @@ select top 100 count(*) from (
       and web_sales.ws_bill_customer_sk = customer.c_customer_sk
       and d_month_seq between 1191 and 1191 + 11
 ) hot_cust
-;
+limit 100;
 
 
 
@@ -2031,7 +1870,7 @@ order by inv1.w_warehouse_sk,inv1.i_item_sk,inv1.d_moy,inv1.mean,inv1.cov
 
 
 
-select top 100 
+select  
    w_state
   ,i_item_id
   ,sum(case when (cast(d_date as date) < cast ('2001-05-16' as date)) 
@@ -2055,11 +1894,11 @@ select top 100
  group by
     w_state,i_item_id
  order by w_state,i_item_id
-;
+limit 100;
 
 
 
-select top 100 distinct(i_product_name)
+select  distinct(i_product_name)
  from item i1
  where i_manufact_id between 867 and 867+40 
    and (select count(*) as item_cnt
@@ -2107,11 +1946,11 @@ select top 100 distinct(i_product_name)
         (i_size = 'medium' or i_size = 'extra large')
         )))) > 0
  order by i_product_name
- ;
+ limit 100;
 
 
 
-select top 100 dt.d_year
+select  dt.d_year
  	,item.i_category_id
  	,item.i_category
  	,sum(ss_ext_sales_price)
@@ -2129,11 +1968,11 @@ select top 100 dt.d_year
  order by       sum(ss_ext_sales_price) desc,dt.d_year
  		,item.i_category_id
  		,item.i_category
- ;
+limit 100 ;
 
 
 
-select top 100 s_store_name, s_store_id,
+select  s_store_name, s_store_id,
         sum(case when (d_day_name='Sunday') then ss_sales_price else null end) sun_sales,
         sum(case when (d_day_name='Monday') then ss_sales_price else null end) mon_sales,
         sum(case when (d_day_name='Tuesday') then ss_sales_price else  null end) tue_sales,
@@ -2148,11 +1987,11 @@ select top 100 s_store_name, s_store_id,
        d_year = 2001 
  group by s_store_name, s_store_id
  order by s_store_name, s_store_id,sun_sales,mon_sales,tue_sales,wed_sales,thu_sales,fri_sales,sat_sales
- ;
+ limit 100;
 
 
 
-select top 100 asceding.rnk, i1.i_product_name best_performing, i2.i_product_name worst_performing
+select  asceding.rnk, i1.i_product_name best_performing, i2.i_product_name worst_performing
 from(select *
      from (select item_sk,rank() over (order by rank_col asc) rnk
            from (select ss_item_sk item_sk,avg(ss_net_profit) rank_col 
@@ -2183,11 +2022,11 @@ where asceding.rnk = descending.rnk
   and i1.i_item_sk=asceding.item_sk
   and i2.i_item_sk=descending.item_sk
 order by asceding.rnk
-;
+limit 100;
 
 
 
-select top 100 ca_zip, ca_county, sum(ws_sales_price)
+select  ca_zip, ca_county, sum(ws_sales_price)
  from web_sales, customer, customer_address, date_dim, item
  where ws_bill_customer_sk = c_customer_sk
  	and c_current_addr_sk = ca_address_sk 
@@ -2203,11 +2042,11 @@ select top 100 ca_zip, ca_county, sum(ws_sales_price)
  	and d_qoy = 1 and d_year = 1999
  group by ca_zip, ca_county
  order by ca_zip, ca_county
- ;
+ limit 100;
 
 
 
-select top 100 c_last_name
+select  c_last_name
        ,c_first_name
        ,ca_city
        ,bought_city
@@ -2238,7 +2077,7 @@ select top 100 c_last_name
           ,ca_city
           ,bought_city
           ,ss_ticket_number
-  ;
+  limit 100;
 
 
 
@@ -2283,13 +2122,13 @@ with v1 as(
        v1.s_company_name = v1_lead.s_company_name and
        v1.rn = v1_lag.rn + 1 and
        v1.rn = v1_lead.rn - 1)
-  select top 100 *
+  select  *
  from v2
  where  d_year = 2001 and    
         avg_monthly_sales > 0 and
         case when avg_monthly_sales > 0 then abs(sum_sales - avg_monthly_sales) / avg_monthly_sales else null end > 0.1
  order by sum_sales - avg_monthly_sales, nsum
- ;
+ limit 100;
 
 
 
@@ -2360,7 +2199,7 @@ select sum (ss_quantity)
 
 
 
-select top 100 channel, item, return_ratio, return_rank, currency_rank from
+select  channel, item, return_ratio, return_rank, currency_rank from
  (select
  'web' as channel
  ,web.item
@@ -2485,11 +2324,11 @@ select top 100 channel, item, return_ratio, return_rank, currency_rank from
  )
  )
  order by 1,4,5,2
- ;
+ limit 100;
 
 
 
-select top 100 
+select  
    s_store_name
   ,s_company_id
   ,s_street_number
@@ -2544,7 +2383,7 @@ order by s_store_name
         ,s_county
         ,s_state
         ,s_zip
-;
+limit 100;
 
 
 
@@ -2570,7 +2409,7 @@ where ss_sold_date_sk=d_date_sk
   and d_month_seq between 1186 and 1186+11
   and ss_item_sk is not NULL
 group by ss_item_sk, d_date)
- select top 100 *
+ select  *
 from (select item_sk
      ,d_date
      ,web_sales
@@ -2589,11 +2428,11 @@ from (select item_sk
 where web_cumulative > store_cumulative
 order by item_sk
         ,d_date
-;
+limit 100;
 
 
 
-select top 100 dt.d_year
+select  dt.d_year
  	,item.i_brand_id brand_id
  	,item.i_brand brand
  	,sum(ss_ext_sales_price) ext_price
@@ -2611,11 +2450,11 @@ select top 100 dt.d_year
  order by dt.d_year
  	,ext_price desc
  	,brand_id
- ;
+limit 100 ;
 
 
 
-select top 100 * from 
+select  * from 
 (select i_manufact_id,
 sum(ss_sales_price) sum_sales,
 avg(sum(ss_sales_price)) over (partition by i_manufact_id) avg_quarterly_sales
@@ -2639,7 +2478,7 @@ where case when avg_quarterly_sales > 0
 order by avg_quarterly_sales,
 	 sum_sales,
 	 i_manufact_id
-;
+limit 100;
 
 
 
@@ -2691,15 +2530,15 @@ with my_customers as (
  (select cast((revenue/50) as int) as segment
   from   my_revenue
  )
-  select top 100 segment, count(*) as num_customers, segment*50 as segment_base
+  select  segment, count(*) as num_customers, segment*50 as segment_base
  from segments
  group by segment
  order by segment, num_customers
- ;
+ limit 100;
 
 
 
-select top 100 i_brand_id brand_id, i_brand brand,
+select  i_brand_id brand_id, i_brand brand,
  	sum(ss_ext_sales_price) ext_price
  from date_dim, store_sales, item
  where d_date_sk = ss_sold_date_sk
@@ -2709,7 +2548,7 @@ select top 100 i_brand_id brand_id, i_brand brand,
  	and d_year=2002
  group by i_brand, i_brand_id
  order by ext_price desc, i_brand_id
- ;
+limit 100 ;
 
 
 
@@ -2769,7 +2608,7 @@ where i_color in ('almond','blush','lemon'))
  and     ws_bill_addr_sk         = ca_address_sk
  and     ca_gmt_offset           = -5
  group by i_item_id)
-  select top 100 i_item_id ,sum(total_sales) total_sales
+  select  i_item_id ,sum(total_sales) total_sales
  from  (select * from ss 
         union all
         select * from cs 
@@ -2778,7 +2617,7 @@ where i_color in ('almond','blush','lemon'))
  group by i_item_id
  order by total_sales,
           i_item_id
- ;
+ limit 100;
 
 
 
@@ -2820,13 +2659,13 @@ with v1 as(
        v1. cc_name = v1_lead. cc_name and
        v1.rn = v1_lag.rn + 1 and
        v1.rn = v1_lead.rn - 1)
-  select top 100 *
+  select  *
  from v2
  where  d_year = 1999 and
         avg_monthly_sales > 0 and
         case when avg_monthly_sales > 0 then abs(sum_sales - avg_monthly_sales) / avg_monthly_sales else null end > 0.1
  order by sum_sales - avg_monthly_sales, avg_monthly_sales
- ;
+ limit 100;
 
 
 
@@ -2872,7 +2711,7 @@ with ss_items as
                                      where d_date = '2002-04-06'))
   and ws_sold_date_sk   = d_date_sk
  group by i_item_id)
-  select top 100 ss_items.item_id
+  select  ss_items.item_id
        ,ss_item_rev
        ,ss_item_rev/((ss_item_rev+cs_item_rev+ws_item_rev)/3) * 100 ss_dev
        ,cs_item_rev
@@ -2891,7 +2730,7 @@ with ss_items as
    and ws_item_rev between 0.9 * cs_item_rev and 1.1 * cs_item_rev
  order by item_id
          ,ss_item_rev
- ;
+ limit 100;
 
 
 
@@ -2909,7 +2748,7 @@ with wss as
  where d_date_sk = ss_sold_date_sk
  group by d_week_seq,ss_store_sk
  )
-  select top 100 s_store_name1,s_store_id1,d_week_seq1
+  select  s_store_name1,s_store_id1,d_week_seq1
        ,sun_sales1/sun_sales2,mon_sales1/mon_sales2
        ,tue_sales1/tue_sales2,wed_sales1/wed_sales2,thu_sales1/thu_sales2
        ,fri_sales1/fri_sales2,sat_sales1/sat_sales2
@@ -2935,7 +2774,7 @@ with wss as
  where s_store_id1=s_store_id2
    and d_week_seq1=d_week_seq2-52
  order by s_store_name1,s_store_id1,d_week_seq1
-;
+limit 100;
 
 
 
@@ -3002,7 +2841,7 @@ where i_category in ('Shoes'))
  and     ws_bill_addr_sk         = ca_address_sk
  and     ca_gmt_offset           = -5
  group by i_item_id)
-  select top 100  
+  select   
   i_item_id
 ,sum(total_sales) total_sales
  from  (select * from ss 
@@ -3013,11 +2852,11 @@ where i_category in ('Shoes'))
  group by i_item_id
  order by i_item_id
       ,total_sales
- ;
+ limit 100;
 
 
 
-select top 100 promotions,total,cast(promotions as decimal(15,4))/cast(total as decimal(15,4))*100
+select  promotions,total,cast(promotions as decimal(15,4))/cast(total as decimal(15,4))*100
 from
   (select sum(ss_ext_sales_price) promotions
    from  store_sales
@@ -3057,11 +2896,11 @@ from
    and   d_year = 1998
    and   d_moy  = 11) all_sales
 order by promotions, total
-;
+limit 100;
 
 
 
-select top 100 
+select  
    substr(w_warehouse_name,1,20)
   ,sm_type
   ,web_name
@@ -3092,11 +2931,11 @@ group by
 order by substr(w_warehouse_name,1,20)
         ,sm_type
        ,web_name
-;
+limit 100;
 
 
 
-select top 100 * 
+select  * 
 from (select i_manager_id
              ,sum(ss_sales_price) sum_sales
              ,avg(sum(ss_sales_price)) over (partition by i_manager_id) avg_monthly_sales
@@ -3121,7 +2960,7 @@ where case when avg_monthly_sales > 0 then abs (sum_sales - avg_monthly_sales) /
 order by i_manager_id
         ,avg_monthly_sales
         ,sum_sales
-;
+limit 100;
 
 
 
@@ -3246,7 +3085,7 @@ order by cs1.product_name
 
 
 
-select top 100
+select 
 	s_store_name,
 	i_item_desc,
 	sc.revenue,
@@ -3271,11 +3110,11 @@ select top 100
        s_store_sk = sc.ss_store_sk and
        i_item_sk = sc.ss_item_sk
  order by s_store_name, i_item_desc
-;
+limit 100;
 
 
 
-select top 100  
+select   
          w_warehouse_name
  	,w_warehouse_sq_ft
  	,w_city
@@ -3491,11 +3330,11 @@ select top 100
  	,ship_carriers
        ,year
  order by w_warehouse_name
- ;
+ limit 100;
 
 
 
-select top 100 *
+select  *
 from (select i_category
             ,i_class
             ,i_brand
@@ -3535,11 +3374,11 @@ order by i_category
         ,s_store_id
         ,sumsales
         ,rk
-;
+limit 100;
 
 
 
-select top 100 c_last_name
+select  c_last_name
        ,c_first_name
        ,ca_city
        ,bought_city
@@ -3577,11 +3416,11 @@ select top 100 c_last_name
    and current_addr.ca_city <> bought_city
  order by c_last_name
          ,ss_ticket_number
- ;
+ limit 100;
 
 
 
-select top 100 
+select  
   cd_gender,
   cd_marital_status,
   cd_education_status,
@@ -3624,11 +3463,11 @@ select top 100
           cd_education_status,
           cd_purchase_estimate,
           cd_credit_rating
- ;
+ limit 100;
 
 
 
-select top 100 
+select  
     sum(ss_net_profit) as total_sum
    ,s_state
    ,s_county
@@ -3662,7 +3501,7 @@ select top 100
    lochierarchy desc
   ,case when lochierarchy = 0 then s_state end
   ,rank_within_parent
- ;
+ limit 100;
 
 
 
@@ -3706,7 +3545,7 @@ select i_brand_id brand_id, i_brand brand,t_hour,t_minute,
 
 
 
-select top 100 i_item_desc
+select  i_item_desc
       ,w_warehouse_name
       ,d1.d_week_seq
       ,sum(case when p_promo_sk is null then 1 else 0 end) no_promo
@@ -3731,7 +3570,7 @@ where d1.d_week_seq = d2.d_week_seq
   and cd_marital_status = 'M'
 group by i_item_desc,w_warehouse_name,d1.d_week_seq
 order by total_cnt desc, i_item_desc, w_warehouse_name, d_week_seq
-;
+limit 100;
 
 
 
@@ -3798,7 +3637,7 @@ with year_total as (
          ,c_last_name
          ,d_year
          )
-  select top 100
+  select 
         t_s_secyear.customer_id, t_s_secyear.customer_first_name, t_s_secyear.customer_last_name
  from year_total t_s_firstyear
      ,year_total t_s_secyear
@@ -3820,7 +3659,7 @@ with year_total as (
          and case when t_w_firstyear.year_total > 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end
            > case when t_s_firstyear.year_total > 0 then t_s_secyear.year_total / t_s_firstyear.year_total else null end
  order by 1,3,2
-;
+limit 100;
 
 
 
@@ -3871,7 +3710,7 @@ WITH all_sales AS (
                                             AND ws_item_sk=wr_item_sk)
        WHERE i_category='Children') sales_detail
  GROUP BY d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id)
- SELECT top 100 prev_yr.d_year AS prev_year
+ SELECT  prev_yr.d_year AS prev_year
                           ,curr_yr.d_year AS year
                           ,curr_yr.i_brand_id
                           ,curr_yr.i_class_id
@@ -3890,11 +3729,11 @@ WITH all_sales AS (
    AND prev_yr.d_year=2002-1
    AND CAST(curr_yr.sales_cnt AS DECIMAL(17,2))/CAST(prev_yr.sales_cnt AS DECIMAL(17,2))<0.9
  ORDER BY sales_cnt_diff,sales_amt_diff
- ;
+ limit 100;
 
 
 
-select top 100 channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt, SUM(ext_sales_price) sales_amt FROM (
+select  channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt, SUM(ext_sales_price) sales_amt FROM (
         SELECT 'store' as channel, 'ss_store_sk' col_name, d_year, d_qoy, i_category, ss_ext_sales_price ext_sales_price
          FROM store_sales, item, date_dim
          WHERE ss_store_sk IS NULL
@@ -3914,7 +3753,7 @@ select top 100 channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt,
            AND cs_item_sk=i_item_sk) foo
 GROUP BY channel, col_name, d_year, d_qoy, i_category
 ORDER BY channel, col_name, d_year, d_qoy, i_category
-;
+limit 100;
 
 
 
@@ -3933,7 +3772,7 @@ with ss as
  ,
  sr as
  (select s_store_sk,
-         sum(sr_return_amt) as returns,
+         sum(sr_return_amt) as "returns",
          sum(sr_net_loss) as profit_loss
  from store_returns,
       date_dim,
@@ -3956,7 +3795,7 @@ with ss as
  ), 
  cr as
  (select cr_call_center_sk,
-         sum(cr_return_amount) as returns,
+         sum(cr_return_amount) as "returns",
          sum(cr_net_loss) as profit_loss
  from catalog_returns,
       date_dim
@@ -3979,7 +3818,7 @@ with ss as
  group by wp_web_page_sk), 
  wr as
  (select wp_web_page_sk,
-        sum(wr_return_amt) as returns,
+        sum(wr_return_amt) as "returns",
         sum(wr_net_loss) as profit_loss
  from web_returns,
       date_dim,
@@ -3989,16 +3828,16 @@ with ss as
                   and (cast('2001-08-22' as date) +  30 days)
        and wr_web_page_sk = wp_web_page_sk
  group by wp_web_page_sk)
-  select top 100 channel
+  select  channel
         , id
         , sum(sales) as sales
-        , sum(returns) as returns
+        , sum("returns")  as "returns"
         , sum(profit) as profit
  from 
  (select 'store channel' as channel
         , ss.s_store_sk as id
         , sales
-        , coalesce(returns, 0) as returns
+        , coalesce(returns, 0)  as "returns"
         , (profit - coalesce(profit_loss,0)) as profit
  from   ss left join sr
         on  ss.s_store_sk = sr.s_store_sk
@@ -4022,7 +3861,7 @@ with ss as
  group by rollup (channel, id)
  order by channel
          ,id
- ;
+ limit 100;
 
 
 
@@ -4062,7 +3901,7 @@ ss as
    where sr_ticket_number is null
    group by d_year, ss_item_sk, ss_customer_sk
    )
- select top 100
+ select 
 ss_customer_sk,
 round(ss_qty/(coalesce(ws_qty,0)+coalesce(cs_qty,0)),2) ratio,
 ss_qty store_qty, ss_wc store_wholesale_cost, ss_sp store_sales_price,
@@ -4080,11 +3919,11 @@ order by
   other_chan_wholesale_cost,
   other_chan_sales_price,
   ratio
-;
+limit 100;
 
 
 
-select top 100
+select 
   c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit
   from
    (select ss_ticket_number
@@ -4103,14 +3942,14 @@ select top 100
     group by ss_ticket_number,ss_customer_sk,ss_addr_sk,store.s_city) ms,customer
     where ss_customer_sk = c_customer_sk
  order by c_last_name,c_first_name,substr(s_city,1,30), profit
-;
+limit 100;
 
 
 
 with ssr as
  (select  s_store_id as store_id,
           sum(ss_ext_sales_price) as sales,
-          sum(coalesce(sr_return_amt, 0)) as returns,
+          sum(coalesce(sr_return_amt, 0)) as "returns",
           sum(ss_net_profit - coalesce(sr_net_loss, 0)) as profit
   from store_sales left outer join store_returns on
          (ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number),
@@ -4131,7 +3970,7 @@ with ssr as
  csr as
  (select  cp_catalog_page_id as catalog_page_id,
           sum(cs_ext_sales_price) as sales,
-          sum(coalesce(cr_return_amount, 0)) as returns,
+          sum(coalesce(cr_return_amount, 0)) as "returns",
           sum(cs_net_profit - coalesce(cr_net_loss, 0)) as profit
   from catalog_sales left outer join catalog_returns on
          (cs_item_sk = cr_item_sk and cs_order_number = cr_order_number),
@@ -4152,7 +3991,7 @@ group by cp_catalog_page_id)
  wsr as
  (select  web_site_id,
           sum(ws_ext_sales_price) as sales,
-          sum(coalesce(wr_return_amt, 0)) as returns,
+          sum(coalesce(wr_return_amt, 0)) as "returns",
           sum(ws_net_profit - coalesce(wr_net_loss, 0)) as profit
   from web_sales left outer join web_returns on
          (ws_item_sk = wr_item_sk and ws_order_number = wr_order_number),
@@ -4169,10 +4008,10 @@ group by cp_catalog_page_id)
        and ws_promo_sk = p_promo_sk
        and p_channel_tv = 'N'
 group by web_site_id)
-  select top 100 channel
+  select  channel
         , id
         , sum(sales) as sales
-        , sum(returns) as returns
+        , sum("returns")  as "returns"
         , sum(profit) as profit
  from 
  (select 'store channel' as channel
@@ -4199,7 +4038,7 @@ group by web_site_id)
  group by rollup (channel, id)
  order by channel
          ,id
- ;
+ limit 100;
 
 
 
@@ -4215,7 +4054,7 @@ with customer_total_return as
    and cr_returning_addr_sk = ca_address_sk 
  group by cr_returning_customer_sk
          ,ca_state )
-  select top 100 c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name
+  select  c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name
                    ,ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,ca_gmt_offset
                   ,ca_location_type,ctr_total_return
  from customer_total_return ctr1
@@ -4230,11 +4069,11 @@ with customer_total_return as
  order by c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name
                    ,ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,ca_gmt_offset
                   ,ca_location_type,ctr_total_return
- ;
+ limit 100;
 
 
 
-select top 100 i_item_id
+select  i_item_id
        ,i_item_desc
        ,i_current_price
  from item, inventory, date_dim, store_sales
@@ -4247,7 +4086,7 @@ select top 100 i_item_id
  and ss_item_sk = i_item_sk
  group by i_item_id,i_item_desc,i_current_price
  order by i_item_id
- ;
+ limit 100;
 
 
 
@@ -4299,7 +4138,7 @@ with sr_items as
 		where d_date in ('1999-04-02','1999-08-18','1999-11-23')))
  and   wr_returned_date_sk   = d_date_sk
  group by i_item_id)
-  select top 100 sr_items.item_id
+  select  sr_items.item_id
        ,sr_item_qty
        ,sr_item_qty/(sr_item_qty+cr_item_qty+wr_item_qty)/3.0 * 100 sr_dev
        ,cr_item_qty
@@ -4314,11 +4153,11 @@ with sr_items as
    and sr_items.item_id=wr_items.item_id 
  order by sr_items.item_id
          ,sr_item_qty
- ;
+ limit 100;
 
 
 
-select top 100 c_customer_id as customer_id
+select  c_customer_id as customer_id
        , coalesce(c_last_name,'') || ', ' || coalesce(c_first_name,'') as customername
  from customer
      ,customer_address
@@ -4335,11 +4174,11 @@ select top 100 c_customer_id as customer_id
    and hd_demo_sk = c_current_hdemo_sk
    and sr_cdemo_sk = cd_demo_sk
  order by c_customer_id
- ;
+ limit 100;
 
 
 
-select top 100 substr(r_reason_desc,1,20)
+select  substr(r_reason_desc,1,20)
        ,avg(ws_quantity)
        ,avg(wr_refunded_cash)
        ,avg(wr_fee)
@@ -4419,11 +4258,11 @@ order by substr(r_reason_desc,1,20)
         ,avg(ws_quantity)
         ,avg(wr_refunded_cash)
         ,avg(wr_fee)
-;
+limit 100;
 
 
 
-select top 100  
+select   
     sum(ws_net_paid) as total_sum
    ,i_category
    ,i_class
@@ -4445,7 +4284,7 @@ select top 100
    lochierarchy desc,
    case when lochierarchy = 0 then i_category end,
    rank_within_parent
- ;
+ limit 100;
 
 
 
@@ -4566,7 +4405,7 @@ from
 
 
 
-select top 100 *
+select  *
 from(
 select i_category, i_class, i_brand,
        s_store_name, s_company_name,
@@ -4590,11 +4429,11 @@ group by i_category, i_class, i_brand,
          s_store_name, s_company_name, d_moy) tmp1
 where case when (avg_monthly_sales <> 0) then (abs(sum_sales - avg_monthly_sales) / avg_monthly_sales) else null end > 0.1
 order by sum_sales - avg_monthly_sales, s_store_name
-;
+limit 100;
 
 
 
-select top 100 cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
+select  cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
  from ( select count(*) amc
        from web_sales, household_demographics , time_dim, web_page
        where ws_sold_time_sk = time_dim.t_time_sk
@@ -4612,7 +4451,7 @@ select top 100 cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
          and household_demographics.hd_dep_count = 2
          and web_page.wp_char_count between 5000 and 5200) pt
  order by am_pm_ratio
- ;
+ limit 100;
 
 
 
@@ -4647,7 +4486,7 @@ order by sum(cr_net_loss) desc;
 
 
 
-select top 100 
+select  
    sum(ws_ext_discount_amt)  as "Excess Discount Amount" 
 from 
     web_sales 
@@ -4673,11 +4512,11 @@ and ws_ext_discount_amt
           and d_date_sk = ws_sold_date_sk 
       ) 
 order by sum(ws_ext_discount_amt)
-;
+limit 100;
 
 
 
-select top 100 ss_customer_sk
+select  ss_customer_sk
             ,sum(act_sales) sumsales
       from (select ss_item_sk
                   ,ss_ticket_number
@@ -4691,11 +4530,11 @@ select top 100 ss_customer_sk
               and r_reason_desc = 'reason 50') t
       group by ss_customer_sk
       order by sumsales, ss_customer_sk
-;
+limit 100;
 
 
 
-select top 100 
+select  
    count(distinct ws_order_number) as "order count"
   ,sum(ws_ext_ship_cost) as "total shipping cost"
   ,sum(ws_net_profit) as "total net profit"
@@ -4720,7 +4559,7 @@ and not exists(select *
                from web_returns wr1
                where ws1.ws_order_number = wr1.wr_order_number)
 order by count(distinct ws_order_number)
-;
+limit 100;
 
 
 
@@ -4729,7 +4568,7 @@ with ws_wh as
  from web_sales ws1,web_sales ws2
  where ws1.ws_order_number = ws2.ws_order_number
    and ws1.ws_warehouse_sk <> ws2.ws_warehouse_sk)
- select top 100 
+ select  
    count(distinct ws_order_number) as "order count"
   ,sum(ws_ext_ship_cost) as "total shipping cost"
   ,sum(ws_net_profit) as "total net profit"
@@ -4752,11 +4591,11 @@ and ws1.ws_order_number in (select wr_order_number
                             from web_returns,ws_wh
                             where wr_order_number = ws_wh.ws_order_number)
 order by count(distinct ws_order_number)
-;
+limit 100;
 
 
 
-select top 100 count(*) 
+select  count(*) 
 from store_sales
     ,household_demographics 
     ,time_dim, store
@@ -4768,7 +4607,7 @@ where ss_sold_time_sk = time_dim.t_time_sk
     and household_demographics.hd_dep_count = 8
     and store.s_store_name = 'ese'
 order by count(*)
-;
+limit 100;
 
 
 
@@ -4788,12 +4627,12 @@ where cs_sold_date_sk = d_date_sk
   and d_month_seq between 1224 and 1224 + 11
 group by cs_bill_customer_sk
         ,cs_item_sk)
- select top 100 sum(case when ssci.customer_sk is not null and csci.customer_sk is null then 1 else 0 end) store_only
+ select  sum(case when ssci.customer_sk is not null and csci.customer_sk is null then 1 else 0 end) store_only
       ,sum(case when ssci.customer_sk is null and csci.customer_sk is not null then 1 else 0 end) catalog_only
       ,sum(case when ssci.customer_sk is not null and csci.customer_sk is not null then 1 else 0 end) store_and_catalog
 from ssci full outer join csci on (ssci.customer_sk=csci.customer_sk
                                and ssci.item_sk = csci.item_sk)
-;
+limit 100;
 
 
 
@@ -4830,7 +4669,7 @@ order by
 
 
 
-select top 100 
+select  
    substr(w_warehouse_name,1,20)
   ,sm_type
   ,cc_name
@@ -4861,6 +4700,6 @@ group by
 order by substr(w_warehouse_name,1,20)
         ,sm_type
         ,cc_name
-;
+limit 100;
 
 

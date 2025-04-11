@@ -1,0 +1,8 @@
+./dsqgen \
+  -DIRECTORY ../query_templates \
+  -INPUT ../query_templates/templates.lst \
+  -DIALECT dremio \
+  -OUTPUT_DIR queries \
+  -SCALE 1 \
+  -DEBUG Y \
+  -QUALIFY Y
