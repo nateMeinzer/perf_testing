@@ -13,6 +13,7 @@ def upload_parquet_files(parquet_dir, test_mode, specific_file=None):
     s3_endpoint = os.environ.get("S3_ENDPOINT_URL")
     s3_access_key = os.environ.get("S3_ACCESS_KEY")
     s3_secret_key = os.environ.get("S3_SECRET_KEY")
+    s3_folder = os.environ.get("S3_FOLDER_NAME")
 
     if not s3_bucket or not s3_endpoint or not s3_access_key or not s3_secret_key:
         print("\033[91mEnvironment variables S3_BUCKET_NAME, S3_ENDPOINT_URL, S3_ACCESS_KEY, and S3_SECRET_KEY must be set.\033[0m")
@@ -35,7 +36,7 @@ def upload_parquet_files(parquet_dir, test_mode, specific_file=None):
             print(f"\033[91mFile {specific_file} does not exist in the directory {parquet_dir}.\033[0m")
             return
         table_name = os.path.splitext(specific_file)[0]
-        key = f"{table_name}/{specific_file}"
+        key = f"{s3_folder}/{table_name}/{specific_file}"
 
         if test_mode:
             print(f"TEST MODE: Source: {file_path}, Target: s3://{s3_bucket}/{key}")
@@ -56,7 +57,7 @@ def upload_parquet_files(parquet_dir, test_mode, specific_file=None):
                 # Use the base name (without extension) as the table name
                 table_name = os.path.splitext(filename)[0]
                 # Define the S3 key as "table_name/filename.parquet"
-                key = f"{table_name}/{filename}"
+                key = f"{s3_folder}/{table_name}/{filename}"
 
                 if test_mode:
                     print(f"TEST MODE: Source: {file_path}, Target: s3://{s3_bucket}/{key}")

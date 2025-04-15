@@ -95,6 +95,19 @@ Deleted all .parquet files in 'tpcds-kit/test_data/parquet'.
 
 ---
 
+### **Test Plans**
+The `query_file_test.csv` file, which contains test queries, is now located at:
+```
+root/perf_testing/benchmark-kit/test_plans/query_file_test.csv
+```
+
+Benchmark results and debug logs will be stored in:
+```
+root/perf_testing/results/small_sample/
+```
+
+---
+
 ## **Iceberg Lakehouse Kit**
 
 The `iceberg.py` script provides commands to deploy and clean up tables in Dremio.

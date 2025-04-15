@@ -1,0 +1,7 @@
+jobID,reflections,query,elapsed_time,success,bytes,sent_bytes
+run-20250414-125816,False,query_1,40828,True,11,0
+run-20250414-125816,False,query_10,37196,True,4715,0
+run-20250414-125816,False,query_11,63424,True,3693,0
+run-20250414-125816,False,query_12,73277,True,1714,0
+run-20250414-125816,False,query_13,75495,True,307,0
+run-20250414-125816,False,query_14,48340,True,5248,0

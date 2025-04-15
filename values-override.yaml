@@ -1,0 +1,83 @@
+dremio:
+  trialImagePullCredentials: ""   <-- use quotes
+  license: "" <-- use quotes
+  tag: 26.0.0
+  image:
+    repository: quay.io/dremio/dremio-enterprise
+
+coordinator:
+  web:
+    auth:
+      enabled: true
+      type: "internal"
+  resources:
+    requests:
+      cpu: 6
+      memory: 24Gi
+    limits:
+      cpu: 8
+      memory: 30Gi
+    
+distStorage:
+  type: aws
+  aws:
+    bucketName: "dremio"
+    path: "/dremio-internal"
+    authentication: "accessKeySecret"
+    credentials:
+      accessKey: "minioadmin"
+      secret: "minioadmin"
+    extraProperties: 
+      <property>
+        <name>fs.s3a.endpoint</name>
+        <value>http://minio:9000</value>
+      </property>
+      <property>
+        <name>fs.s3a.path.style.access</name>
+        <value>true</value>
+      </property>
+      <property>
+        <name>fs.s3a.connection.ssl.enabled</name>
+        <value>false</value>
+      </property>
+  
+catalog:
+  name: iceberg
+  externalAccess:
+    enabled: false
+    tls:
+      enabled: false
+
+  storage:
+    location: s3://dremio/iceberg
+    type: S3
+    s3:
+      region: us-east-1                  # Dummy but required
+      roleArn: arn:aws:iam::000000000000:role/dummy # Dummy but required
+      endpoint: http://minio:9000       # Your S3-compatible MinIO URL
+      pathStyleAccess: true             # Required for MinIO
+      skipSts: true                     # Required for MinIO
+      useAccessKeys: true               # Required for MinIO
+      credentials:
+        accessKey: minioadmin
+        secret: minioadmin
+      extraProperties: |
+        <property>
+          <name>fs.s3a.endpoint</name>
+          <value>http://minio:9000</value>
+        </property>
+        <property>
+          <name>fs.s3a.path.style.access</name>
+          <value>true</value>
+        </property>
+        <property>
+          <name>fs.s3a.connection.ssl.enabled</name>
+          <value>false</value>
+        </property>
+        <property>
+          <name>fs.s3.compat</name>
+          <value>true</value>
+        </property>
+
+service:
+  type: LoadBalancer

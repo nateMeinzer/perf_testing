@@ -12,9 +12,10 @@ DREMIO_USERNAME = os.getenv("DREMIO_USERNAME")
 DREMIO_PASSWORD = os.getenv("DREMIO_PASSWORD")
 DREMIO_URL = os.getenv("DREMIO_URL")
 ICEBERG_BUCKET_NAME = os.getenv("ICEBERG_BUCKET_NAME")
+ICEBERG_FOLDER_NAME = os.getenv("ICEBERG_FOLDER_NAME")
 
-if not DREMIO_USERNAME or not DREMIO_PASSWORD or not DREMIO_URL or not ICEBERG_BUCKET_NAME:
-    raise ValueError("DREMIO_USERNAME, DREMIO_PASSWORD, DREMIO_URL, and ICEBERG_BUCKET_NAME must be set in the environment variables.")
+if not DREMIO_USERNAME or not DREMIO_PASSWORD or not DREMIO_URL or not ICEBERG_BUCKET_NAME or not ICEBERG_FOLDER_NAME:
+    raise ValueError("DREMIO_USERNAME, DREMIO_PASSWORD, DREMIO_URL, ICEBERG_BUCKET_NAME, and ICEBERG_FOLDER_NAME must be set in the environment variables.")
 
 def get_auth_header():
     """Get authentication header for Dremio API calls"""
@@ -109,7 +110,7 @@ def cleanup_tables():
     table_names = list(tables["partitioned_tables"].keys()) + tables["non_partitioned_tables"]
 
     for table_name in table_names:
-        query = f'DROP TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}";'
+        query = f'DROP TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}";'
         print(f"Executing cleanup for table: {table_name}")
         success = execute_query(query)
         if success:

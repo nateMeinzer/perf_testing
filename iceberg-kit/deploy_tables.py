@@ -22,7 +22,10 @@ S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
 S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
 
 ICEBERG_BUCKET_NAME = os.getenv("ICEBERG_BUCKET_NAME")
-S3_OBJECT_STORE = os.getenv("S3_OBJECT_STORE")
+ICEBERG_FOLDER_NAME = os.getenv("ICEBERG_FOLDER_NAME")
+S3_OBJECT_STORE = os.getenv("S3_BUCKET_NAME")
+S3_FOLDER_NAME = os.getenv("S3_FOLDER_NAME")
+
 
 if not DREMIO_USERNAME or not DREMIO_PASSWORD or not DREMIO_URL or not ICEBERG_BUCKET_NAME:
     raise ValueError("DREMIO_USERNAME, DREMIO_PASSWORD, DREMIO_URL, and DREMIO_SOURCE_NAME must be set in the environment variables.")
@@ -118,13 +121,13 @@ def process_table(table_name, partition_column=None):
     # Step 2: Create the Iceberg table
     if partition_column:
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}" PARTITION BY ({partition_column}) AS 
-        SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet";
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" PARTITION BY ({partition_column}) AS 
+        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}"."{table_name}.parquet";
         """
     else:
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{table_name}" AS 
-        SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet";
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" AS 
+        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}"."{table_name}.parquet";
         """
     print(f"Creating Iceberg table for: {table_name}")
     execute_query(create_query)
