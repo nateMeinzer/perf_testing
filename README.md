@@ -1,6 +1,6 @@
 # TPC-DS Benchmarking with Dremio v26
 
-This repository supports benchmarking Dremio v26 OSS using the TPC-DS benchmark at 1TB scale. It includes tooling to:
+This repository supports benchmarking Dremio v26 using the TPC-DS benchmark at 1TB scale. It includes tooling to:
 
 - Generate TPC-DS test data in `.dat` format (1 file per table)
 - Convert that data to Parquet
