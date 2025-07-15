@@ -1,4 +1,4 @@
-select  count(*) 
+select  count(*) as tot_count
 from store_sales
     ,household_demographics 
     ,time_dim, store

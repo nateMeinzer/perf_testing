@@ -3,7 +3,7 @@ import subprocess
 
 def execute_script(script_name):
     """Execute a Python script from the iceberg-lakehouse-kit folder."""
-    script_path = f"./iceberg-lakehouse-kit/{script_name}"
+    script_path = f"./iceberg-kit/{script_name}"
     try:
         subprocess.run(["python", script_path], check=True)
     except subprocess.CalledProcessError as e:
