@@ -1,7 +1,1 @@
-timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
-1744671496277,40828,run-noref-20250414-125816 - query_1.sql,200,OK,Test Group 1-1,text,true,,11,0,1,1,null,39683,0,2697
-1744671537117,37196,run-noref-20250414-125816 - query_10.sql,200,OK,Test Group 1-1,text,true,,4715,0,1,1,null,35545,0,0
-1744671574318,63424,run-noref-20250414-125816 - query_11.sql,200,OK,Test Group 1-1,text,true,,3693,0,1,1,null,62946,0,0
-1744671637747,73277,run-noref-20250414-125816 - query_12.sql,200,OK,Test Group 1-1,text,true,,1714,0,1,1,null,72353,0,0
-1744671711034,75495,run-noref-20250414-125816 - query_13.sql,200,OK,Test Group 1-1,text,true,,307,0,1,1,null,75136,0,0
-1744671786537,48340,run-noref-20250414-125816 - query_14.sql,200,OK,Test Group 1-1,text,true,,5248,0,1,1,null,48035,0,0
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect,"job_id"

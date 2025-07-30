@@ -122,12 +122,12 @@ def process_table(table_name, partition_column=None):
     if partition_column:
         create_query = f"""
         CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" PARTITION BY ({partition_column}) AS 
-        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}"."{table_name}.parquet";
+        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
         """
     else:
         create_query = f"""
         CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" AS 
-        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}"."{table_name}.parquet";
+        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
         """
     print(f"Creating Iceberg table for: {table_name}")
     execute_query(create_query)

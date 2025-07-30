@@ -27,9 +27,12 @@ def execute_query(query):
     endpoint = f"{DREMIO_URL}/sql"
 
     try:
+        print(f"Executing query: {query}")
         response = requests.post(endpoint, headers=headers, json=payload)
+        print(f"Response: {response.status_code} - {response.text}")
         response.raise_for_status()
         job_id = response.json().get("id")
+        print(f"Job ID: {job_id}")
         return job_id
     except requests.exceptions.RequestException as e:
         print(f"Failed to execute query: {e}")
@@ -40,15 +43,18 @@ def wait_for_job_completion(job_id):
     url = f"{DREMIO_URL}/job/{job_id}"
     elapsed_time = 0
 
+    print(f"Waiting for job {job_id} to complete...")
     for attempt in range(5):
         try:
             res = requests.get(url, headers=headers)
+            print(f"Attempt {attempt + 1}: Response: {res.status_code} - {res.text}")
             if res.status_code == 404:
                 time.sleep(10)
                 continue
             res.raise_for_status()
             break
-        except requests.RequestException:
+        except requests.RequestException as e:
+            print(f"Error checking job status: {e}")
             time.sleep(10)
     else:
         print(f"Error: Job {job_id} not found after multiple attempts.")
@@ -57,6 +63,7 @@ def wait_for_job_completion(job_id):
     last_state = None
     while True:
         res = requests.get(url, headers=headers)
+        print(f"Job status response: {res.status_code} - {res.text}")
         state = res.json().get("jobState")
         if state != last_state:
             print(f"Job {job_id} status: {state}")
@@ -67,7 +74,8 @@ def wait_for_job_completion(job_id):
                 print(".", end="", flush=True)
 
         if state == "COMPLETED":
-            return True  # Skip repeating the success message
+            print(f"✅ Job {job_id} completed successfully.")
+            return True
         elif state in ["FAILED", "CANCELED"]:
             print(f"\n❌ Job {job_id} failed with state: {state}. Please inspect SQL logs.")
             return False
@@ -78,8 +86,10 @@ def request_recommendations(job_id):
     endpoint = f"{DREMIO_URL}/reflection/recommendations"
     payload = {"jobIds": [job_id]}
 
+    print(f"Requesting recommendations for job {job_id}...")
     try:
         res = requests.post(endpoint, headers=headers, json=payload)
+        print(f"Recommendations response: {res.status_code} - {res.text}")
         res.raise_for_status()
         return res.json()
     except requests.RequestException as e:
@@ -89,16 +99,20 @@ def request_recommendations(job_id):
 def create_reflection_from_recommendation(recommendation):
     headers = get_auth_header()
 
+    print(f"Creating view from recommendation: {recommendation}")
     view_payload = recommendation["viewRequestBody"]
     catalog_url = f"{DREMIO_URL}/catalog"
     view_response = requests.post(catalog_url, headers=headers, json=view_payload)
+    print(f"View creation response: {view_response.status_code} - {view_response.text}")
     view_response.raise_for_status()
     view_id = view_response.json()["id"]
 
+    print(f"Creating reflection for view ID: {view_id}")
     reflection_payload = recommendation["reflectionRequestBody"]
     reflection_payload["datasetId"] = view_id
     reflection_url = f"{DREMIO_URL}/reflection"
     reflection_response = requests.post(reflection_url, headers=headers, json=reflection_payload)
+    print(f"Reflection creation response: {reflection_response.status_code} - {reflection_response.text}")
     reflection_response.raise_for_status()
     print("✅ Recommended reflection created.")
 
@@ -119,6 +133,7 @@ def process_queries():
             with open(query_path, "r") as f:
                 query = f.read().strip()
                 print(f"Processing query: {query_file}")
+                print(f"Query content: {query}")
         except Exception as e:
             print(f"Error reading query file {query_file}: {e}")
             continue
