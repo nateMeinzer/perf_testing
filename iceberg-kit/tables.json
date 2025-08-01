@@ -1,40 +1,40 @@
 {
     "partitioned_tables": {
         "catalog_returns": {
-            "partition_by": "CR_RETURNED_DATE_SK",
-            "localsort_by": "CR_ITEM_SK"
+            "partition_by": "cr_returned_date_sk",
+            "localsort_by": "cr_item_sk"
         },
         "store_sales": {
-            "partition_by": "SS_SOLD_DATE_SK",
-            "localsort_by": "SS_ITEM_SK"
+            "partition_by": "ss_sold_date_sk",
+            "localsort_by": "ss_item_sk"
         },
         "catalog_sales": {
-            "partition_by": "CS_SOLD_DATE_SK",
-            "localsort_by": "CS_ITEM_SK"
+            "partition_by": "cs_sold_date_sk",
+            "localsort_by": "cs_item_sk"
         },
         "store_returns": {
-            "partition_by": "SR_RETURNED_DATE_SK",
-            "localsort_by": "SR_ITEM_SK"
+            "partition_by": "sr_returned_date_sk",
+            "localsort_by": "sr_item_sk"
         },
         "web_sales": {
-            "partition_by": "WS_SOLD_DATE_SK",
-            "localsort_by": "WS_ITEM_SK"
+            "partition_by": "ws_sold_date_sk",
+            "localsort_by": "ws_item_sk"
         },
         "inventory": {
-            "partition_by": "INV_DATE_SK",
-            "localsort_by": "INV_ITEM_SK"
+            "partition_by": "inv_date_sk",
+            "localsort_by": "inv_item_sk"
         },
         "web_returns": {
-            "partition_by": "WR_RETURNED_DATE_SK",
-            "localsort_by": "WR_ITEM_SK"
+            "partition_by": "wr_returned_date_sk",
+            "localsort_by": "wr_item_sk"
         }
     },
     "non_partitioned_tables": [
-        "catalog_page","call_center",
+        "catalog_page", "call_center",
         "customer_address", "customer_demographics", "date_dim", "dbgen_version", 
         "household_demographics", "income_band", "customer",
         "item", "promotion", "reason", "ship_mode",
         "store", "time_dim", 
-        "warehouse", "web_page",  "web_site"
+        "warehouse", "web_page", "web_site"
     ]
 }
