@@ -120,18 +120,18 @@ def process_table(table_name, partition_column=None, localsort_column=None):
     execute_query(query)  # Execute the query regardless of the outcome
 
     # Step 2: Create the Iceberg table
-    iceberg_path = f"{ICEBERG_FOLDER_NAME}" + f'."{ICEBERG_SUBFOLDER}"'
+
     
     if partition_column:
         localsort_clause = f" LOCALSORT BY ({localsort_column})"
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" 
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{ICEBERG_SUBFOLDER}"."{table_name}" 
         PARTITION BY ({partition_column}){localsort_clause} AS 
         SELECT * FROM tpcds.tpcds.tpcds.sample."{table_name}";
         """
     else:
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" AS 
+        CREATE TABLE  "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{ICEBERG_SUBFOLDER}"."{table_name}" AS 
         SELECT * FROM tpcds.tpcds.tpcds.sample."{table_name}";
         """
     print(f"Creating Iceberg table for: {table_name}")
