@@ -158,12 +158,24 @@ def main():
         try:
             with open(tables_file, "r") as f:
                 tables = json.load(f)
+                # Debug: Print the contents of tables.json
+                print("Contents of tables.json:")
+                print(json.dumps(tables, indent=4))
         except json.JSONDecodeError as e:
             print(f"Error: Failed to parse {tables_file}. Ensure it contains valid JSON. {e}")
             return
 
         # Process partitioned tables
         for table_name, config in tables["partitioned_tables"].items():
+            # Debug: Print table_name and config to verify structure
+            print(f"Processing partitioned table: {table_name}")
+            print(f"Config for {table_name}: {config}")
+            
+            # Ensure config contains the expected keys
+            if "partition_by" not in config or "localsort_by" not in config:
+                print(f"Error: Missing 'partition_by' or 'localsort_by' in config for table {table_name}")
+                continue
+            
             partition_column = config["partition_by"]  # Use "partition_by" instead of "partition_column"
             localsort_column = config["localsort_by"]  # Use "localsort_by" instead of "localsort_column"
             process_table(table_name, partition_column, localsort_column)
