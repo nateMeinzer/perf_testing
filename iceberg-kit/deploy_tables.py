@@ -164,13 +164,13 @@ def main():
 
         # Process partitioned tables
         for table_name, config in tables["partitioned_tables"].items():
-            partition_column = config["partition_column"]
-            localsort_column = config["localsort_column"]
+            partition_column = config["partition_by"]  # Use "partition_by" instead of "partition_column"
+            localsort_column = config["localsort_by"]  # Use "localsort_by" instead of "localsort_column"
             process_table(table_name, partition_column, localsort_column)
 
         # Process non-partitioned tables
-        for table_name, localsort_column in tables["non_partitioned_tables"].items():
-            process_table(table_name, localsort_column=localsort_column)
+        for table_name in tables["non_partitioned_tables"]:  # Iterate directly over the list
+            process_table(table_name)
 
 if __name__ == "__main__":
     main()
