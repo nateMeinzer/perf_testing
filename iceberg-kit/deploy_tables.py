@@ -23,6 +23,7 @@ S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
 
 ICEBERG_BUCKET_NAME = os.getenv("ICEBERG_BUCKET_NAME")
 ICEBERG_FOLDER_NAME = os.getenv("ICEBERG_FOLDER_NAME")
+ICEBERG_SUBFOLDER = os.getenv("ICEBERG_SUBFOLDER")  # Default to empty if not set
 S3_OBJECT_STORE = os.getenv("S3_BUCKET_NAME")
 S3_FOLDER_NAME = os.getenv("S3_FOLDER_NAME")
 
@@ -109,7 +110,7 @@ def execute_query(query):
             print(f"Error response: {e.response.text}")
         return False
 
-def process_table(table_name, partition_column=None):
+def process_table(table_name, partition_column=None, localsort_column=None):
     """Query the object and create the Iceberg table."""
     # Step 1: Query the object with LIMIT 1
     query = f"""
@@ -119,14 +120,18 @@ def process_table(table_name, partition_column=None):
     execute_query(query)  # Execute the query regardless of the outcome
 
     # Step 2: Create the Iceberg table
+    iceberg_path = f"{ICEBERG_FOLDER_NAME}" + (f'."{ICEBERG_SUBFOLDER}"' if ICEBERG_SUBFOLDER else "")
+    
     if partition_column:
+        localsort_clause = f" LOCALSORT BY ({localsort_column})" if localsort_column else ""
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" PARTITION BY ({partition_column}) AS 
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" 
+        PARTITION BY ({partition_column}){localsort_clause} AS 
         SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
         """
     else:
         create_query = f"""
-        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{ICEBERG_FOLDER_NAME}"."{table_name}" AS 
+        CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" AS 
         SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
         """
     print(f"Creating Iceberg table for: {table_name}")
@@ -141,7 +146,8 @@ def main():
         # Process only the specified table
         table_name = args.table
         print(f"Processing single table: {table_name}")
-        process_table(table_name)
+        # Assuming partition_column and localsort_column are provided for single table processing
+        process_table(table_name, partition_column="partition_column", localsort_column="localsort_column")
     else:
         # Load tables.json
         tables_file = "tables.json"
@@ -157,12 +163,14 @@ def main():
             return
 
         # Process partitioned tables
-        for table_name, partition_column in tables["partitioned_tables"].items():
-            process_table(table_name, partition_column)
+        for table_name, config in tables["partitioned_tables"].items():
+            partition_column = config["partition_column"]
+            localsort_column = config["localsort_column"]
+            process_table(table_name, partition_column, localsort_column)
 
         # Process non-partitioned tables
-        for table_name in tables["non_partitioned_tables"]:
-            process_table(table_name)
+        for table_name, localsort_column in tables["non_partitioned_tables"].items():
+            process_table(table_name, localsort_column=localsort_column)
 
 if __name__ == "__main__":
     main()
