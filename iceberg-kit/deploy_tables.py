@@ -114,7 +114,7 @@ def process_table(table_name, partition_column=None, localsort_column=None):
     """Query the object and create the Iceberg table."""
     # Step 1: Query the object with LIMIT 1
     query = f"""
-    SELECT * FROM "{S3_OBJECT_STORE}"."{S3_BUCKET_NAME}"."{table_name}"."{table_name}.parquet" LIMIT 1
+    SELECT * FROM tpcds.tpcds.tpcds.sample."{table_name}" LIMIT 1
     """
     print(f"Querying object for table: {table_name}")
     execute_query(query)  # Execute the query regardless of the outcome
@@ -127,12 +127,12 @@ def process_table(table_name, partition_column=None, localsort_column=None):
         create_query = f"""
         CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" 
         PARTITION BY ({partition_column}){localsort_clause} AS 
-        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
+        SELECT * FROM tpcds.tpcds.tpcds.sample."{table_name}";
         """
     else:
         create_query = f"""
         CREATE TABLE "{ICEBERG_BUCKET_NAME}"."{iceberg_path}"."{table_name}" AS 
-        SELECT * FROM "{S3_BUCKET_NAME}"."{S3_FOLDER_NAME}"."{table_name}";
+        SELECT * FROM tpcds.tpcds.tpcds.sample."{table_name}";
         """
     print(f"Creating Iceberg table for: {table_name}")
     execute_query(create_query)
