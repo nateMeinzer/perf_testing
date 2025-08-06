@@ -160,19 +160,40 @@ def create_reflection_from_recommendation(recommendation):
     print(f"Creating view from recommendation: {recommendation}")
     view_payload = recommendation["viewRequestBody"]
     catalog_url = f"{DREMIO_URL}/api/v3/catalog"
-    view_response = requests.post(catalog_url, headers=headers, json=view_payload)
-    print(f"View creation response: {view_response.status_code} - {view_response.text}")
-    view_response.raise_for_status()
-    view_id = view_response.json()["id"]
+
+    # Debugging the view payload
+    print("View payload being sent:")
+    print(view_payload)
+
+    try:
+        view_response = requests.post(catalog_url, headers=headers, json=view_payload)
+        print(f"View creation response: {view_response.status_code} - {view_response.text}")
+        view_response.raise_for_status()
+        view_id = view_response.json()["id"]
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating view: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Error response: {e.response.text}")
+        return
 
     print(f"Creating reflection for view ID: {view_id}")
     reflection_payload = recommendation["reflectionRequestBody"]
     reflection_payload["datasetId"] = view_id
     reflection_url = f"{DREMIO_URL}/api/v3/reflection"
-    reflection_response = requests.post(reflection_url, headers=headers, json=reflection_payload)
-    print(f"Reflection creation response: {reflection_response.status_code} - {reflection_response.text}")
-    reflection_response.raise_for_status()
-    print("✅ Recommended reflection created.")
+
+    # Debugging the reflection payload
+    print("Reflection payload being sent:")
+    print(reflection_payload)
+
+    try:
+        reflection_response = requests.post(reflection_url, headers=headers, json=reflection_payload)
+        print(f"Reflection creation response: {reflection_response.status_code} - {reflection_response.text}")
+        reflection_response.raise_for_status()
+        print("✅ Recommended reflection created.")
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating reflection: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Error response: {e.response.text}")
 
 def process_queries():
     queries_folder = os.path.join(os.path.dirname(__file__), "queries")
