@@ -16,28 +16,11 @@ if not DREMIO_PAT or not DREMIO_URL or not DREMIO_USERNAME or not DREMIO_PASSWOR
     raise ValueError("DREMIO_PAT, DREMIO_URL, DREMIO_USERNAME, and DREMIO_PASSWORD must be set in the environment variables.")
 
 def get_auth_header():
-    """Get authentication header for Dremio API calls"""
-    auth_payload = {
-        "userName": DREMIO_USERNAME,
-        "password": DREMIO_PASSWORD
-    }
-    try:
-        print("Authenticating with Dremio...")
-        response = requests.post(f"{DREMIO_URL}/apiv2/login", json=auth_payload)
-        response.raise_for_status()
-        try:
-            token = response.json()["token"]
-        except ValueError:
-            print("Error: Response is not JSON. Debugging response content:")
-            print(response.text)
-            return None
-        print('Token received')
-        return {"Authorization": f"_dremio{token}", "Content-Type": "application/json"}
-    except requests.exceptions.RequestException as e:
-        print(f"Authentication failed: {e}")
-        if hasattr(e, 'response') and e.response is not None:
-            print(f"Error response: {e.response.text}")
+    """Get authentication header using DREMIO_PAT"""
+    if not DREMIO_PAT:
+        print("Error: DREMIO_PAT is not set in the environment variables.")
         return None
+    return {"Authorization": f"Bearer {DREMIO_PAT}", "Content-Type": "application/json"}
 
 def execute_query(query):
     """Execute a SQL query in Dremio and wait for results"""
@@ -101,7 +84,7 @@ def execute_query(query):
 
 def wait_for_job_completion(job_id):
     headers = get_auth_header()
-    url = f"{DREMIO_URL}/job/{job_id}"
+    url = f"{DREMIO_URL}/api/v3/job/{job_id}"
     elapsed_time = 0
 
     print(f"Waiting for job {job_id} to complete...")
@@ -158,7 +141,7 @@ def wait_for_job_completion(job_id):
 
 def request_recommendations(job_id):
     headers = get_auth_header()
-    endpoint = f"{DREMIO_URL}/reflection/recommendations"
+    endpoint = f"{DREMIO_URL}/api/v3/reflection/recommendations"
     payload = {"jobIds": [job_id]}
 
     print(f"Requesting recommendations for job {job_id}...")
@@ -176,7 +159,7 @@ def create_reflection_from_recommendation(recommendation):
 
     print(f"Creating view from recommendation: {recommendation}")
     view_payload = recommendation["viewRequestBody"]
-    catalog_url = f"{DREMIO_URL}/catalog"
+    catalog_url = f"{DREMIO_URL}/api/v3/catalog"
     view_response = requests.post(catalog_url, headers=headers, json=view_payload)
     print(f"View creation response: {view_response.status_code} - {view_response.text}")
     view_response.raise_for_status()
@@ -185,7 +168,7 @@ def create_reflection_from_recommendation(recommendation):
     print(f"Creating reflection for view ID: {view_id}")
     reflection_payload = recommendation["reflectionRequestBody"]
     reflection_payload["datasetId"] = view_id
-    reflection_url = f"{DREMIO_URL}/reflection"
+    reflection_url = f"{DREMIO_URL}/api/v3/reflection"
     reflection_response = requests.post(reflection_url, headers=headers, json=reflection_payload)
     print(f"Reflection creation response: {reflection_response.status_code} - {reflection_response.text}")
     reflection_response.raise_for_status()
