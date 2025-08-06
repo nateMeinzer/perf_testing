@@ -22,9 +22,11 @@ def get_auth_header():
         "password": DREMIO_PASSWORD
     }
     try:
+        print("Authenticating with Dremio...")
         response = requests.post(f"{DREMIO_URL}/apiv2/login", json=auth_payload)
         response.raise_for_status()
         token = response.json()["token"]
+        print('token received')
         return {"Authorization": f"_dremio{token}", "Content-Type": "application/json"}
     except requests.exceptions.RequestException as e:
         print(f"Authentication failed: {e}")
@@ -49,7 +51,11 @@ def execute_query(query):
             headers=headers,
             json=submit_payload
         )
-        response.raise_for_status()
+        
+        
+        print(f"Response status code: {response.status_code}")
+        print(response.text)  # Add this line to debug the response
+        print('getting job id')
         job_id = response.json().get('id')
         
         if not job_id:
@@ -58,6 +64,7 @@ def execute_query(query):
 
         # Step 2: Poll for query status
         while True:
+            print(f"Polling for job status: {job_id}")
             status_response = requests.get(
                 f"{DREMIO_URL}/api/v3/job/{job_id}",
                 headers=headers
