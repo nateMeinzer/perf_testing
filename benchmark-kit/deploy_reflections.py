@@ -25,11 +25,18 @@ def get_auth_header():
         print("Authenticating with Dremio...")
         response = requests.post(f"{DREMIO_URL}/apiv2/login", json=auth_payload)
         response.raise_for_status()
-        token = response.json()["token"]
-        print('token received')
+        try:
+            token = response.json()["token"]
+        except ValueError:
+            print("Error: Response is not JSON. Debugging response content:")
+            print(response.text)
+            return None
+        print('Token received')
         return {"Authorization": f"_dremio{token}", "Content-Type": "application/json"}
     except requests.exceptions.RequestException as e:
         print(f"Authentication failed: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Error response: {e.response.text}")
         return None
 
 def execute_query(query):
@@ -38,10 +45,9 @@ def execute_query(query):
     if not headers:
         return False
 
-    # Step 1: Submit the query
     submit_payload = {
         "sql": query,
-        "context": ["icerberg", "test-dremio", "sample"]  # Add context value
+        "context": ["icerberg", "test-dremio", "sample"]
     }
 
     try:
@@ -51,36 +57,41 @@ def execute_query(query):
             headers=headers,
             json=submit_payload
         )
-        
-        
         print(f"Response status code: {response.status_code}")
-        print(response.text)  # Add this line to debug the response
-        print('getting job id')
-        job_id = response.json().get('id')
+        print(response.text)  # Debug response content
+        try:
+            job_id = response.json().get('id')
+        except ValueError:
+            print("Error: Response is not JSON. Debugging response content:")
+            print(response.text)
+            return False
         
         if not job_id:
             print("No job ID returned from query submission")
             return False
 
-        # Step 2: Poll for query status
         while True:
             print(f"Polling for job status: {job_id}")
             status_response = requests.get(
                 f"{DREMIO_URL}/api/v3/job/{job_id}",
                 headers=headers
             )
-            status_response.raise_for_status()
-            status = status_response.json()
+            try:
+                status = status_response.json()
+            except ValueError:
+                print("Error: Status response is not JSON. Debugging response content:")
+                print(status_response.text)
+                return False
             
             if status.get('jobState') == 'COMPLETED':
                 print("Query completed successfully")
-                return True
+                return job_id
             elif status.get('jobState') in ['FAILED', 'CANCELED', 'INVALID']:
                 print(f"Query failed with state: {status.get('jobState')}")
                 print(f"Error: {status.get('errorMessage')}")
                 return False
             
-            time.sleep(1)  # Wait before polling again
+            time.sleep(1)
 
     except requests.exceptions.RequestException as e:
         print(f"Failed to execute query: {e}")
@@ -105,6 +116,8 @@ def wait_for_job_completion(job_id):
             break
         except requests.RequestException as e:
             print(f"Error checking job status: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"Error response: {e.response.text}")
             time.sleep(10)
     else:
         print(f"Error: Job {job_id} not found after multiple attempts.")
@@ -112,9 +125,21 @@ def wait_for_job_completion(job_id):
 
     last_state = None
     while True:
-        res = requests.get(url, headers=headers)
-        print(f"Job status response: {res.status_code} - {res.text}")
-        state = res.json().get("jobState")
+        try:
+            res = requests.get(url, headers=headers)
+            print(f"Job status response: {res.status_code}")
+            try:
+                state = res.json().get("jobState")
+            except ValueError:
+                print("Error: Job status response is not JSON. Debugging response content:")
+                print(res.text)
+                return False
+        except requests.RequestException as e:
+            print(f"Error polling job status: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"Error response: {e.response.text}")
+            return False
+
         if state != last_state:
             print(f"Job {job_id} status: {state}")
             last_state = state
