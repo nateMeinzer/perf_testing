@@ -16,27 +16,70 @@ if not DREMIO_PAT or not DREMIO_URL or not DREMIO_USERNAME or not DREMIO_PASSWOR
     raise ValueError("DREMIO_PAT, DREMIO_URL, DREMIO_USERNAME, and DREMIO_PASSWORD must be set in the environment variables.")
 
 def get_auth_header():
-    return {
-        "Authorization": f"Bearer {DREMIO_PAT}",
-        "Content-Type": "application/json"
+    """Get authentication header for Dremio API calls"""
+    auth_payload = {
+        "userName": DREMIO_USERNAME,
+        "password": DREMIO_PASSWORD
     }
+    try:
+        response = requests.post(f"{DREMIO_URL}/apiv2/login", json=auth_payload)
+        response.raise_for_status()
+        token = response.json()["token"]
+        return {"Authorization": f"_dremio{token}", "Content-Type": "application/json"}
+    except requests.exceptions.RequestException as e:
+        print(f"Authentication failed: {e}")
+        return None
 
 def execute_query(query):
+    """Execute a SQL query in Dremio and wait for results"""
     headers = get_auth_header()
-    payload = {"sql": query, "context": ["iceberg", "sample"]}
-    endpoint = f"{DREMIO_URL}/sql"
+    if not headers:
+        return False
+
+    # Step 1: Submit the query
+    submit_payload = {
+        "sql": query,
+        "context": ["icerberg", "test-dremio", "sample"]  # Add context value
+    }
 
     try:
-        print(f"Executing query: {query}")
-        response = requests.post(endpoint, headers=headers, json=payload)
-        print(f"Response: {response.status_code} - {response.text}")
+        print(f"Submitting SQL query: {query}")
+        response = requests.post(
+            f"{DREMIO_URL}/api/v3/sql",
+            headers=headers,
+            json=submit_payload
+        )
         response.raise_for_status()
-        job_id = response.json().get("id")
-        print(f"Job ID: {job_id}")
-        return job_id
+        job_id = response.json().get('id')
+        
+        if not job_id:
+            print("No job ID returned from query submission")
+            return False
+
+        # Step 2: Poll for query status
+        while True:
+            status_response = requests.get(
+                f"{DREMIO_URL}/api/v3/job/{job_id}",
+                headers=headers
+            )
+            status_response.raise_for_status()
+            status = status_response.json()
+            
+            if status.get('jobState') == 'COMPLETED':
+                print("Query completed successfully")
+                return True
+            elif status.get('jobState') in ['FAILED', 'CANCELED', 'INVALID']:
+                print(f"Query failed with state: {status.get('jobState')}")
+                print(f"Error: {status.get('errorMessage')}")
+                return False
+            
+            time.sleep(1)  # Wait before polling again
+
     except requests.exceptions.RequestException as e:
         print(f"Failed to execute query: {e}")
-        return None
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Error response: {e.response.text}")
+        return False
 
 def wait_for_job_completion(job_id):
     headers = get_auth_header()
