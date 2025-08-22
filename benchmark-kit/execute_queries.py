@@ -51,7 +51,7 @@ def execute_query(query):
 def execute_queries():
     """Iterate through queries in the queries folder and log results to a CSV file."""
     with open(results_file, mode="w", newline="") as csvfile:
-        fieldnames = ["query", "status", "data", "error"]
+        fieldnames = ["filename", "status"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -63,10 +63,8 @@ def execute_queries():
                 query_text = f.read().strip().rstrip(";")
             result = execute_query(query_text)
             writer.writerow({
-                "query": query_text,
-                "status": result["status"],
-                "data": result.get("data"),
-                "error": result.get("error")
+                "filename": filename,
+                "status": result["status"]
             })
 
 if __name__ == "__main__":
