@@ -45,11 +45,12 @@ Convert `.dat` files to `.parquet` format and upload them to an S3 bucket using 
 
 #### **Usage**
 ```bash
-python tpcds upload [--test]
+python tpcds upload [--test] [--spark]
 ```
 
 #### **Arguments**
 - `--test`: Run in test mode to simulate the upload process. Outputs the source and target paths without performing the actual upload.
+- `--spark`: Use Spark-based Parquet transformation instead of the default method.
 
 #### **Example**
 1. **Test Mode**:
@@ -63,13 +64,19 @@ python tpcds upload [--test]
    Source: tpcds-kit/test_data/parquet/orders.parquet Target: s3://tpcds/orders/orders.parquet
    ```
 
-2. **Full Execution**:
+2. **Full Execution (Default Method)**:
    ```bash
    python tpcds upload
    ```
    This will:
    - Convert `.dat` files in `tpcds-kit/test_data/raw_files` to `.parquet` files in `tpcds-kit/test_data/parquet`.
    - Upload the `.parquet` files to the S3 bucket specified in the `.env` file.
+
+3. **Full Execution (Spark Method)**:
+   ```bash
+   python tpcds upload --spark
+   ```
+   This will use Spark to convert and upload the data.
 
 ---
 

@@ -9,3 +9,4 @@ jupyter
 python-dotenv
 boto3
 pyarrow
+termcolor
