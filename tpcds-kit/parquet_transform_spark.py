@@ -78,6 +78,9 @@ def process_file(spark, file_path):
 if __name__ == "__main__":
     # Initialize Spark session
     spark = SparkSession.builder \
+        .config("spark.driver.memory", "8g") \
+        .config("spark.executor.memory", "8g") \
+        .config("spark.executor.memoryOverhead", "2g") \
         .appName("TPC-DS Parquet Transformer") \
         .master("local[*]") \
         .getOrCreate()
