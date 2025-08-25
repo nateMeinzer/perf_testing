@@ -84,8 +84,9 @@ if __name__ == "__main__":
     if not dat_files:
         print("No .dat files found in the input directory.")
     else:
-        # Process files in parallel using Spark
-        spark.sparkContext.parallelize(dat_files).foreach(lambda file_path: process_file(spark, file_path))
+        # Process files sequentially on the driver node
+        for file_path in dat_files:
+            process_file(spark, file_path)
 
     # Stop the Spark session
     spark.stop()
