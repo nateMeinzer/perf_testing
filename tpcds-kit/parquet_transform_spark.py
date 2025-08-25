@@ -40,7 +40,7 @@ def process_file(spark, file_path):
     """Process a single .dat file and convert it to Parquet."""
     try:
         # Read the .dat file; TPC-DS files are pipe-delimited with no header
-        df = spark.read.csv(file_path, sep="|", header=False, charset="latin1")
+        df = spark.read.csv(file_path, sep="|", header=False)
 
         # Get table name from file name (remove .dat extension)
         table_name = os.path.splitext(os.path.basename(file_path))[0]
@@ -89,4 +89,4 @@ if __name__ == "__main__":
             process_file(spark, file_path)
 
     # Stop the Spark session
-    spark.stop()
+    spark
