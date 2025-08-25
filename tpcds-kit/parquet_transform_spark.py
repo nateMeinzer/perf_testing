@@ -63,9 +63,13 @@ def process_file(spark, file_path):
         df = df.withColumn("partition_key", expr(f"monotonically_increasing_id() % {num_partitions}"))
 
         # Write DataFrame to Parquet with partitioning
-        output_file = os.path.join(output_dir, f"{table_name}.parquet")
-        df.write.mode("overwrite").partitionBy("partition_key").parquet(output_file)
-        print(f"Successfully converted {file_path} to {output_file} with {num_partitions} partitions")
+        output_folder = os.path.join(output_dir, table_name)  # Remove .parquet from folder name
+        df.write.mode("overwrite").partitionBy("partition_key").parquet(output_folder)
+
+        # Remove the partitioning column after writing
+        df = df.drop("partition_key")
+
+        print(f"Successfully converted {file_path} to {output_folder} with {num_partitions} partitions")
     except AnalysisException as e:
         handle_error(f"Failed to process {file_path} due to schema mismatch: {e}")
     except Exception as e:
@@ -89,4 +93,4 @@ if __name__ == "__main__":
             process_file(spark, file_path)
 
     # Stop the Spark session
-    spark
+    spark.stop()
