@@ -86,7 +86,6 @@ if __name__ == "__main__":
         .config("spark.driver.memory", "8g") \
         .config("spark.executor.memory", "8g") \
         .config("spark.executor.memoryOverhead", "2g") \
-        .config("spark.sql.shuffle.partitions", "2000") \
         .appName("TPC-DS Parquet Transformer") \
         .master("local[*]") \
         .getOrCreate()
