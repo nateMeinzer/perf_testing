@@ -1,5 +1,6 @@
 import os
 import json
+import argparse
 from pyspark.sql import SparkSession
 from pyspark.sql.utils import AnalysisException
 from termcolor import colored
@@ -81,14 +82,22 @@ def process_file(spark, file_path):
         handle_error(f"Failed to process {file_path}: {e}")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Parquet transform")
+    parser.add_argument("--custom_dir", required=False, type=str, help="Directory for temporary files location, instead of default /tmp directory")
+    args = parser.parse_args()
+
     # Initialize Spark session
     spark = SparkSession.builder \
         .config("spark.driver.memory", "8g") \
         .config("spark.executor.memory", "8g") \
         .config("spark.executor.memoryOverhead", "2g") \
         .appName("TPC-DS Parquet Transformer") \
-        .master("local[*]") \
-        .getOrCreate()
+        .master("local[*]")
+    
+    if args.custom_dir != "":
+        spark = spark.config("spark.local.dir", args.custom_dir)
+    
+    spark = spark.getOrCreate()
 
     # Get list of all .dat files in the input directory
     dat_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith(".dat")]
