@@ -24,7 +24,7 @@ def generate_data(scale_factor):
 
     subprocess.run(["python", os.path.join(TPCDS_KIT_DIR, "data_generator.py"), "--scale-factor", str(scale_factor)])
 
-def upload_data(test_mode, use_spark):
+def upload_data(test_mode, use_spark, custom_tmp_dir=""):
     # Retrieve S3 configuration from environment variables
     s3_bucket = os.environ.get("S3_BUCKET_NAME")
     s3_endpoint = os.environ.get("S3_ENDPOINT_URL")
@@ -49,7 +49,11 @@ def upload_data(test_mode, use_spark):
 
     # Run the appropriate script to convert .dat to .parquet
     if use_spark:
-        subprocess.run(["python", os.path.join(TPCDS_KIT_DIR, "parquet_transform_spark.py")])
+        commandArguments = [ "python", os.path.join(TPCDS_KIT_DIR, "parquet_transform_spark.py") ]
+        if custom_tmp_dir != "":
+            commandArguments.append("--custom_dir")
+            commandArguments.append(custom_tmp_dir)
+        subprocess.run(commandArguments)
     else:
         subprocess.run(["python", os.path.join(TPCDS_KIT_DIR, "data_to_parquet.py")])
 
@@ -95,6 +99,7 @@ if __name__ == "__main__":
     upload_parser = subparsers.add_parser("upload", help="Convert and upload Parquet files to S3")
     upload_parser.add_argument("--test", action="store_true", help="Run in test mode to output source and target paths without uploading")
     upload_parser.add_argument("--spark", action="store_true", help="Use Spark-based Parquet transformation")
+    upload_parser.add_argument("--custom_dir", type=str, help="Use as temporary directory instead of /tmp", default="")
 
     # Subparser for cleanup
     cleanup_parser = subparsers.add_parser("cleanup", help="Cleanup .dat and .parquet files")
@@ -104,6 +109,6 @@ if __name__ == "__main__":
     if args.command == "generate":
         generate_data(args.scale)
     elif args.command == "upload":
-        upload_data(args.test, args.spark)
+        upload_data(args.test, args.spark, args.custom_dir)
     elif args.command == "cleanup":
         cleanup()
